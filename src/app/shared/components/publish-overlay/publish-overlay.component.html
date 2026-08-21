@@ -1,0 +1,6 @@
+<div class="overlay-backdrop" (click)="onClose()">
+  <div class="overlay-card" (click)="$event.stopPropagation()">
+    <p>Your survey is now published</p>
+    <button type="button" class="overlay-close" (click)="onClose()" aria-label="Close">×</button>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+<div class="poll-container">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-brand">
+      <span class="hero-brand__icon">💬</span>
+      <span class="hero-brand__name">Poll<br />App</span>
+    </div>
+
+    <div class="hero-content">
+      <h1>Collect Feedback,<br />Unlock Ideas</h1>
+      <p>
+        Create and share surveys in minutes – from team events to
+        workplace culture. Collect opinions, engage your audience,
+        and turn feedback into action.
+      </p>
+      <button class="btn-primary" routerLink="/create">New survey</button>
+    </div>
+  </section>
+
+  <h2 class="section-title">Your surveys</h2>
+
+  <!-- ENDING SOON -->
+  <section class="ending-soon" *ngIf="endingSoonPolls.length > 0">
+    <h3>Ending soon surveys</h3>
+    <div class="ending-grid">
+      <div class="ending-card" *ngFor="let poll of endingSoonPolls">
+        <span class="badge">{{ poll.category }}</span>
+        <h4>{{ poll.title }}</h4>
+        <p class="ends-in">Ends in {{ getDaysLeft(poll.end_date) }} Day(s)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <div class="filter-tabs">
+      <button [class.active]="filter === 'active'" (click)="filter = 'active'">Active survey</button>
+      <button [class.active]="filter === 'past'" (click)="filter = 'past'">Past survey</button>
+    </div>
+    <label class="sort">
+      Sort by categories
+      <select>
+        <option value="date">Date</option>
+        <option value="category">Category</option>
+        <option value="votes">Votes</option>
+      </select>
+    </label>
+  </div>
+
+  <!-- POLL LIST -->
+  <div class="poll-grid" *ngIf="!loading">
+    <div class="poll-card" *ngFor="let poll of getFilteredPolls()">
+      <div class="poll-header">
+        <span class="category">{{ poll.category }}</span>
+        <span class="status" [class.active]="poll.is_active">
+          {{ poll.is_active ? '● Active' : '○ Past' }}
+        </span>
+      </div>
+      <h3 class="poll-title">{{ poll.title }}</h3>
+      <p class="poll-description">{{ poll.description }}</p>
+      <div class="poll-footer">
+        <span class="votes">{{ getTotalVotes(poll) }} answers</span>
+        <div class="poll-actions">
+          <button class="btn-vote" [routerLink]="['/poll', poll.id]">Vote</button>
+          <button class="btn-delete" (click)="deletePoll(poll.id)">🗑️</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <p>Loading surveys...</p>
+  </div>
+</div>

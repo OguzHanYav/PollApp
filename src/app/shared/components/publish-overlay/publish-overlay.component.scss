@@ -1,0 +1,31 @@
+.overlay-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(53, 39, 58, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.overlay-card {
+  background: #FEE9D4;
+  color: #2B2233;
+  border-radius: 14px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-weight: 600;
+  max-width: 360px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.overlay-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #2B2233;
+  margin-left: auto;
+}
