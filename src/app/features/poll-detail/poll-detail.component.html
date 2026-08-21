@@ -1,8 +1,8 @@
-<div class="loading-state" *ngIf="loading">
+<div class="loading-state" *ngIf="loading()">
   <p>Loading survey...</p>
 </div>
 
-<div class="detail" *ngIf="!loading && poll">
+<div class="detail" *ngIf="!loading() && poll()">
   <header class="detail__topbar">
     <div class="brand">
       <span class="brand__icon">💬</span>
@@ -14,18 +14,18 @@
   <div class="detail__content">
     <div class="survey-card">
       <div class="survey-card__meta">
-        <span class="badge" [class.badge--inactive]="!poll.is_active">
-          {{ poll.is_active ? 'Published' : 'Closed' }}
+        <span class="badge" [class.badge--inactive]="!poll()?.is_active">
+          {{ poll()?.is_active ? 'Published' : 'Closed' }}
         </span>
-        <span class="end-date" *ngIf="poll.end_date">Ends on {{ poll.end_date | date: 'dd.MM.yyyy' }}</span>
-        <span class="category" *ngIf="poll.category">Category: {{ poll.category }}</span>
+        <span class="end-date" *ngIf="poll()?.end_date">Ends on {{ poll()?.end_date | date: 'dd.MM.yyyy' }}</span>
+        <span class="category" *ngIf="poll()?.category">Category: {{ poll()?.category }}</span>
       </div>
 
-      <h1>{{ poll.title }}</h1>
-      <p class="description" *ngIf="poll.description">{{ poll.description }}</p>
+      <h1>{{ poll()?.title }}</h1>
+      <p class="description" *ngIf="poll()?.description">{{ poll()?.description }}</p>
 
       <div class="questions">
-        <div class="question" *ngFor="let q of poll.questions; let qi = index">
+        <div class="question" *ngFor="let q of poll()?.questions; let qi = index">
           <h3>{{ qi + 1 }}. {{ q.question_text }}</h3>
           <span class="hint" *ngIf="q.allow_multiple">More than one answers are possible.</span>
           <div class="answer-options">
@@ -33,7 +33,6 @@
               <input
                 [type]="q.allow_multiple ? 'checkbox' : 'radio'"
                 [name]="'question-' + q.id"
-                [checked]="isSelected(q.id, a.id)"
                 (change)="toggleAnswer(q.id, a.id, q.allow_multiple)"
               />
               <span>{{ answerLetters[ai] }}. {{ a.answer_text }}</span>
@@ -43,8 +42,8 @@
       </div>
 
       <div class="survey-card__footer">
-        <button class="btn-primary" [disabled]="submitting" (click)="completeSurvey()">
-          {{ submitting ? 'Submitting…' : 'Complete survey' }}
+        <button class="btn-primary" [disabled]="submitting()" (click)="completeSurvey()">
+          {{ submitting() ? 'Submitting…' : 'Complete survey' }}
         </button>
       </div>
     </div>
@@ -53,18 +52,18 @@
       <h2>Survey results <span class="live">LIVE</span></h2>
 
       <ng-container *ngIf="hasResults(); else noResults">
-        <div class="result-question" *ngFor="let q of poll.questions; let qi = index">
+        <div class="result-question" *ngFor="let q of poll()?.questions; let qi = index">
           <h4>{{ qi + 1 }}. {{ q.question_text }}</h4>
           <div class="result-row" *ngFor="let a of q.answers; let ai = index">
             <span class="result-row__letter">{{ answerLetters[ai] }}</span>
             <div class="result-row__bar">
               <div
                 class="result-row__fill"
-                [style.width.%]="votePercentage(a.votes, questionTotalVotes(q.answers))"
+                [style.width.%]="getPercentage(a.votes)"
               ></div>
             </div>
             <span class="result-row__percent">
-              {{ votePercentage(a.votes, questionTotalVotes(q.answers)) }}%
+              {{ getPercentage(a.votes) }}%
             </span>
           </div>
         </div>
