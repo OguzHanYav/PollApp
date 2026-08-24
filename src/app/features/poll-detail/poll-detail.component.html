@@ -2,37 +2,45 @@
   <p>Loading survey...</p>
 </div>
 
-<div class="detail" *ngIf="!loading() && poll()">
+<!--
+  poll, loading und submitting sind Signals (Funktionen) -> im Template immer
+  mit () aufrufen. "as p" erspart wiederholte poll()-Aufrufe.
+-->
+<div class="detail" *ngIf="!loading() && poll() as p">
   <header class="detail__topbar">
     <div class="brand">
       <span class="brand__icon">💬</span>
       <span class="brand__name">Poll<br />App</span>
     </div>
-    <button class="btn-primary" routerLink="/create">Create survey</button>
+    <button class="btn-primary" routerLink="/">Back to surveys</button>
   </header>
 
   <div class="detail__content">
     <div class="survey-card">
       <div class="survey-card__meta">
-        <span class="badge" [class.badge--inactive]="!poll()?.is_active">
-          {{ poll()?.is_active ? 'Published' : 'Closed' }}
+        <span class="badge" [class.badge--inactive]="!p.is_active">
+          {{ p.is_active ? 'Published' : 'Closed' }}
         </span>
-        <span class="end-date" *ngIf="poll()?.end_date">Ends on {{ poll()?.end_date | date: 'dd.MM.yyyy' }}</span>
-        <span class="category" *ngIf="poll()?.category">Category: {{ poll()?.category }}</span>
+        <span class="end-date" *ngIf="p.end_date">Ends on {{ p.end_date | date: 'dd.MM.yyyy' }}</span>
+        <span class="category" *ngIf="p.category">Category: {{ p.category }}</span>
       </div>
 
-      <h1>{{ poll()?.title }}</h1>
-      <p class="description" *ngIf="poll()?.description">{{ poll()?.description }}</p>
+      <h1>{{ p.title }}</h1>
+      <p class="description" *ngIf="p.description">{{ p.description }}</p>
 
+      <!-- User Story 4: Past Surveys können angesehen, aber nicht mehr
+           angeklickt / erneut abgegeben werden. -->
       <div class="questions">
-        <div class="question" *ngFor="let q of poll()?.questions; let qi = index">
+        <div class="question" *ngFor="let q of p.questions; let qi = index">
           <h3>{{ qi + 1 }}. {{ q.question_text }}</h3>
           <span class="hint" *ngIf="q.allow_multiple">More than one answers are possible.</span>
           <div class="answer-options">
-            <label class="answer-option" *ngFor="let a of q.answers; let ai = index">
+            <label class="answer-option" [class.disabled]="!p.is_active" *ngFor="let a of q.answers; let ai = index">
               <input
                 [type]="q.allow_multiple ? 'checkbox' : 'radio'"
                 [name]="'question-' + q.id"
+                [checked]="isSelected(q.id, a.id)"
+                [disabled]="!p.is_active"
                 (change)="toggleAnswer(q.id, a.id, q.allow_multiple)"
               />
               <span>{{ answerLetters[ai] }}. {{ a.answer_text }}</span>
@@ -42,28 +50,34 @@
       </div>
 
       <div class="survey-card__footer">
-        <button class="btn-primary" [disabled]="submitting()" (click)="completeSurvey()">
+        <button
+          class="btn-primary"
+          *ngIf="p.is_active"
+          [disabled]="submitting()"
+          (click)="completeSurvey()"
+        >
           {{ submitting() ? 'Submitting…' : 'Complete survey' }}
         </button>
+        <p class="closed-note" *ngIf="!p.is_active">This survey has ended – voting is closed.</p>
       </div>
     </div>
 
     <div class="results">
-      <h2>Survey results <span class="live">LIVE</span></h2>
+      <h2>Survey results <span class="live" *ngIf="p.is_active">LIVE</span></h2>
 
       <ng-container *ngIf="hasResults(); else noResults">
-        <div class="result-question" *ngFor="let q of poll()?.questions; let qi = index">
+        <div class="result-question" *ngFor="let q of p.questions; let qi = index">
           <h4>{{ qi + 1 }}. {{ q.question_text }}</h4>
           <div class="result-row" *ngFor="let a of q.answers; let ai = index">
             <span class="result-row__letter">{{ answerLetters[ai] }}</span>
             <div class="result-row__bar">
               <div
                 class="result-row__fill"
-                [style.width.%]="getPercentage(a.votes)"
+                [style.width.%]="votePercentage(a.votes, questionTotalVotes(q.answers))"
               ></div>
             </div>
             <span class="result-row__percent">
-              {{ getPercentage(a.votes) }}%
+              {{ votePercentage(a.votes, questionTotalVotes(q.answers)) }}%
             </span>
           </div>
         </div>

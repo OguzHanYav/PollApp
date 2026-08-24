@@ -1,6 +1,7 @@
-import { Component, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RealtimeChannel } from '@supabase/supabase-js';
 import { PollService } from '../../shared/services/poll.service';
 import { Poll } from '../../shared/models/poll.model';
 
@@ -11,14 +12,15 @@ import { Poll } from '../../shared/models/poll.model';
   templateUrl: './poll-detail.component.html',
   styleUrls: ['./poll-detail.component.scss']
 })
-export class PollDetailComponent implements OnInit {
-  poll: WritableSignal<Poll | undefined> = signal<Poll | undefined>(undefined);
+export class PollDetailComponent implements OnInit, OnDestroy {
+  poll = signal<Poll | undefined>(undefined);
   loading = signal(false);
   submitting = signal(false);
-  hasVoted = signal(false);
 
   answerLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   selectedAnswers: Record<number, Set<number>> = {};
+
+  private answerChannel?: RealtimeChannel;
 
   constructor(
     private route: ActivatedRoute,
@@ -26,10 +28,21 @@ export class PollDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    if (id) {
-      this.loadPoll(id);
-    }
+    // paramMap statt snapshot: läuft auch dann sauber, wenn Angular die
+    // Komponente bei einem Wechsel von /poll/:id auf /poll/:andereId
+    // wiederverwendet, statt sie neu zu erzeugen.
+    this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      if (id) {
+        this.selectedAnswers = {};
+        this.loadPoll(id);
+        this.subscribeToLiveUpdates(id);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.pollService.unsubscribeChannel(this.answerChannel);
   }
 
   loadPoll(id: number): void {
@@ -46,7 +59,22 @@ export class PollDetailComponent implements OnInit {
     });
   }
 
+  // User Story 5: Ergebnisse aktualisieren sich live, sobald sich Stimmen
+  // ändern (z.B. weil jemand anderes gerade abgestimmt hat).
+  private subscribeToLiveUpdates(pollId: number): void {
+    this.pollService.unsubscribeChannel(this.answerChannel);
+    this.answerChannel = this.pollService.subscribeToAnswerChanges(pollId, () => {
+      this.pollService.getPollById(pollId).subscribe({
+        next: (data) => this.poll.set(data),
+        error: (err) => console.error('Fehler beim Live-Update:', err)
+      });
+    });
+  }
+
   toggleAnswer(questionId: number, answerId: number, allowMultiple: boolean): void {
+    const poll = this.poll();
+    if (!poll?.is_active) return; // Past Surveys sind nicht mehr interaktiv
+
     const set = this.selectedAnswers[questionId] ?? new Set<number>();
     if (allowMultiple) {
       set.has(answerId) ? set.delete(answerId) : set.add(answerId);
@@ -57,71 +85,40 @@ export class PollDetailComponent implements OnInit {
     this.selectedAnswers[questionId] = set;
   }
 
-  getTotalVotes(): number {
-    const currentPoll = this.poll();
-    if (!currentPoll?.questions) return 0;
-    let total = 0;
-    currentPoll.questions.forEach(q => {
-      if (q.answers) {
-        q.answers.forEach(a => total += a.votes);
-      }
-    });
-    return total;
-  }
-
-  getPercentage(votes: number): number {
-    const total = this.getTotalVotes();
-    return total > 0 ? Math.round((votes / total) * 100) : 0;
+  isSelected(questionId: number, answerId: number): boolean {
+    return this.selectedAnswers[questionId]?.has(answerId) ?? false;
   }
 
   hasResults(): boolean {
-    const currentPoll = this.poll();
-    if (!currentPoll?.questions) return false;
-    let hasVotes = false;
-    currentPoll.questions.forEach(q => {
-      if (q.answers) {
-        q.answers.forEach(a => {
-          if (a.votes > 0) hasVotes = true;
-        });
-      }
-    });
-    return hasVotes;
+    const p = this.poll();
+    if (!p?.questions) return false;
+    return p.questions.some((q: any) =>
+      (q.answers ?? []).some((a: any) => a.votes > 0)
+    );
   }
 
-  vote(answerId: number): void {
-    if (this.hasVoted()) return;
-    this.submitting.set(true);
-    this.pollService.vote(answerId).then(() => {
-      this.hasVoted.set(true);
-      this.submitting.set(false);
-      const currentId = this.poll()?.id;
-      if (currentId) {
-        this.loadPoll(currentId);
-      }
-    }).catch(err => {
-      console.error('Fehler beim Abstimmen:', err);
-      this.submitting.set(false);
-    });
+  questionTotalVotes(answers: any[] | undefined): number {
+    return (answers ?? []).reduce((sum, a) => sum + (a.votes ?? 0), 0);
+  }
+
+  votePercentage(votes: number, total: number): number {
+    return total > 0 ? Math.round((votes / total) * 100) : 0;
   }
 
   completeSurvey(): void {
     const p = this.poll();
-    if (!p || this.submitting()) return;
+    if (!p || !p.is_active || this.submitting()) return;
 
     const answerIds: number[] = [];
     Object.values(this.selectedAnswers).forEach(set => answerIds.push(...set));
 
-    if (answerIds.length === 0) {
-      alert('Please select at least one answer!');
-      return;
-    }
+    if (answerIds.length === 0) return;
 
     this.submitting.set(true);
     Promise.all(answerIds.map(id => this.pollService.vote(id)))
       .then(() => {
         this.selectedAnswers = {};
         if (p.id) this.loadPoll(p.id);
-        this.hasVoted.set(true);
       })
       .catch(err => console.error('Fehler beim Abstimmen:', err))
       .finally(() => this.submitting.set(false));

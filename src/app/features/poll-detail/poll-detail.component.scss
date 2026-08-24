@@ -217,3 +217,15 @@ $text-dark: #2B2233;
     grid-template-columns: 1fr;
   }
 }
+
+// Past Surveys: Antwortoptionen sind gesperrt und optisch abgeschwächt
+.answer-option.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.closed-note {
+  font-size: 13px;
+  color: rgba(43, 34, 51, 0.6);
+  margin: 0;
+}

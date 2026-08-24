@@ -1,5 +1,9 @@
 import { Routes } from '@angular/router';
 
+// Hinweis: "New Survey" ist laut Vorgabe ein Dialog/Modal/Overlay und KEINE
+// eigene Route mehr. Die vorherige Route 'create' -> PollCreateComponent
+// wurde deshalb entfernt. PollCreateComponent wird jetzt direkt aus
+// PollListComponent heraus als Overlay eingebunden.
 export const routes: Routes = [
   {
     path: '',
@@ -9,17 +13,14 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'create',
-    loadComponent: () =>
-      import('./features/poll-create/poll-create.component').then(
-        (m) => m.PollCreateComponent
-      ),
-  },
-  {
     path: 'poll/:id',
     loadComponent: () =>
       import('./features/poll-detail/poll-detail.component').then(
         (m) => m.PollDetailComponent
       ),
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];

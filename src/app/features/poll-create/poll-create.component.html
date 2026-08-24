@@ -3,12 +3,12 @@
     <div class="create-header">
       <span class="badge">Draft</span>
       <h1>📝 Create New Survey</h1>
-      <button type="button" class="btn-cancel" routerLink="/">Cancel ✕</button>
+      <button type="button" class="btn-cancel" (click)="cancel()">Cancel ✕</button>
     </div>
 
     <form [formGroup]="surveyForm" (ngSubmit)="onSubmit()">
       <div class="form-row">
-        <!-- Survey Name -->
+        <!-- Survey Name (Pflicht) -->
         <div class="form-group">
           <label>Survey Name *</label>
           <div class="field-with-icon">
@@ -20,33 +20,27 @@
           </small>
         </div>
 
-        <!-- Description -->
+        <!-- Description (optional) -->
         <div class="form-group">
-          <label>Describing Text *</label>
+          <label>Describing Text <span class="optional">(optional)</span></label>
           <div class="field-with-icon">
             <textarea formControlName="description" rows="3" placeholder="Describe the purpose of this survey..."></textarea>
             <button type="button" class="icon-btn" (click)="clearField('description')" aria-label="Clear">🗑️</button>
           </div>
-          <small *ngIf="surveyForm.get('description')?.touched && surveyForm.get('description')?.invalid">
-            Please enter a description.
-          </small>
         </div>
       </div>
 
       <div class="form-row">
-        <!-- End Date -->
+        <!-- End Date (optional) -->
         <div class="form-group">
-          <label>Set End Date *</label>
+          <label>Set End Date <span class="optional">(optional)</span></label>
           <div class="field-with-icon">
             <input type="date" formControlName="end_date" />
             <button type="button" class="icon-btn" (click)="clearField('end_date')" aria-label="Clear">🗑️</button>
           </div>
-          <small *ngIf="surveyForm.get('end_date')?.touched && surveyForm.get('end_date')?.invalid">
-            Please select an end date.
-          </small>
         </div>
 
-        <!-- Category -->
+        <!-- Category (Pflicht) -->
         <div class="form-group">
           <label>Choose Category *</label>
           <select formControlName="category">
@@ -68,39 +62,47 @@
       <div class="questions-section">
         <h3>Questions</h3>
 
-        <div class="question-block" *ngFor="let q of questions.controls; let qIndex = index" [formGroupName]="qIndex">
-          <div class="question-header">
-            <span class="question-number">Question {{ qIndex + 1 }}</span>
-            <button type="button" class="btn-delete-question" (click)="removeQuestion(qIndex)">
-              <span *ngIf="qIndex === 0">🗑️ Clear fields</span>
-              <span *ngIf="qIndex > 0">🗑️ Remove question</span>
-            </button>
-          </div>
+        <!--
+          formArrayName="questions" muss auf einem Eltern-Element sitzen, das
+          die *ngFor-Schleife der question-blocks umschließt - ohne dieses
+          Wrapper-Element findet Angular die FormGroup mit Index "0", "1" usw.
+          nicht ("Cannot find control with name: '0'").
+        -->
+        <div formArrayName="questions">
+          <div class="question-block" *ngFor="let q of questions.controls; let qIndex = index" [formGroupName]="qIndex">
+            <div class="question-header">
+              <span class="question-number">Question {{ qIndex + 1 }}</span>
+              <button type="button" class="btn-delete-question" (click)="removeQuestion(qIndex)">
+                <span *ngIf="qIndex === 0">🗑️ Clear fields</span>
+                <span *ngIf="qIndex > 0">🗑️ Remove question</span>
+              </button>
+            </div>
 
-          <div class="form-group">
-            <label>Question Text *</label>
-            <input type="text" formControlName="question_text" placeholder="Enter your question..." />
-            <small *ngIf="q.get('question_text')?.touched && q.get('question_text')?.invalid">
-              Please enter a question.
-            </small>
-          </div>
+            <div class="form-group">
+              <label>Question Text *</label>
+              <input type="text" formControlName="question_text" placeholder="Enter your question..." />
+              <small *ngIf="q.get('question_text')?.touched && q.get('question_text')?.invalid">
+                Please enter a question.
+              </small>
+            </div>
 
-          <div class="form-group checkbox">
-            <input type="checkbox" formControlName="allow_multiple" id="allow_multiple_{{ qIndex }}" />
-            <label for="allow_multiple_{{ qIndex }}">Allow multiple answers</label>
-          </div>
+            <div class="form-group checkbox">
+              <input type="checkbox" formControlName="allow_multiple" id="allow_multiple_{{ qIndex }}" />
+              <label for="allow_multiple_{{ qIndex }}">Allow multiple answers</label>
+            </div>
 
-          <!-- Answers -->
-          <div class="answers-section">
-            <label>Answers</label>
-            <div formArrayName="answers">
-              <div class="answer-row" *ngFor="let a of getAnswers(qIndex).controls; let aIndex = index" [formGroupName]="aIndex">
-                <input type="text" formControlName="answer_text" placeholder="Answer {{ getAnswerLetter(aIndex) }}" />
-                <button type="button" class="btn-remove-answer" (click)="removeAnswer(qIndex, aIndex)" *ngIf="getAnswers(qIndex).length > 2">
-                  ✕
-                </button>
+            <!-- Answers (Pflicht) -->
+            <div class="answers-section">
+              <label>Answers *</label>
+              <div formArrayName="answers">
+                <div class="answer-row" *ngFor="let a of getAnswers(qIndex).controls; let aIndex = index" [formGroupName]="aIndex">
+                  <input type="text" formControlName="answer_text" placeholder="Answer {{ getAnswerLetter(aIndex) }}" />
+                  <button type="button" class="btn-remove-answer" (click)="removeAnswer(qIndex, aIndex)" *ngIf="getAnswers(qIndex).length > 2">
+                    ✕
+                  </button>
+                </div>
+                <button type="button" class="btn-add-answer" (click)="addAnswer(qIndex)">+ Add answer</button>
               </div>
-              <button type="button" class="btn-add-answer" (click)="addAnswer(qIndex)">+ Add answer</button>
             </div>
           </div>
         </div>
@@ -114,7 +116,7 @@
   </div>
 
   <!-- OVERLAY -->
-  <div class="overlay" *ngIf="showPublishOverlay">
+  <div class="overlay" *ngIf="showPublishOverlay()">
     <div class="overlay-content">
       <div class="success-icon">🎉</div>
       <h2>Your survey is now published!</h2>

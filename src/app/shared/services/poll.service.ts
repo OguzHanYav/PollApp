@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
 import { Poll } from '../models/poll.model';
 import { Observable, from, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -58,6 +58,7 @@ export class PollService {
     );
   }
 
+  // Sortiert aufsteigend nach end_date -> frühestes Ende zuerst (User Story 1)
   getEndingSoonPolls(): Observable<Poll[]> {
     const today = new Date().toISOString().split('T')[0];
     return from(
@@ -70,6 +71,7 @@ export class PollService {
             answers:answers (*)
           )
         `)
+        .eq('is_active', true)
         .gte('end_date', today)
         .order('end_date', { ascending: true })
         .limit(3)
@@ -88,9 +90,9 @@ export class PollService {
       .from('polls')
       .insert({
         title,
-        description,
-        category,
-        end_date,
+        description: description || null,
+        category: category || null,
+        end_date: end_date || null,
         is_active: true
       })
       .select()
@@ -175,5 +177,26 @@ export class PollService {
     if (updateError) throw updateError;
 
     return { success: true };
+  }
+
+  // --- Realtime (User Story 5: Live-Auswertung) ---
+  // Abonniert Änderungen an der answers-Tabelle, damit die Detailansicht
+  // ohne manuelles Neuladen aktualisiert werden kann, sobald irgendjemand
+  // abstimmt (auch andere Nutzer:innen in anderen Browsertabs).
+  subscribeToAnswerChanges(pollId: number, onChange: () => void): RealtimeChannel {
+    return this.supabase
+      .channel(`poll-${pollId}-answers`)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'answers' },
+        () => onChange()
+      )
+      .subscribe();
+  }
+
+  unsubscribeChannel(channel: RealtimeChannel | undefined): void {
+    if (channel) {
+      this.supabase.removeChannel(channel);
+    }
   }
 }

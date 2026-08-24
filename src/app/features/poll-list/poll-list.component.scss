@@ -49,10 +49,19 @@ $heading-font: 'Baloo 2', cursive;
   }
 }
 
+.hero-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
 .hero-content {
   display: flex;
   flex-direction: column;
-  max-width: 620px;
+  flex: 1 1 460px;
+  max-width: 560px;
 
   h1 {
     font-family: $heading-font;
@@ -67,6 +76,20 @@ $heading-font: 'Baloo 2', cursive;
     color: rgba(255, 255, 255, 0.85);
     line-height: 1.6;
     margin: 0 0 28px;
+  }
+}
+
+.hero-image {
+  flex: 1 1 360px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 480px;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
   }
 }
 
@@ -141,9 +164,14 @@ $heading-font: 'Baloo 2', cursive;
   }
 
   .ends-in {
+    align-self: flex-start;
     margin-top: auto;
-    font-size: 13px;
-    color: rgba(43, 34, 51, 0.65);
+    font-size: 12px;
+    font-weight: 600;
+    color: $bg-dark;
+    background: $accent-apricot;
+    padding: 4px 10px;
+    border-radius: 999px;
   }
 }
 
@@ -254,6 +282,12 @@ $heading-font: 'Baloo 2', cursive;
   align-items: center;
   justify-content: space-between;
   margin-top: 8px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+
+  .deadline {
+    color: $accent-orange;
+  }
 
   .votes {
     font-size: 12px;
@@ -264,6 +298,7 @@ $heading-font: 'Baloo 2', cursive;
 .poll-actions {
   display: flex;
   gap: 8px;
+  margin-top: 4px;
 
   .btn-vote {
     background: $accent-apricot;
@@ -298,5 +333,32 @@ $heading-font: 'Baloo 2', cursive;
   .filter-bar {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 24px 0;
+}
+
+// Overlay für das "New Survey"-Modal (Dialog statt eigener Route)
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(53, 39, 58, 0.65);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+  overflow-y: auto;
+  z-index: 900;
+}
+
+@media (max-width: 768px) {
+  .hero-image {
+    order: 2;
+    max-width: 100%;
   }
 }

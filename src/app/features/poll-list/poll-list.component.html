@@ -6,24 +6,33 @@
       <span class="hero-brand__name">Poll<br />App</span>
     </div>
 
-    <div class="hero-content">
-      <h1>Collect Feedback,<br />Unlock Ideas</h1>
-      <p>
-        Create and share surveys in minutes – from team events to
-        workplace culture. Collect opinions, engage your audience,
-        and turn feedback into action.
-      </p>
-      <button class="btn-primary" routerLink="/create">New survey</button>
+    <div class="hero-main">
+      <div class="hero-content">
+        <h1>Collect Feedback,<br />Unlock Ideas</h1>
+        <p>
+          Create and share surveys in minutes – from team events to
+          workplace culture. Collect opinions, engage your audience,
+          and turn feedback into action.
+        </p>
+        <!-- New Survey öffnet ein Modal/Overlay, KEINE eigene Route -->
+        <button class="btn-primary" (click)="openCreateModal()">New survey</button>
+      </div>
+
+      <!-- Bild einfach unter assets/home-illustration.png ablegen -->
+      <div class="hero-image">
+        <img src="assets/home-illustration.svg" alt="Poll App Illustration" />
+      </div>
     </div>
   </section>
 
   <h2 class="section-title">Your surveys</h2>
 
-  <!-- ENDING SOON -->
-  <section class="ending-soon" *ngIf="endingSoonPolls.length > 0">
-    <h3>⏰ Ending soon surveys</h3>
+  <!-- ENDING SOON: kommt bereits chronologisch (frühestes Enddatum zuerst)
+       sortiert vom PollService (order by end_date ascending) -->
+  <section class="ending-soon" *ngIf="endingSoonPolls().length > 0">
+    <h3>Ending soon surveys</h3>
     <div class="ending-grid">
-      <div class="ending-card" *ngFor="let poll of endingSoonPolls" (click)="goToDetail(poll.id)">
+      <div class="ending-card" *ngFor="let poll of endingSoonPolls()">
         <span class="badge">{{ poll.category }}</span>
         <h4>{{ poll.title }}</h4>
         <span class="ends-in">⏳ {{ getDaysLabel(poll.end_date) }}</span>
@@ -34,22 +43,21 @@
   <!-- FILTER -->
   <div class="filter-bar">
     <div class="filter-tabs">
-      <button [class.active]="filter === 'active'" (click)="setFilter('active')">Active survey</button>
-      <button [class.active]="filter === 'past'" (click)="setFilter('past')">Past survey</button>
+      <button [class.active]="filter() === 'active'" (click)="setFilter('active')">Active survey</button>
+      <button [class.active]="filter() === 'past'" (click)="setFilter('past')">Past survey</button>
     </div>
     <label class="sort">
-      Sort by categories
-      <select>
-        <option value="date">Date</option>
-        <option value="category">Category</option>
-        <option value="votes">Votes</option>
+      Filter by category
+      <select [value]="categoryFilter()" (change)="setCategoryFilter($any($event.target).value)">
+        <option value="all">Alle</option>
+        <option *ngFor="let category of categories()" [value]="category">{{ category }}</option>
       </select>
     </label>
   </div>
 
   <!-- POLL LIST -->
-  <div class="poll-grid" *ngIf="!loading">
-    <div class="poll-card" *ngFor="let poll of filteredPolls" (click)="goToDetail(poll.id)">
+  <div class="poll-grid" *ngIf="!loading()">
+    <div class="poll-card" *ngFor="let poll of filteredPolls()">
       <div class="poll-header">
         <span class="category">{{ poll.category }}</span>
         <span class="status" [class.active]="poll.is_active">
@@ -59,16 +67,28 @@
       <h3 class="poll-title">{{ poll.title }}</h3>
       <p class="poll-description">{{ poll.description }}</p>
       <div class="poll-footer">
+        <span class="deadline" *ngIf="poll.end_date">Ends on {{ poll.end_date | date: 'dd.MM.yyyy' }}</span>
         <span class="votes">{{ getTotalVotes(poll) }} answers</span>
-        <div class="poll-actions">
-          <button class="btn-vote" (click)="$event.stopPropagation(); goToDetail(poll.id)">Vote</button>
-          <button class="btn-delete" (click)="$event.stopPropagation(); deletePoll(poll.id)">🗑️</button>
-        </div>
+      </div>
+      <div class="poll-actions">
+        <button class="btn-vote" [routerLink]="['/poll', poll.id]">
+          {{ poll.is_active ? 'Vote' : 'View' }}
+        </button>
+        <button class="btn-delete" (click)="deletePoll(poll.id)">🗑️</button>
       </div>
     </div>
+
+    <p class="empty-state" *ngIf="filteredPolls().length === 0">
+      No surveys found for this filter.
+    </p>
   </div>
 
-  <div class="loading" *ngIf="loading">
+  <div class="loading" *ngIf="loading()">
     <p>Loading surveys...</p>
+  </div>
+
+  <!-- CREATE-SURVEY MODAL (Overlay, keine eigene Route) -->
+  <div class="modal-backdrop" *ngIf="showCreateModal()">
+    <app-poll-create (closed)="closeCreateModal()" (created)="onPollCreated($event)"></app-poll-create>
   </div>
 </div>

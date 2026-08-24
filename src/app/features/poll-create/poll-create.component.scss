@@ -4,16 +4,17 @@ $accent-apricot: #FEE9D4;
 $card-light: #FEFDFF;
 $text-dark: #2B2233;
 
+// :host ist jetzt NICHT mehr die volle Seite (früher eigene Route mit
+// min-height:100vh), sondern sitzt als Dialog-Inhalt im modal-backdrop von
+// PollListComponent.
 :host {
   display: block;
-  background: #F4F1F7;
-  min-height: 100vh;
-  padding: 40px 24px;
 }
 
 .create-container {
   max-width: 900px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .create-card {
@@ -21,6 +22,7 @@ $text-dark: #2B2233;
   border-radius: 24px;
   padding: 32px;
   color: #fff;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
 .create-header {
@@ -72,6 +74,12 @@ $text-dark: #2B2233;
   label {
     font-weight: 600;
     font-size: 14px;
+
+    .optional {
+      font-weight: 400;
+      opacity: 0.6;
+      font-size: 12px;
+    }
   }
 
   small {
