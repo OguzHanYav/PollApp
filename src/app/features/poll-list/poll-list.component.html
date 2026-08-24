@@ -2,7 +2,7 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-brand">
-      <img  src="././assets/Frame 548.svg" alt="">
+      <img src="././assets/Frame 548.svg" alt="">
       <span class="hero-brand__name">Poll<br />App</span>
     </div>
 
@@ -35,7 +35,8 @@
       <div class="ending-card" *ngFor="let poll of endingSoonPolls()">
         <span class="badge">{{ poll.category }}</span>
         <h4>{{ poll.title }}</h4>
-        <span class="ends-in">⏳ {{ getDaysLabel(poll.end_date) }}</span>
+        <span class="ends-in">{{ getDaysLabel(poll.end_date) }}</span>
+
       </div>
     </div>
   </section>
@@ -57,24 +58,13 @@
 
   <!-- POLL LIST -->
   <div class="poll-grid" *ngIf="!loading()">
-    <div class="poll-card" *ngFor="let poll of filteredPolls()">
+    <div class="poll-card" [routerLink]="['/poll', poll.id]" *ngFor="let poll of filteredPolls()">
       <div class="poll-header">
         <span class="category">{{ poll.category }}</span>
-        <span class="status" [class.active]="poll.is_active">
-          {{ poll.is_active ? '● Active' : '○ Past' }}
-        </span>
       </div>
       <h3 class="poll-title">{{ poll.title }}</h3>
-      <p class="poll-description">{{ poll.description }}</p>
       <div class="poll-footer">
-        <span class="deadline" *ngIf="poll.end_date">Ends on {{ poll.end_date | date: 'dd.MM.yyyy' }}</span>
-        <span class="votes">{{ getTotalVotes(poll) }} answers</span>
-      </div>
-      <div class="poll-actions">
-        <button class="btn-vote" [routerLink]="['/poll', poll.id]">
-          {{ poll.is_active ? 'Vote' : 'View' }}
-        </button>
-        <button class="btn-delete" (click)="deletePoll(poll.id)">🗑️</button>
+        <span class="" *ngIf="poll.end_date"> {{ getDaysLabel(poll.end_date) }}</span>
       </div>
     </div>
 

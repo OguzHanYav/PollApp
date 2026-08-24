@@ -136,7 +136,7 @@ $font-nokora: 'Nokora', sans-serif;
 }
 
 .ending-soon {
-  max-width: 1200px;
+  max-width: 1042px;
   margin: 0 auto 40px;
 
   h3 {
@@ -156,16 +156,22 @@ $font-nokora: 'Nokora', sans-serif;
 
 .ending-card {
   background: $card-light;
-  border-radius: 16px;
-  padding: 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 150px;
   color: $text-dark;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   transition: transform 0.2s;
+  width: 321px;
+  height: 310px;
+  gap: 10px;
+  opacity: 1;
+  padding-top: 40px;
+  padding-right: 18px;
+  padding-bottom: 40px;
+  padding-left: 18px;
+  border-top-right-radius: 80px;
+
 
   &:hover {
     transform: translateY(-4px);
@@ -203,7 +209,8 @@ $font-nokora: 'Nokora', sans-serif;
 }
 
 .filter-bar {
-  max-width: 1200px;
+  max-width: 1042px;
+
   margin: 0 auto 24px;
   display: flex;
   align-items: center;
@@ -214,17 +221,27 @@ $font-nokora: 'Nokora', sans-serif;
 
 .filter-tabs {
   display: flex;
-  gap: 12px;
+  width: 249px;
+  height: 25px;
+  gap: 24px;
+
 
   button {
-    font-family: $font-mulish;
-    font-weight: 500;
-    padding: 10px 20px;
-    border-radius: 999px;
+    font-family: $font-nokora;
+    font-weight: 400;
+    font-size: 16px;
+
     border: 1px solid rgba(255, 255, 255, 0.3);
-    background: transparent;
-    color: #fff;
+    background: #fee8d5;
     cursor: pointer;
+    width: 120px;
+    height: 25px;
+    border-radius: 20px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 4px;
+    padding-right: 4px;
+
 
     &.active {
       background: $accent-orange;
@@ -236,7 +253,7 @@ $font-nokora: 'Nokora', sans-serif;
 
 .sort {
   font-family: $font-mulish;
-  font-weight: 400;
+  font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -259,10 +276,10 @@ $font-nokora: 'Nokora', sans-serif;
 }
 
 .poll-grid {
-  max-width: 1200px;
+  max-width: 1042px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(2,1fr);
   gap: 16px;
 }
 
@@ -273,6 +290,8 @@ $font-nokora: 'Nokora', sans-serif;
   padding: 20px;
   display: flex;
   flex-direction: column;
+  width: 513px;
+  max-width: 513px;
   gap: 10px;
   cursor: pointer;
   transition: transform 0.2s;
@@ -290,9 +309,9 @@ $font-nokora: 'Nokora', sans-serif;
 
   .category {
     font-family: $font-mulish;
-    font-weight: 600;
-    font-size: 13px;
-    color: $accent-orange;
+    font-weight: 500;
+    font-size: 16px;
+    color: #FFCFA1;
   }
 
   .status {
@@ -308,9 +327,9 @@ $font-nokora: 'Nokora', sans-serif;
 }
 
 .poll-title {
-  font-family: $font-nokora;
+  font-family: $font-mulish;
   font-weight: 700;
-  font-size: 17px;
+  font-size: 24px;
   margin: 0;
 }
 
@@ -324,12 +343,18 @@ $font-nokora: 'Nokora', sans-serif;
 }
 
 .poll-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.6);
+  font-family: "Mulish", sans-serif;
+  font-weight: 500;
+  align-self: flex-end;
+  margin-top: auto;
+  font-size: 14px;
+  color: #35273A;
+  background: #FFCFA1;
+  padding-top: 3px;
+  padding-right: 6px;
+  padding-bottom: 3px;
+  padding-left: 6px;
+  border-top-right-radius: 14px;
 
   .deadline {
     font-family: $font-mulish;
