@@ -1,3 +1,51 @@
-body{
-    margin: 0;
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Nerko+One&family=Mulish:wght@200;300;400;500;600;700;800;900&family=Nokora:wght@100;300;400;700;900&display=swap');
+
+/* Font-Variablen */
+$font-nerko: 'Nerko One', cursive;
+$font-mulish: 'Mulish', sans-serif;
+$font-nokora: 'Nokora', sans-serif;
+
+/* Globale Einstellungen */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+body {
+  font-family: $font-mulish;
+  font-weight: 400;
+}
+
+/* Utility-Klassen */
+.font-nerko {
+  font-family: $font-nerko;
+  font-weight: 400;
+}
+
+.font-mulish {
+  font-family: $font-mulish;
+}
+
+.font-nokora {
+  font-family: $font-nokora;
+}
+
+/* Font-Gewichte für Mulish */
+.font-mulish-thin { font-weight: 200; }
+.font-mulish-extra-light { font-weight: 200; }
+.font-mulish-light { font-weight: 300; }
+.font-mulish-regular { font-weight: 400; }
+.font-mulish-medium { font-weight: 500; }
+.font-mulish-semi-bold { font-weight: 600; }
+.font-mulish-bold { font-weight: 700; }
+.font-mulish-extra-bold { font-weight: 800; }
+.font-mulish-black { font-weight: 900; }
+
+/* Font-Gewichte für Nokora */
+.font-nokora-thin { font-weight: 100; }
+.font-nokora-light { font-weight: 300; }
+.font-nokora-regular { font-weight: 400; }
+.font-nokora-bold { font-weight: 700; }
+.font-nokora-black { font-weight: 900; }

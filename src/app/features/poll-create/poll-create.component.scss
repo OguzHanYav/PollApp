@@ -4,9 +4,11 @@ $accent-apricot: #FEE9D4;
 $card-light: #FEFDFF;
 $text-dark: #2B2233;
 
-// :host ist jetzt NICHT mehr die volle Seite (früher eigene Route mit
-// min-height:100vh), sondern sitzt als Dialog-Inhalt im modal-backdrop von
-// PollListComponent.
+// Font-Variablen
+$font-nerko: 'Nerko One', cursive;
+$font-mulish: 'Mulish', sans-serif;
+$font-nokora: 'Nokora', sans-serif;
+
 :host {
   display: block;
 }
@@ -32,6 +34,8 @@ $text-dark: #2B2233;
   margin-bottom: 24px;
 
   h1 {
+    font-family: $font-nerko;
+    font-weight: 400;
     flex: 1;
     color: $accent-orange;
     font-size: 28px;
@@ -40,22 +44,28 @@ $text-dark: #2B2233;
 }
 
 .badge {
+  font-family: $font-mulish;
+  font-weight: 600;
   background: $accent-apricot;
   color: $text-dark;
   font-size: 12px;
-  font-weight: 600;
   padding: 4px 10px;
   border-radius: 6px;
 }
 
 .btn-cancel {
+  font-family: $font-mulish;
+  font-weight: 600;
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
   border: none;
   border-radius: 10px;
   padding: 10px 18px;
-  font-weight: 600;
   cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
 }
 
 .form-row {
@@ -72,6 +82,7 @@ $text-dark: #2B2233;
   margin-bottom: 16px;
 
   label {
+    font-family: $font-mulish;
     font-weight: 600;
     font-size: 14px;
 
@@ -83,6 +94,8 @@ $text-dark: #2B2233;
   }
 
   small {
+    font-family: $font-mulish;
+    font-weight: 400;
     color: #ff9a9a;
     font-size: 12px;
   }
@@ -93,6 +106,7 @@ $text-dark: #2B2233;
     gap: 8px;
 
     label {
+      font-family: $font-mulish;
       font-weight: 400;
       font-size: 13px;
     }
@@ -126,15 +140,20 @@ input[type='text'],
 input[type='date'],
 textarea,
 select {
+  font-family: $font-mulish;
+  font-weight: 400;
   background: $card-light;
   border: none;
   border-radius: 10px;
   padding: 12px 14px;
   color: $text-dark;
-  font-family: inherit;
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
+
+  &:focus {
+    outline: 2px solid $accent-orange;
+  }
 }
 
 textarea {
@@ -145,6 +164,8 @@ textarea {
   margin-top: 16px;
 
   > h3 {
+    font-family: $font-nerko;
+    font-weight: 400;
     margin-bottom: 16px;
   }
 }
@@ -163,11 +184,14 @@ textarea {
   margin-bottom: 12px;
 
   .question-number {
+    font-family: $font-mulish;
     font-weight: 600;
   }
 }
 
 .btn-delete-question {
+  font-family: $font-mulish;
+  font-weight: 400;
   background: transparent;
   border: none;
   color: #fff;
@@ -184,8 +208,9 @@ textarea {
   margin-top: 12px;
 
   > label {
-    display: block;
+    font-family: $font-mulish;
     font-weight: 600;
+    display: block;
     margin-bottom: 8px;
   }
 }
@@ -202,21 +227,28 @@ textarea {
 }
 
 .btn-remove-answer {
+  font-family: $font-mulish;
   background: transparent;
   border: none;
   color: #fff;
   cursor: pointer;
   font-size: 14px;
+  opacity: 0.7;
+
+  &:hover {
+    opacity: 1;
+  }
 }
 
 .btn-add-answer,
 .btn-add-question {
+  font-family: $font-mulish;
+  font-weight: 600;
   background: none;
   border: none;
   color: $accent-orange;
   text-decoration: underline;
   cursor: pointer;
-  font-weight: 600;
   padding: 0;
 }
 
@@ -226,6 +258,8 @@ textarea {
 }
 
 .btn-publish {
+  font-family: $font-mulish;
+  font-weight: 700;
   display: block;
   margin: 24px 0 0 auto;
   background: $accent-orange;
@@ -233,8 +267,11 @@ textarea {
   border: none;
   border-radius: 10px;
   padding: 12px 28px;
-  font-weight: 700;
   cursor: pointer;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.05);
+  }
 
   &:disabled {
     opacity: 0.5;
@@ -266,28 +303,42 @@ textarea {
   }
 
   h2 {
+    font-family: $font-nerko;
+    font-weight: 400;
     font-size: 20px;
     margin: 0 0 8px;
+    color: $text-dark;
   }
 
   p {
+    font-family: $font-mulish;
+    font-weight: 400;
     color: rgba(43, 34, 51, 0.7);
     margin: 0 0 20px;
   }
 }
 
 .btn-primary {
+  font-family: $font-mulish;
+  font-weight: 700;
   background: $accent-orange;
   color: $bg-dark;
   border: none;
   border-radius: 10px;
   padding: 12px 24px;
-  font-weight: 700;
   cursor: pointer;
+
+  &:hover {
+    filter: brightness(1.05);
+  }
 }
 
 @media (max-width: 720px) {
   .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .create-card {
+    padding: 20px;
   }
 }

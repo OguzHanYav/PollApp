@@ -5,11 +5,17 @@ $card-light: #FEFDFF;
 $card-light-alt: #FAF5FE;
 $text-dark: #2B2233;
 
+// Font-Variablen
+$font-nerko: 'Nerko One', cursive;
+$font-mulish: 'Mulish', sans-serif;
+$font-nokora: 'Nokora', sans-serif;
+
 :host {
   display: block;
   background: #fff;
   min-height: 100vh;
-  font-family: 'Inter', sans-serif;
+  font-family: $font-mulish;
+  font-weight: 400;
 }
 
 .loading-state {
@@ -43,13 +49,21 @@ $text-dark: #2B2233;
     justify-content: center;
     font-size: 14px;
   }
+
+  &__name {
+    font-family: $font-nerko;
+    font-weight: 400;
+    font-size: 20px;
+    color: $accent-orange;
+  }
 }
 
 .btn-primary {
+  font-family: $font-mulish;
+  font-weight: 700;
   border: none;
   border-radius: 10px;
   padding: 12px 24px;
-  font-weight: 600;
   cursor: pointer;
   background: $accent-orange;
   color: $bg-dark;
@@ -57,6 +71,10 @@ $text-dark: #2B2233;
   &:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.05);
   }
 }
 
@@ -79,17 +97,23 @@ $text-dark: #2B2233;
     gap: 16px;
     flex-wrap: wrap;
     margin-bottom: 16px;
+    font-family: $font-mulish;
+    font-weight: 400;
     font-size: 13px;
     color: rgba(43, 34, 51, 0.7);
   }
 
   h1 {
+    font-family: $font-nerko;
+    font-weight: 400;
     color: $accent-orange;
     font-size: 30px;
     margin: 0 0 16px;
   }
 
   .description {
+    font-family: $font-mulish;
+    font-weight: 400;
     color: rgba(43, 34, 51, 0.8);
     margin-bottom: 32px;
     line-height: 1.6;
@@ -103,9 +127,10 @@ $text-dark: #2B2233;
 }
 
 .badge {
+  font-family: $font-mulish;
+  font-weight: 600;
   background: $accent-apricot;
   color: $text-dark;
-  font-weight: 600;
   padding: 4px 12px;
   border-radius: 6px;
 
@@ -122,12 +147,16 @@ $text-dark: #2B2233;
 
 .question {
   h3 {
+    font-family: $font-nokora;
+    font-weight: 700;
     font-size: 16px;
     margin: 0 0 4px;
     color: $text-dark;
   }
 
   .hint {
+    font-family: $font-mulish;
+    font-weight: 400;
     display: block;
     font-size: 12px;
     color: rgba(43, 34, 51, 0.6);
@@ -142,16 +171,25 @@ $text-dark: #2B2233;
 }
 
 .answer-option {
+  font-family: $font-mulish;
+  font-weight: 400;
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 14px;
   color: $text-dark;
   cursor: pointer;
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 
 .results {
   h2 {
+    font-family: $font-nerko;
+    font-weight: 400;
     font-size: 20px;
     color: $text-dark;
     margin-bottom: 24px;
@@ -162,6 +200,8 @@ $text-dark: #2B2233;
   }
 
   &__empty {
+    font-family: $font-mulish;
+    font-weight: 400;
     color: rgba(43, 34, 51, 0.6);
   }
 }
@@ -170,6 +210,8 @@ $text-dark: #2B2233;
   margin-bottom: 24px;
 
   h4 {
+    font-family: $font-mulish;
+    font-weight: 600;
     font-size: 15px;
     margin: 0 0 10px;
     color: $text-dark;
@@ -184,6 +226,8 @@ $text-dark: #2B2233;
   margin-bottom: 8px;
 
   &__letter {
+    font-family: $font-mulish;
+    font-weight: 600;
     font-size: 13px;
     color: rgba(43, 34, 51, 0.6);
   }
@@ -199,13 +243,24 @@ $text-dark: #2B2233;
     background: $accent-orange;
     height: 100%;
     border-radius: 6px;
+    transition: width 0.6s ease;
   }
 
   &__percent {
+    font-family: $font-mulish;
+    font-weight: 600;
     font-size: 13px;
     text-align: right;
     color: $text-dark;
   }
+}
+
+.closed-note {
+  font-family: $font-mulish;
+  font-weight: 400;
+  font-size: 13px;
+  color: rgba(43, 34, 51, 0.6);
+  margin: 0;
 }
 
 @media (max-width: 900px) {
@@ -216,16 +271,8 @@ $text-dark: #2B2233;
   .questions {
     grid-template-columns: 1fr;
   }
-}
 
-// Past Surveys: Antwortoptionen sind gesperrt und optisch abgeschwächt
-.answer-option.disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-
-.closed-note {
-  font-size: 13px;
-  color: rgba(43, 34, 51, 0.6);
-  margin: 0;
+  .detail__topbar {
+    padding: 16px 20px;
+  }
 }

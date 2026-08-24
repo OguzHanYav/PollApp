@@ -1,3 +1,13 @@
+$bg-dark: #35273A;
+$accent-orange: #FFB770;
+$accent-apricot: #FEE9D4;
+$card-light: #FEFDFF;
+$text-dark: #2B2233;
+
+// Font-Variablen
+$font-nerko: 'Nerko One', cursive;
+$font-mulish: 'Mulish', sans-serif;
+
 .overlay-backdrop {
   position: fixed;
   inset: 0;
@@ -9,23 +19,36 @@
 }
 
 .overlay-card {
-  background: #FEE9D4;
-  color: #2B2233;
+  background: $accent-apricot;
+  color: $text-dark;
   border-radius: 14px;
   padding: 20px 24px;
   display: flex;
   align-items: center;
   gap: 24px;
-  font-weight: 600;
   max-width: 360px;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+
+  span {
+    font-family: $font-mulish;
+    font-weight: 600;
+    font-size: 14px;
+  }
 }
 
 .overlay-close {
+  font-family: $font-mulish;
+  font-weight: 700;
   background: none;
   border: none;
   font-size: 18px;
   cursor: pointer;
-  color: #2B2233;
+  color: $text-dark;
   margin-left: auto;
+  padding: 4px 8px;
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(43, 34, 51, 0.1);
+  }
 }

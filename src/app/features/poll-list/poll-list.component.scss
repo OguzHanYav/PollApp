@@ -3,7 +3,11 @@ $accent-orange: #FFB770;
 $accent-apricot: #FEE9D4;
 $card-light: #FEFDFF;
 $text-dark: #2B2233;
-$heading-font: 'Baloo 2', cursive;
+
+// Font-Variablen
+$font-nerko: 'Nerko One', cursive;
+$font-mulish: 'Mulish', sans-serif;
+$font-nokora: 'Nokora', sans-serif;
 
 :host {
   display: block;
@@ -14,7 +18,8 @@ $heading-font: 'Baloo 2', cursive;
   min-height: 100vh;
   color: #fff;
   padding: 32px 24px 64px;
-  font-family: 'Inter', sans-serif;
+  font-family: $font-mulish;
+  font-weight: 400;
 }
 
 .hero {
@@ -27,7 +32,7 @@ $heading-font: 'Baloo 2', cursive;
 
 .hero-brand {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
 
   &__icon {
@@ -42,10 +47,11 @@ $heading-font: 'Baloo 2', cursive;
   }
 
   &__name {
-    font-family: $heading-font;
-    font-weight: 700;
-    line-height: 1.05;
+    font-family: $font-nerko;
+    font-weight: 400;
+    line-height: 62%;
     color: $accent-orange;
+    font-size: 26px;
   }
 }
 
@@ -64,8 +70,8 @@ $heading-font: 'Baloo 2', cursive;
   max-width: 560px;
 
   h1 {
-    font-family: $heading-font;
-    font-weight: 700;
+    font-family: $font-nerko;
+    font-weight: 400;
     font-size: 46px;
     line-height: 1.15;
     color: $accent-orange;
@@ -73,8 +79,12 @@ $heading-font: 'Baloo 2', cursive;
   }
 
   p {
+    font-family: $font-mulish;
+    font-weight: 600;
+    font-size: 24px;
     color: rgba(255, 255, 255, 0.85);
-    line-height: 1.6;
+    line-height: 100%;
+    letter-spacing: 0%;
     margin: 0 0 28px;
   }
 }
@@ -94,13 +104,15 @@ $heading-font: 'Baloo 2', cursive;
 }
 
 .btn-primary {
+  font-family: $font-nokora;
+  font-weight: 700;
+  font-size: 18px;
   align-self: flex-start;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 14px 28px;
   border-radius: 10px;
-  font-weight: 600;
   border: none;
   cursor: pointer;
   background: $accent-orange;
@@ -112,12 +124,15 @@ $heading-font: 'Baloo 2', cursive;
 }
 
 .section-title {
-  font-family: $heading-font;
+  font-family: $font-nerko;
+  font-weight: 400;
   text-align: center;
   color: $accent-orange;
-  font-size: 32px;
+  font-size: 72px;
   max-width: 1200px;
   margin: 80px auto 40px;
+  line-height: 100%;
+  letter-spacing: 0%;
 }
 
 .ending-soon {
@@ -125,7 +140,9 @@ $heading-font: 'Baloo 2', cursive;
   margin: 0 auto 40px;
 
   h3 {
-    font-weight: 400;
+    font-family: $font-mulish;
+    font-weight: 500;
+    font-size: 32px;
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: 16px;
   }
@@ -147,31 +164,41 @@ $heading-font: 'Baloo 2', cursive;
   min-height: 150px;
   color: $text-dark;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
 
   .badge {
-    align-self: flex-start;
-    background: $accent-apricot;
-    color: $text-dark;
-    font-size: 12px;
+    font-family: $font-mulish;
     font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 6px;
+    align-self: flex-start;
+    color: $text-dark;
+    font-size: 14px;
   }
 
   h4 {
-    font-size: 18px;
+    font-family: $font-nokora;
+    font-weight: 700;
+    font-size: 26px;
     margin: 0;
   }
 
   .ends-in {
+    font-family: $font-mulish;
+    font-weight: 500;
     align-self: flex-start;
     margin-top: auto;
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 14px;
     color: $bg-dark;
-    background: $accent-apricot;
-    padding: 4px 10px;
-    border-radius: 999px;
+    background: #FFCFA1;
+    padding-top: 3px;
+    padding-right: 6px;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    border-top-right-radius: 14px;
   }
 }
 
@@ -190,13 +217,14 @@ $heading-font: 'Baloo 2', cursive;
   gap: 12px;
 
   button {
+    font-family: $font-mulish;
+    font-weight: 500;
     padding: 10px 20px;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     background: transparent;
     color: #fff;
     cursor: pointer;
-    font-weight: 500;
 
     &.active {
       background: $accent-orange;
@@ -207,6 +235,8 @@ $heading-font: 'Baloo 2', cursive;
 }
 
 .sort {
+  font-family: $font-mulish;
+  font-weight: 400;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -214,6 +244,8 @@ $heading-font: 'Baloo 2', cursive;
   font-size: 14px;
 
   select {
+    font-family: $font-mulish;
+    font-weight: 400;
     background: transparent;
     color: #fff;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -242,6 +274,13 @@ $heading-font: 'Baloo 2', cursive;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .poll-header {
@@ -250,11 +289,15 @@ $heading-font: 'Baloo 2', cursive;
   justify-content: space-between;
 
   .category {
+    font-family: $font-mulish;
+    font-weight: 600;
     font-size: 13px;
     color: $accent-orange;
   }
 
   .status {
+    font-family: $font-mulish;
+    font-weight: 500;
     font-size: 12px;
     color: rgba(255, 255, 255, 0.5);
 
@@ -265,12 +308,15 @@ $heading-font: 'Baloo 2', cursive;
 }
 
 .poll-title {
+  font-family: $font-nokora;
   font-weight: 700;
   font-size: 17px;
   margin: 0;
 }
 
 .poll-description {
+  font-family: $font-mulish;
+  font-weight: 400;
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   margin: 0;
@@ -286,10 +332,14 @@ $heading-font: 'Baloo 2', cursive;
   color: rgba(255, 255, 255, 0.6);
 
   .deadline {
+    font-family: $font-mulish;
+    font-weight: 400;
     color: $accent-orange;
   }
 
   .votes {
+    font-family: $font-mulish;
+    font-weight: 400;
     font-size: 12px;
     color: rgba(255, 255, 255, 0.6);
   }
@@ -301,28 +351,44 @@ $heading-font: 'Baloo 2', cursive;
   margin-top: 4px;
 
   .btn-vote {
+    font-family: $font-mulish;
+    font-weight: 600;
     background: $accent-apricot;
     color: $text-dark;
     border: none;
     border-radius: 8px;
     padding: 6px 14px;
-    font-weight: 600;
     font-size: 13px;
     cursor: pointer;
+
+    &:hover {
+      opacity: 0.9;
+    }
   }
 
   .btn-delete {
+    font-family: $font-mulish;
     background: transparent;
     border: none;
     cursor: pointer;
     font-size: 14px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 
 .loading {
+  font-family: $font-mulish;
+  font-weight: 400;
   max-width: 1200px;
   margin: 0 auto;
   color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 60px 0;
 }
 
 @media (max-width: 768px) {
@@ -334,6 +400,11 @@ $heading-font: 'Baloo 2', cursive;
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .hero-image {
+    order: 2;
+    max-width: 100%;
+  }
 }
 
 .empty-state {
@@ -343,7 +414,7 @@ $heading-font: 'Baloo 2', cursive;
   padding: 24px 0;
 }
 
-// Overlay für das "New Survey"-Modal (Dialog statt eigener Route)
+// Overlay für das "New Survey"-Modal
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -354,11 +425,4 @@ $heading-font: 'Baloo 2', cursive;
   padding: 40px 16px;
   overflow-y: auto;
   z-index: 900;
-}
-
-@media (max-width: 768px) {
-  .hero-image {
-    order: 2;
-    max-width: 100%;
-  }
 }
