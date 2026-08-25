@@ -101,24 +101,18 @@ $font-nokora: 'Nokora', sans-serif;
     width: 100%;
     height: auto;
     object-fit: cover;
-    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
-    will-change: transform;
-    animation: hero-float 5s ease-in-out infinite;
-  }
-
-  &:hover img {
-    animation-play-state: paused;
-    transform: translateY(-10px) scale(1.03) rotate(-1deg);
-    filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
+    transform: translateY(0) scale(1) rotate(0deg);
+    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
   }
 }
 
-@keyframes hero-float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-8px);
+// Nur reiner Hover-Effekt, kein Dauerloop: ohne Hover bleibt das Bild in
+// Originalgröße. Über @media (hover: hover) und (pointer: fine) bewusst nur
+// auf Geräten mit echtem Maus-Hover aktiv, nicht auf Touch/Tablet/Mobile.
+@media (hover: hover) and (pointer: fine) {
+  .hero-image:hover img {
+    transform: translateY(-10px) scale(1.04) rotate(-1.5deg);
+    filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
   }
 }
 

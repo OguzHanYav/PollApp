@@ -92,6 +92,15 @@ export class PollDetailComponent implements OnInit, OnDestroy {
     return this.selectedAnswers[questionId]?.has(answerId) ?? false;
   }
 
+  // Task 1: feste, konsistente Reihenfolge der Antwortoptionen (A, B, C, D...)
+  // unabhängig von der Stimmenzahl. Sortiert stabil nach answer.id
+  // (aufsteigend = Erstellungsreihenfolge, also exakt A vor B vor C ...).
+  // Wird sowohl für die Abstimmungs-Optionen als auch für das
+  // Balkendiagramm verwendet, damit beide Seiten immer synchron sind.
+  sortedAnswers(question: any): any[] {
+    return [...(question.answers ?? [])].sort((a: any, b: any) => a.id - b.id);
+  }
+
   hasResults(): boolean {
     const p = this.poll();
     if (!p?.questions) return false;

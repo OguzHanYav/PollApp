@@ -35,10 +35,12 @@
           <h3>{{ qi + 1 }}. {{ q.question_text }}</h3>
           <span class="hint" *ngIf="q.allow_multiple">More than one answers are possible.</span>
           <div class="answer-options">
+            <!-- Task 1: sortedAnswers(q) statt q.answers -> feste Reihenfolge
+                 A, B, C, D ... unabhängig von der Stimmenzahl -->
             <label
               class="answer-option"
               [class.disabled]="!p.is_active"
-              *ngFor="let a of q.answers; let ai = index; trackBy: trackByAnswer"
+              *ngFor="let a of sortedAnswers(q); let ai = index; trackBy: trackByAnswer"
             >
               <input
                 [type]="q.allow_multiple ? 'checkbox' : 'radio'"
@@ -72,7 +74,9 @@
       <ng-container *ngIf="hasResults(); else noResults">
         <div class="result-question" *ngFor="let q of p.questions; let qi = index; trackBy: trackByQuestion">
           <h4>{{ qi + 1 }}. {{ q.question_text }}</h4>
-          <div class="result-row" *ngFor="let a of q.answers; let ai = index; trackBy: trackByAnswer">
+          <!-- Task 1: sortedAnswers(q) statt q.answers -> Balkendiagramm hat
+               dieselbe feste Reihenfolge wie die Abstimmungs-Optionen -->
+          <div class="result-row" *ngFor="let a of sortedAnswers(q); let ai = index; trackBy: trackByAnswer">
             <span class="result-row__letter">{{ answerLetters[ai] }}</span>
             <div class="result-row__bar">
               <div
