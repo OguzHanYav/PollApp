@@ -39,8 +39,8 @@ $font-nokora: 'Nokora', sans-serif;
   gap: 10px;
 
   img {
-    width: 44px;
-    height: 36px;
+    width: 69px;
+    height: 50px;
   }
 
   &__name {
@@ -393,12 +393,47 @@ $font-nokora: 'Nokora', sans-serif;
 /* ========================================
    POLL GRID
    ======================================== */
-.poll-grid {
+/* ========================================
+   POLL GRID - MIT VERTIKALER SCROLLBAR
+   ======================================== */
+.poll-grid-wrapper {
   max-width: 1042px;
   margin: 0 auto;
+  max-height: 600px; /* Maximale Höhe, danach wird gescrollt */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 4px 8px 16px 4px;
+  
+  /* --- SCROLLBAR STYLING --- */
+  /* WebKit (Chrome, Safari, Edge) */
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $accent-orange;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: darken($accent-orange, 10%);
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: $accent-orange rgba(255, 255, 255, 0.05);
+}
+
+.poll-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  width: 100%;
 }
 
 .poll-card {
@@ -408,11 +443,9 @@ $font-nokora: 'Nokora', sans-serif;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  width: 513px;
-  max-width: 513px;
   gap: 10px;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background 0.2s;
 
   &:hover {
     transform: translateY(-4px);
@@ -488,41 +521,7 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
-.poll-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 4px;
 
-  .btn-vote {
-    font-family: $font-mulish;
-    font-weight: 600;
-    background: $accent-apricot;
-    color: $text-dark;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 13px;
-    cursor: pointer;
-
-    &:hover {
-      opacity: 0.9;
-    }
-  }
-
-  .btn-delete {
-    font-family: $font-mulish;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    opacity: 0.7;
-    transition: opacity 0.2s;
-
-    &:hover {
-      opacity: 1;
-    }
-  }
-}
 
 .loading {
   font-family: $font-mulish;
@@ -586,7 +585,7 @@ $font-nokora: 'Nokora', sans-serif;
 
   .poll-card {
     width: 100%;
-    max-width: 100%;
+    max-width: 513px;
   }
 
   .ending-grid {
