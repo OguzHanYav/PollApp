@@ -269,34 +269,37 @@ $font-nokora: 'Nokora', sans-serif;
 // orangener Pfeil, weißes Flyout-Menü).
 .category-dropdown {
   position: relative;
-  font-family: $font-nokora;
+  font-family: $font-mulish;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 
   &__toggle {
     display: flex;
     align-items: center;
-    gap: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    min-width: 260px;
     color: #fff;
-    font-family: $font-nokora;
     font-weight: 700;
-    font-size: 15px;
-    padding: 10px 18px;
-    border-radius: 999px;
+    font-size: 20px;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    background: transparent;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 18px;
+    transition: background 0.2s ease;
 
     span {
       text-transform: capitalize;
-      max-width: 220px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     &:hover {
-      background: rgba(255, 255, 255, 0.14);
-      border-color: $accent-orange;
+      background: rgba(255, 255, 255, 0.12);
     }
   }
 
@@ -305,30 +308,32 @@ $font-nokora: 'Nokora', sans-serif;
     transition: transform 0.2s ease;
 
     path {
-      stroke: $accent-orange;
+      fill: white;
+      stroke: white;
     }
   }
 
   &.open &__arrow {
     transform: rotate(180deg);
+     fill: $accent-orange;
+      stroke: $accent-orange;
   }
 
   &.open &__toggle {
-    background: rgba(255, 255, 255, 0.14);
-    border-color: $accent-orange;
+    background: rgba(255, 255, 255, 0.12);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   &__menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    min-width: 220px;
+    width: 100%;
+    min-width: 260px;
     max-height: 280px;
     overflow-y: auto;
     background: $card-light;
-    border-radius: 14px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
-    padding: 8px;
+    border-radius: 0 0 14px 14px;
+    box-shadow: 0 16px 28px rgba(0, 0, 0, 0.3);
+    padding: 8px 0;
     margin: 0;
     list-style: none;
     z-index: 20;
@@ -336,11 +341,13 @@ $font-nokora: 'Nokora', sans-serif;
     li {
       font-family: $font-mulish;
       font-weight: 500;
-      font-size: 14px;
+      font-size: 17px;
       color: $text-dark;
-      padding: 10px 14px;
-      border-radius: 8px;
+      padding: 10px 20px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       transition: background 0.15s ease;
 
       &:hover {
@@ -348,11 +355,22 @@ $font-nokora: 'Nokora', sans-serif;
       }
 
       &.active {
-        background: $accent-orange;
-        color: $bg-dark;
+        color: $accent-orange;
         font-weight: 700;
+
+        &::after {
+          content: '✓';
+          margin-left: 12px;
+        }
       }
     }
+  }
+
+  &__selected {
+    margin-top: 10px;
+    font-weight: 600;
+    font-size: 15px;
+    color: $accent-orange;
   }
 }
 
