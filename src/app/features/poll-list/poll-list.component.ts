@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, computed } from '@angular/core';
+import { Component, OnInit, signal, computed, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { PollService } from '../../shared/services/poll.service';
@@ -26,6 +26,9 @@ export class PollListComponent implements OnInit {
   // "New Survey" ist ein Modal/Overlay, keine eigene Route.
   showCreateModal = signal(false);
 
+  // Custom "Sort by categories" Dropdown (ersetzt das native <select>)
+  categoryDropdownOpen = signal(false);
+
   // Kategorien werden dynamisch aus den vorhandenen Umfragen ermittelt.
   categories = computed(() => {
     const cats = new Set(
@@ -51,12 +54,23 @@ export class PollListComponent implements OnInit {
 
   constructor(
     private pollService: PollService,
-    private router: Router
+    private router: Router,
+    private elementRef: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit(): void {
     this.loadPolls();
     this.loadEndingSoon();
+  }
+
+  // Schließt das Kategorie-Dropdown bei Klick außerhalb der Komponente.
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.categoryDropdownOpen()) return;
+    const target = event.target as Node;
+    if (!this.elementRef.nativeElement.contains(target)) {
+      this.categoryDropdownOpen.set(false);
+    }
   }
 
   loadPolls(): void {
@@ -93,6 +107,21 @@ export class PollListComponent implements OnInit {
 
   setCategoryFilter(value: string): void {
     this.categoryFilter.set(value);
+  }
+
+  // --- Kategorie-Dropdown ---
+  toggleCategoryDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.categoryDropdownOpen.update(open => !open);
+  }
+
+  closeCategoryDropdown(): void {
+    this.categoryDropdownOpen.set(false);
+  }
+
+  selectCategory(value: string): void {
+    this.setCategoryFilter(value);
+    this.categoryDropdownOpen.set(false);
   }
 
   deletePoll(id: number): void {

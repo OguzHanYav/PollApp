@@ -89,6 +89,7 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
+// User Story / Task 4: sanfte, reine CSS-Hover-Animation fürs Hero-Bild
 .hero-image {
   flex: 1 1 360px;
   display: flex;
@@ -100,6 +101,24 @@ $font-nokora: 'Nokora', sans-serif;
     width: 100%;
     height: auto;
     object-fit: cover;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.45s ease;
+    will-change: transform;
+    animation: hero-float 5s ease-in-out infinite;
+  }
+
+  &:hover img {
+    animation-play-state: paused;
+    transform: translateY(-10px) scale(1.03) rotate(-1deg);
+    filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
+  }
+}
+
+@keyframes hero-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
   }
 }
 
@@ -251,26 +270,94 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
-.sort {
-  font-family: $font-mulish;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 14px;
+// Task 1: "Sort by categories" als eigenständige, gestylte Dropdown-Komponente
+// (ersetzt das native <select>), passend zum Gesamtdesign (dunkler Button,
+// orangener Pfeil, weißes Flyout-Menü).
+.category-dropdown {
+  position: relative;
+  font-family: $font-nokora;
 
-  select {
-    font-family: $font-mulish;
-    font-weight: 400;
-    background: transparent;
+  &__toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     color: #fff;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 8px;
-    padding: 6px 10px;
+    font-family: $font-nokora;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
 
-    option {
+    span {
+      text-transform: capitalize;
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: $accent-orange;
+    }
+  }
+
+  &__arrow {
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+
+    path {
+      stroke: $accent-orange;
+    }
+  }
+
+  &.open &__arrow {
+    transform: rotate(180deg);
+  }
+
+  &.open &__toggle {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: $accent-orange;
+  }
+
+  &__menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 220px;
+    max-height: 280px;
+    overflow-y: auto;
+    background: $card-light;
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+    padding: 8px;
+    margin: 0;
+    list-style: none;
+    z-index: 20;
+
+    li {
+      font-family: $font-mulish;
+      font-weight: 500;
+      font-size: 14px;
       color: $text-dark;
+      padding: 10px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background: $accent-apricot;
+      }
+
+      &.active {
+        background: $accent-orange;
+        color: $bg-dark;
+        font-weight: 700;
+      }
     }
   }
 }
@@ -429,6 +516,12 @@ $font-nokora: 'Nokora', sans-serif;
   .hero-image {
     order: 2;
     max-width: 100%;
+  }
+
+  .category-dropdown__menu {
+    left: 0;
+    right: 0;
+    min-width: 0;
   }
 }
 

@@ -32,11 +32,14 @@
   <section class="ending-soon" *ngIf="endingSoonPolls().length > 0">
     <h3>Ending soon surveys</h3>
     <div class="ending-grid">
-      <div class="ending-card" *ngFor="let poll of endingSoonPolls()">
+      <div
+        class="ending-card"
+        [routerLink]="['/poll', poll.id]"
+        *ngFor="let poll of endingSoonPolls()"
+      >
         <span class="badge">{{ poll.category }}</span>
         <h4>{{ poll.title }}</h4>
         <span class="ends-in">{{ getDaysLabel(poll.end_date) }}</span>
-
       </div>
     </div>
   </section>
@@ -47,13 +50,35 @@
       <button [class.active]="filter() === 'active'" (click)="setFilter('active')">Active survey</button>
       <button [class.active]="filter() === 'past'" (click)="setFilter('past')">Past survey</button>
     </div>
-    <label class="sort">
-      Filter by category
-      <select [value]="categoryFilter()" (change)="setCategoryFilter($any($event.target).value)">
-        <option value="all">Alle</option>
-        <option *ngFor="let category of categories()" [value]="category">{{ category }}</option>
-      </select>
-    </label>
+
+    <div class="category-dropdown" [class.open]="categoryDropdownOpen()">
+      <button
+        type="button"
+        class="category-dropdown__toggle"
+        (click)="toggleCategoryDropdown($event)"
+      >
+        <span>{{ categoryFilter() === 'all' ? 'Sort by categories' : categoryFilter() }}</span>
+        <svg class="category-dropdown__arrow" width="12" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1.5L6 6.5L11 1.5" stroke="#35273A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+
+      <ul class="category-dropdown__menu" *ngIf="categoryDropdownOpen()">
+        <li
+          [class.active]="categoryFilter() === 'all'"
+          (click)="selectCategory('all')"
+        >
+          All Surveys
+        </li>
+        <li
+          *ngFor="let category of categories()"
+          [class.active]="categoryFilter() === category"
+          (click)="selectCategory(category)"
+        >
+          {{ category }}
+        </li>
+      </ul>
+    </div>
   </div>
 
   <!-- POLL LIST -->

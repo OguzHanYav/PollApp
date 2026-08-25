@@ -131,7 +131,19 @@ export class PollService {
     return poll;
   }
 
+  // Task 3: Live-Voting. Versucht zuerst die atomare Postgres-Funktion
+  // "increment_vote" (siehe Supabase-Hinweis) zu nutzen, um Race Conditions
+  // bei gleichzeitigen Stimmen zu vermeiden. Falls die Funktion (noch) nicht
+  // existiert, wird auf das bisherige read-then-update Verhalten zurückgefallen.
   async vote(answerId: number): Promise<any> {
+    const { error: rpcError } = await this.supabase.rpc('increment_vote', {
+      answer_id: answerId
+    });
+
+    if (!rpcError) {
+      return { success: true };
+    }
+
     const { data: answer, error: fetchError } = await this.supabase
       .from('answers')
       .select('votes')
@@ -179,7 +191,7 @@ export class PollService {
     return { success: true };
   }
 
-  // --- Realtime (User Story 5: Live-Auswertung) ---
+  // --- Realtime (User Story 5 / Task 3: Live-Auswertung) ---
   // Abonniert Änderungen an der answers-Tabelle, damit die Detailansicht
   // ohne manuelles Neuladen aktualisiert werden kann, sobald irgendjemand
   // abstimmt (auch andere Nutzer:innen in anderen Browsertabs).

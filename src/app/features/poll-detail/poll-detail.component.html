@@ -8,9 +8,9 @@
 -->
 <div class="detail" *ngIf="!loading() && poll() as p">
   <header class="detail__topbar">
-    <div class="brand">
-      <span class="brand__icon">💬</span>
-      <span class="brand__name">Poll<br />App</span>
+     <div class="hero-brand">
+      <img src="././assets/Frame 548.svg" alt="">
+      <span class="hero-brand__name">Poll<br />App</span>
     </div>
     <button class="btn-primary" routerLink="/">Back to surveys</button>
   </header>
@@ -31,11 +31,15 @@
       <!-- User Story 4: Past Surveys können angesehen, aber nicht mehr
            angeklickt / erneut abgegeben werden. -->
       <div class="questions">
-        <div class="question" *ngFor="let q of p.questions; let qi = index">
+        <div class="question" *ngFor="let q of p.questions; let qi = index; trackBy: trackByQuestion">
           <h3>{{ qi + 1 }}. {{ q.question_text }}</h3>
           <span class="hint" *ngIf="q.allow_multiple">More than one answers are possible.</span>
           <div class="answer-options">
-            <label class="answer-option" [class.disabled]="!p.is_active" *ngFor="let a of q.answers; let ai = index">
+            <label
+              class="answer-option"
+              [class.disabled]="!p.is_active"
+              *ngFor="let a of q.answers; let ai = index; trackBy: trackByAnswer"
+            >
               <input
                 [type]="q.allow_multiple ? 'checkbox' : 'radio'"
                 [name]="'question-' + q.id"
@@ -66,9 +70,9 @@
       <h2>Survey results <span class="live" *ngIf="p.is_active">LIVE</span></h2>
 
       <ng-container *ngIf="hasResults(); else noResults">
-        <div class="result-question" *ngFor="let q of p.questions; let qi = index">
+        <div class="result-question" *ngFor="let q of p.questions; let qi = index; trackBy: trackByQuestion">
           <h4>{{ qi + 1 }}. {{ q.question_text }}</h4>
-          <div class="result-row" *ngFor="let a of q.answers; let ai = index">
+          <div class="result-row" *ngFor="let a of q.answers; let ai = index; trackBy: trackByAnswer">
             <span class="result-row__letter">{{ answerLetters[ai] }}</span>
             <div class="result-row__bar">
               <div

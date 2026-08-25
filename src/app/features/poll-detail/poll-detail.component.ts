@@ -59,8 +59,11 @@ export class PollDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  // User Story 5: Ergebnisse aktualisieren sich live, sobald sich Stimmen
-  // ändern (z.B. weil jemand anderes gerade abgestimmt hat).
+  // User Story 5: Ergebnisse aktualisieren sich live (User Story 5 / Task 3),
+  // sobald sich Stimmen in Supabase ändern – auch wenn eine andere Person in
+  // einem anderen Tab/Browser abstimmt. Voraussetzung in Supabase: die
+  // "answers"-Tabelle muss der Realtime-Publikation hinzugefügt sein
+  // (Database -> Replication -> answers aktivieren).
   private subscribeToLiveUpdates(pollId: number): void {
     this.pollService.unsubscribeChannel(this.answerChannel);
     this.answerChannel = this.pollService.subscribeToAnswerChanges(pollId, () => {
@@ -105,6 +108,17 @@ export class PollDetailComponent implements OnInit, OnDestroy {
     return total > 0 ? Math.round((votes / total) * 100) : 0;
   }
 
+  // TrackBy-Funktionen: verhindern, dass Angular bei jedem Live-Update
+  // (Realtime-Push) die kompletten Frage-/Antwort-DOM-Knoten neu aufbaut –
+  // dadurch bleiben z.B. Balken-Transitions sauber und flackerfrei.
+  trackByQuestion(_index: number, question: any): number {
+    return question.id;
+  }
+
+  trackByAnswer(_index: number, answer: any): number {
+    return answer.id;
+  }
+
   completeSurvey(): void {
     const p = this.poll();
     if (!p || !p.is_active || this.submitting()) return;
@@ -115,12 +129,38 @@ export class PollDetailComponent implements OnInit, OnDestroy {
     if (answerIds.length === 0) return;
 
     this.submitting.set(true);
+
+    // Optimistisches Update: Stimmen sofort lokal hochzählen, damit die
+    // Balken ohne spürbare Verzögerung reagieren, bevor die Bestätigung
+    // von Supabase (bzw. der Realtime-Push) zurückkommt.
+    this.applyOptimisticVotes(answerIds);
+
     Promise.all(answerIds.map(id => this.pollService.vote(id)))
       .then(() => {
         this.selectedAnswers = {};
         if (p.id) this.loadPoll(p.id);
       })
-      .catch(err => console.error('Fehler beim Abstimmen:', err))
+      .catch(err => {
+        console.error('Fehler beim Abstimmen:', err);
+        if (p.id) this.loadPoll(p.id); // bei Fehler auf den echten Stand zurücksetzen
+      })
       .finally(() => this.submitting.set(false));
+  }
+
+  private applyOptimisticVotes(answerIds: number[]): void {
+    const current = this.poll();
+    if (!current?.questions) return;
+
+    const idSet = new Set(answerIds);
+    const updated: Poll = {
+      ...current,
+      questions: current.questions.map(q => ({
+        ...q,
+        answers: (q.answers ?? []).map(a =>
+          idSet.has(a.id) ? { ...a, votes: (a.votes ?? 0) + 1 } : a
+        )
+      }))
+    };
+    this.poll.set(updated);
   }
 }
