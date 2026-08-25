@@ -264,6 +264,9 @@ $font-nokora: 'Nokora', sans-serif;
 /* ========================================
    CUSTOM CATEGORY DROPDOWN (FIXED)
    ======================================== */
+/* ========================================
+   CUSTOM CATEGORY DROPDOWN
+   ======================================== */
 .category-dropdown {
   position: relative;
   font-family: $font-mulish;
@@ -288,19 +291,22 @@ $font-nokora: 'Nokora', sans-serif;
     padding: 14px 18px;
     transition: background 0.2s ease, border-radius 0.2s ease;
 
-    span {
-      text-transform: capitalize;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
     &:hover {
       background: rgba(255, 255, 255, 0.12);
     }
   }
 
-  // ARROW - FIXED: White when closed, orange when open
+  // Label bleibt immer "Sort by categories"
+  &__label {
+    text-transform: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #fff;
+    transition: color 0.2s ease;
+  }
+
+  // ARROW - Weiß standard, Orange bei Open
   &__arrow {
     flex-shrink: 0;
     transition: transform 0.2s ease, fill 0.2s ease, stroke 0.2s ease;
@@ -312,7 +318,7 @@ $font-nokora: 'Nokora', sans-serif;
     }
   }
 
-  // OPEN STATE - Arrow rotates and turns orange
+  // OPEN STATE - Arrow dreht und wird Orange
   &.open &__arrow {
     transform: rotate(180deg);
 
@@ -371,6 +377,16 @@ $font-nokora: 'Nokora', sans-serif;
         }
       }
     }
+  }
+
+  // AUSGEWÄHLTE KATEGORIE UNTEN (ORANGE)
+  &__selected {
+    margin-top: 8px;
+    font-family: $font-nokora;
+    font-weight: 700;
+    font-size: 18px;
+    color: $accent-orange;
+    letter-spacing: 0.5px;
   }
 }
 
