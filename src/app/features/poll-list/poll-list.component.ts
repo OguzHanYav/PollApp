@@ -13,23 +13,16 @@ import { PollCreateComponent } from '../poll-create/poll-create.component';
   styleUrls: ['./poll-list.component.scss']
 })
 export class PollListComponent implements OnInit {
-  // Als Signals statt normaler Klassen-Properties: Werte, die asynchron in
-  // einem .subscribe()-Callback gesetzt werden, lösen so garantiert eine
-  // View-Aktualisierung aus. Das war der Grund, warum "Your Surveys" erst
-  // nach einem Klick sichtbar wurde.
+  // Signals
   polls = signal<Poll[]>([]);
   endingSoonPolls = signal<Poll[]>([]);
   filter = signal<'active' | 'past'>('active');
   categoryFilter = signal<string>('all');
   loading = signal(false);
-
-  // "New Survey" ist ein Modal/Overlay, keine eigene Route.
   showCreateModal = signal(false);
-
-  // Custom "Sort by categories" Dropdown (ersetzt das native <select>)
   categoryDropdownOpen = signal(false);
 
-  // Kategorien werden dynamisch aus den vorhandenen Umfragen ermittelt.
+  // Kategorien dynamisch aus vorhandenen Umfragen
   categories = computed(() => {
     const cats = new Set(
       this.polls()
@@ -39,9 +32,7 @@ export class PollListComponent implements OnInit {
     return Array.from(cats).sort();
   });
 
-  // Tab-Filter (active/past) und Kategorie-Filter werden kombiniert,
-  // aber nicht miteinander vermischt: Kategorie filtert immer nur
-  // innerhalb des aktuell gewählten Tabs.
+  // Kombinierter Filter: Tab + Kategorie
   filteredPolls = computed(() => {
     const tab = this.filter();
     const category = this.categoryFilter();
@@ -63,7 +54,7 @@ export class PollListComponent implements OnInit {
     this.loadEndingSoon();
   }
 
-  // Schließt das Kategorie-Dropdown bei Klick außerhalb der Komponente.
+  // Schließt Dropdown bei Klick außerhalb
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     if (!this.categoryDropdownOpen()) return;
@@ -100,8 +91,6 @@ export class PollListComponent implements OnInit {
 
   setFilter(value: 'active' | 'past'): void {
     this.filter.set(value);
-    // Kategorie-Auswahl beim Tab-Wechsel zurücksetzen, damit sich Active-
-    // und Past-Filter nicht gegenseitig beeinflussen ("nicht vermischen").
     this.categoryFilter.set('all');
   }
 
@@ -151,8 +140,6 @@ export class PollListComponent implements OnInit {
     return Math.ceil(diff / (1000 * 60 * 60 * 24));
   }
 
-  // Grammatik-Fix für die "Ending soon"-Karten: "Ends in 1 day" statt
-  // "Ends in 1 Day(s)".
   getDaysLabel(endDate: string | undefined): string {
     const days = this.getDaysLeft(endDate);
     if (days <= 0) return 'Ends today';

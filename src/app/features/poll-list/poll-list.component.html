@@ -2,7 +2,7 @@
   <!-- HERO -->
   <section class="hero">
     <div class="hero-brand">
-      <img src="././assets/Frame 548.svg" alt="">
+      <img src="./assets/Frame 548.svg" alt="Poll App Logo" />
       <span class="hero-brand__name">Poll<br />App</span>
     </div>
 
@@ -14,11 +14,9 @@
           workplace culture. Collect opinions, engage your audience,
           and turn feedback into action.
         </p>
-        <!-- New Survey öffnet ein Modal/Overlay, KEINE eigene Route -->
         <button class="btn-primary" (click)="openCreateModal()">New survey</button>
       </div>
 
-      <!-- Bild einfach unter assets/home-illustration.png ablegen -->
       <div class="hero-image">
         <img src="assets/home-illustration.svg" alt="Poll App Illustration" />
       </div>
@@ -27,8 +25,7 @@
 
   <h2 class="section-title">Your surveys</h2>
 
-  <!-- ENDING SOON: kommt bereits chronologisch (frühestes Enddatum zuerst)
-       sortiert vom PollService (order by end_date ascending) -->
+  <!-- ENDING SOON -->
   <section class="ending-soon" *ngIf="endingSoonPolls().length > 0">
     <h3>Ending soon surveys</h3>
     <div class="ending-grid">
@@ -51,13 +48,14 @@
       <button [class.active]="filter() === 'past'" (click)="setFilter('past')">Past survey</button>
     </div>
 
+    <!-- CUSTOM CATEGORY DROPDOWN -->
     <div class="category-dropdown" [class.open]="categoryDropdownOpen()">
       <button
         type="button"
         class="category-dropdown__toggle"
         (click)="toggleCategoryDropdown($event)"
       >
-        <span>Sort by categories</span>
+        <span>{{ categoryFilter() === 'all' ? 'Sort by categories' : categoryFilter() }}</span>
         <svg class="category-dropdown__arrow" width="16" height="10" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">
           <path d="M0 1L8 9L16 1H0Z"/>
         </svg>
@@ -78,10 +76,6 @@
           {{ category }}
         </li>
       </ul>
-
-      <span class="category-dropdown__selected" *ngIf="categoryFilter() !== 'all'">
-        {{ categoryFilter() }}
-      </span>
     </div>
   </div>
 
@@ -93,7 +87,7 @@
       </div>
       <h3 class="poll-title">{{ poll.title }}</h3>
       <div class="poll-footer">
-        <span class="" *ngIf="poll.end_date"> {{ getDaysLabel(poll.end_date) }}</span>
+        <span *ngIf="poll.end_date">{{ getDaysLabel(poll.end_date) }}</span>
       </div>
     </div>
 
@@ -106,7 +100,7 @@
     <p>Loading surveys...</p>
   </div>
 
-  <!-- CREATE-SURVEY MODAL (Overlay, keine eigene Route) -->
+  <!-- CREATE-SURVEY MODAL -->
   <div class="modal-backdrop" *ngIf="showCreateModal()">
     <app-poll-create (closed)="closeCreateModal()" (created)="onPollCreated($event)"></app-poll-create>
   </div>

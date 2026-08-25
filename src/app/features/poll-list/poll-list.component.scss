@@ -22,6 +22,9 @@ $font-nokora: 'Nokora', sans-serif;
   font-weight: 400;
 }
 
+/* ========================================
+   HERO
+   ======================================== */
 .hero {
   max-width: 1200px;
   margin: 0 auto;
@@ -35,15 +38,9 @@ $font-nokora: 'Nokora', sans-serif;
   align-items: flex-start;
   gap: 10px;
 
-  &__icon {
+  img {
     width: 44px;
     height: 36px;
-    background: $accent-orange;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
   }
 
   &__name {
@@ -89,7 +86,9 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
-// User Story / Task 4: sanfte, reine CSS-Hover-Animation fürs Hero-Bild
+/* ========================================
+   HERO IMAGE - HOVER ANIMATION
+   ======================================== */
 .hero-image {
   flex: 1 1 360px;
   display: flex;
@@ -106,9 +105,6 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
-// Nur reiner Hover-Effekt, kein Dauerloop: ohne Hover bleibt das Bild in
-// Originalgröße. Über @media (hover: hover) und (pointer: fine) bewusst nur
-// auf Geräten mit echtem Maus-Hover aktiv, nicht auf Touch/Tablet/Mobile.
 @media (hover: hover) and (pointer: fine) {
   .hero-image:hover img {
     transform: translateY(-10px) scale(1.04) rotate(-1.5deg);
@@ -148,6 +144,9 @@ $font-nokora: 'Nokora', sans-serif;
   letter-spacing: 0%;
 }
 
+/* ========================================
+   ENDING SOON
+   ======================================== */
 .ending-soon {
   max-width: 1042px;
   margin: 0 auto 40px;
@@ -185,7 +184,6 @@ $font-nokora: 'Nokora', sans-serif;
   padding-left: 18px;
   border-top-right-radius: 80px;
 
-
   &:hover {
     transform: translateY(-4px);
   }
@@ -221,9 +219,11 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
+/* ========================================
+   FILTER BAR
+   ======================================== */
 .filter-bar {
   max-width: 1042px;
-
   margin: 0 auto 24px;
   display: flex;
   align-items: center;
@@ -238,12 +238,10 @@ $font-nokora: 'Nokora', sans-serif;
   height: 25px;
   gap: 24px;
 
-
   button {
     font-family: $font-nokora;
     font-weight: 400;
     font-size: 16px;
-
     border: 1px solid rgba(255, 255, 255, 0.3);
     background: #fee8d5;
     cursor: pointer;
@@ -255,7 +253,6 @@ $font-nokora: 'Nokora', sans-serif;
     padding-left: 4px;
     padding-right: 4px;
 
-
     &.active {
       background: $accent-orange;
       border-color: $accent-orange;
@@ -264,9 +261,9 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
-// Task 1: "Sort by categories" als eigenständige, gestylte Dropdown-Komponente
-// (ersetzt das native <select>), passend zum Gesamtdesign (dunkler Button,
-// orangener Pfeil, weißes Flyout-Menü).
+/* ========================================
+   CUSTOM CATEGORY DROPDOWN (FIXED)
+   ======================================== */
 .category-dropdown {
   position: relative;
   font-family: $font-mulish;
@@ -289,7 +286,7 @@ $font-nokora: 'Nokora', sans-serif;
     border: none;
     border-radius: 14px;
     padding: 14px 18px;
-    transition: background 0.2s ease;
+    transition: background 0.2s ease, border-radius 0.2s ease;
 
     span {
       text-transform: capitalize;
@@ -303,20 +300,26 @@ $font-nokora: 'Nokora', sans-serif;
     }
   }
 
+  // ARROW - FIXED: White when closed, orange when open
   &__arrow {
     flex-shrink: 0;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, fill 0.2s ease, stroke 0.2s ease;
 
     path {
       fill: white;
       stroke: white;
+      transition: fill 0.2s ease, stroke 0.2s ease;
     }
   }
 
+  // OPEN STATE - Arrow rotates and turns orange
   &.open &__arrow {
     transform: rotate(180deg);
-     fill: $accent-orange;
+
+    path {
+      fill: $accent-orange;
       stroke: $accent-orange;
+    }
   }
 
   &.open &__toggle {
@@ -325,7 +328,11 @@ $font-nokora: 'Nokora', sans-serif;
     border-bottom-right-radius: 0;
   }
 
+  // DROPDOWN MENU
   &__menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
     width: 100%;
     min-width: 260px;
     max-height: 280px;
@@ -365,20 +372,16 @@ $font-nokora: 'Nokora', sans-serif;
       }
     }
   }
-
-  &__selected {
-    margin-top: 10px;
-    font-weight: 600;
-    font-size: 15px;
-    color: $accent-orange;
-  }
 }
 
+/* ========================================
+   POLL GRID
+   ======================================== */
 .poll-grid {
   max-width: 1042px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(2,1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
 }
 
@@ -442,7 +445,7 @@ $font-nokora: 'Nokora', sans-serif;
 }
 
 .poll-footer {
-  font-family: "Mulish", sans-serif;
+  font-family: $font-mulish;
   font-weight: 500;
   align-self: flex-end;
   margin-top: auto;
@@ -515,6 +518,31 @@ $font-nokora: 'Nokora', sans-serif;
   padding: 60px 0;
 }
 
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 24px 0;
+}
+
+/* ========================================
+   MODAL BACKDROP
+   ======================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(53, 39, 58, 0.65);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 16px;
+  overflow-y: auto;
+  z-index: 900;
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
 @media (max-width: 768px) {
   .hero-content h1 {
     font-size: 32px;
@@ -535,24 +563,26 @@ $font-nokora: 'Nokora', sans-serif;
     right: 0;
     min-width: 0;
   }
-}
 
-.empty-state {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.6);
-  padding: 24px 0;
-}
+  .poll-grid {
+    grid-template-columns: 1fr;
+  }
 
-// Overlay für das "New Survey"-Modal
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(53, 39, 58, 0.65);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 40px 16px;
-  overflow-y: auto;
-  z-index: 900;
+  .poll-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .ending-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ending-card {
+    width: 100%;
+    height: auto;
+  }
+
+  .section-title {
+    font-size: 36px;
+  }
 }
