@@ -75,7 +75,7 @@ $font-nokora: 'Nokora', sans-serif;
     line-height: 100%;
     letter-spacing: 0%;
     text-align: center;
-background-color: #FFCFA1;
+    background-color: #FFCFA1;
   }
 }
 
@@ -122,8 +122,9 @@ background-color: #FFCFA1;
 
   label {
     font-family: $font-mulish;
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 18px;
+
 
     .optional {
       font-weight: 400;
@@ -160,6 +161,17 @@ background-color: #FFCFA1;
   input,
   textarea {
     flex: 1;
+    width: 429px;
+    height: 37px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding-top: 7px;
+    padding-right: 13px;
+    padding-bottom: 7px;
+    padding-left: 13px;
+
   }
 }
 
@@ -189,6 +201,15 @@ select {
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding-top: 7px;
+  padding-right: 13px;
+  padding-bottom: 7px;
+  padding-left: 13px;
+
 
   &:focus {
     outline: 2px solid $accent-orange;
@@ -214,6 +235,7 @@ textarea {
   border-radius: 16px;
   padding: 20px;
   margin-bottom: 20px;
+  max-width: 429px;
 }
 
 .question-header {
@@ -262,6 +284,15 @@ textarea {
 
   input {
     flex: 1;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    padding-top: 7px;
+    padding-right: 13px;
+    padding-bottom: 7px;
+    padding-left: 13px;
+
   }
 }
 

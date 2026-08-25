@@ -13,10 +13,10 @@
       <div class="form-row">
         <!-- Survey Name (Pflicht) -->
         <div class="form-group">
-          <label>Survey Name *</label>
+          <label>Survey Name</label>
           <div class="field-with-icon">
             <input type="text" formControlName="title" placeholder="e.g., Customer Feedback 2026" />
-            <button type="button" class="icon-btn" (click)="clearField('title')" aria-label="Clear">🗑️</button>
+            <button type="button" class="icon-btn" (click)="clearField('title')" aria-label="Clear"><img src="././assets/Delete.svg" alt=""></button>
           </div>
           <small *ngIf="surveyForm.get('title')?.touched && surveyForm.get('title')?.invalid">
             Please enter a survey name.
@@ -28,7 +28,7 @@
           <label>Describing Text <span class="optional">(optional)</span></label>
           <div class="field-with-icon">
             <textarea formControlName="description" rows="3" placeholder="Describe the purpose of this survey..."></textarea>
-            <button type="button" class="icon-btn" (click)="clearField('description')" aria-label="Clear">🗑️</button>
+            <button type="button" class="icon-btn" (click)="clearField('description')" aria-label="Clear"><img src="././assets/Delete.svg" alt=""></button>
           </div>
         </div>
       </div>
@@ -39,7 +39,7 @@
           <label>Set End Date <span class="optional">(optional)</span></label>
           <div class="field-with-icon">
             <input type="date" formControlName="end_date" />
-            <button type="button" class="icon-btn" (click)="clearField('end_date')" aria-label="Clear">🗑️</button>
+            <button type="button" class="icon-btn" (click)="clearField('end_date')" aria-label="Clear"><img src="././assets/Delete.svg" alt=""></button>
           </div>
         </div>
 
@@ -74,15 +74,14 @@
         <div formArrayName="questions">
           <div class="question-block" *ngFor="let q of questions.controls; let qIndex = index" [formGroupName]="qIndex">
             <div class="question-header">
-              <span class="question-number">Question {{ qIndex + 1 }}</span>
+              <span class="question-number">{{ qIndex + 1 }}. Question </span>
               <button type="button" class="btn-delete-question" (click)="removeQuestion(qIndex)">
-                <span *ngIf="qIndex === 0">🗑️ Clear fields</span>
+                <span *ngIf="qIndex === 0"><img src="././assets/Delete.svg" alt=""></span>
                 <span *ngIf="qIndex > 0">🗑️ Remove question</span>
               </button>
             </div>
 
             <div class="form-group">
-              <label>Question Text *</label>
               <input type="text" formControlName="question_text" placeholder="Enter your question..." />
               <small *ngIf="q.get('question_text')?.touched && q.get('question_text')?.invalid">
                 Please enter a question.
@@ -99,9 +98,9 @@
               <label>Answers *</label>
               <div formArrayName="answers">
                 <div class="answer-row" *ngFor="let a of getAnswers(qIndex).controls; let aIndex = index" [formGroupName]="aIndex">
-                  <input type="text" formControlName="answer_text" placeholder="Answer {{ getAnswerLetter(aIndex) }}" />
+                  <input type="text" formControlName="answer_text" placeholder="Answer {{ getAnswerLetter(aIndex) }}" /><img (click)="removeQuestion(qIndex)" src="././assets/Delete.svg" alt="">
+
                   <button type="button" class="btn-remove-answer" (click)="removeAnswer(qIndex, aIndex)" *ngIf="getAnswers(qIndex).length > 2">
-                    ✕
                   </button>
                 </div>
                 <button type="button" class="btn-add-answer" (click)="addAnswer(qIndex)">+ Add answer</button>
