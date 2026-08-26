@@ -3,6 +3,8 @@ $accent-orange: #FFB770;
 $accent-apricot: #FEE9D4;
 $card-light: #FEFDFF;
 $text-dark: #2B2233;
+$btn-cancel-bg: #4A2F39;
+$btn-addq-bg: #6E4A56;
 
 // Font-Variablen
 $font-nerko: 'Nerko One', cursive;
@@ -13,30 +15,25 @@ $font-nokora: 'Nokora', sans-serif;
   display: block;
 }
 
-.create-container {
-  max-width: 900px;
-  margin: 0 auto;
-  width: 100%;
-
+.create-page {
+  min-height: 100vh;
+  padding: 72px 40px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
 }
 
 .create-card {
   background: $bg-dark;
   color: #fff;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  width: 1166px;
-  height: 844px;
-  top: 72px;
-  left: 109px;
+  width: 100%;
+  max-width: 1166px;
   border-top-left-radius: 5px;
   border-top-right-radius: 100px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
-  padding-top: 40px;
-  padding-right: 54px;
-  padding-bottom: 40px;
-  padding-left: 54px;
-
+  padding: 40px 54px;
 }
 
 .create-header {
@@ -50,9 +47,7 @@ $font-nokora: 'Nokora', sans-serif;
     font-family: $font-nerko;
     font-weight: 400;
     font-size: 56px;
-    flex: 1;
     color: #EE9236;
-    font-size: 56px;
     margin: 0;
   }
 
@@ -61,57 +56,70 @@ $font-nokora: 'Nokora', sans-serif;
     flex-direction: column;
   }
 
-  span {
+  .badge {
     width: 59px;
     height: 26px;
     border-top-right-radius: 14px;
-    padding-right: 12px;
-    padding-bottom: 3px;
-    padding-left: 8px;
-    opacity: 1;
-    font-family: Mulish;
+    padding: 0 12px 3px 8px;
+    font-family: $font-mulish;
     font-weight: 600;
     font-size: 16px;
     line-height: 100%;
-    letter-spacing: 0%;
     text-align: center;
     background-color: #FFCFA1;
+    color: $text-dark;
+    border-radius: 6px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-}
-
-.badge {
-  font-family: $font-mulish;
-  font-weight: 600;
-  background: $accent-apricot;
-  color: $text-dark;
-  font-size: 12px;
-  padding: 4px 10px;
-  border-radius: 6px;
 }
 
 .btn-cancel {
   font-family: $font-mulish;
   font-weight: 600;
   font-size: 16px;
-  background: #FFB7704D;
+  background: $btn-cancel-bg;
   color: #fff;
   border: none;
-  border-radius: 10px;
-  padding: 10px 18px;
+  border-radius: 999px;
+  padding: 10px 22px;
   cursor: pointer;
-
-
+  white-space: nowrap;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: lighten($btn-cancel-bg, 6%);
   }
 }
 
-.form-row {
+// --- Grid: links Survey Name / End Date + Category / Questions,
+// rechts Describing Text + Add next question, exakt wie Zielbild ---
+.form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 8px;
+  grid-template-rows: auto auto auto;
+  column-gap: 32px;
+  row-gap: 8px;
+  grid-template-areas:
+    "title desc"
+    "meta  desc"
+    "questions addq";
+}
+
+.grid-title    { grid-area: title; }
+.grid-desc     { grid-area: desc; }
+.grid-meta     { grid-area: meta; }
+.grid-questions{ grid-area: questions; }
+.grid-addq     { grid-area: addq; align-self: start; margin-top: 12px; }
+
+.meta-row {
+  display: flex;
+  gap: 20px;
+
+  .form-group {
+    flex: 1;
+  }
 }
 
 .form-group {
@@ -124,7 +132,6 @@ $font-nokora: 'Nokora', sans-serif;
     font-family: $font-mulish;
     font-weight: 700;
     font-size: 18px;
-
 
     .optional {
       font-weight: 400;
@@ -161,17 +168,11 @@ $font-nokora: 'Nokora', sans-serif;
   input,
   textarea {
     flex: 1;
-    width: 429px;
-    height: 37px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    padding-top: 7px;
-    padding-right: 13px;
-    padding-bottom: 7px;
-    padding-left: 13px;
+    width: 100%;
+  }
 
+  .descriptionInput {
+    height: 108px;
   }
 }
 
@@ -195,8 +196,6 @@ select {
   font-weight: 400;
   background: $card-light;
   border: none;
-  border-radius: 10px;
-  padding: 12px 14px;
   color: $text-dark;
   font-size: 14px;
   width: 100%;
@@ -205,11 +204,7 @@ select {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
-  padding-top: 7px;
-  padding-right: 13px;
-  padding-bottom: 7px;
-  padding-left: 13px;
-
+  padding: 7px 13px;
 
   &:focus {
     outline: 2px solid $accent-orange;
@@ -221,13 +216,7 @@ textarea {
 }
 
 .questions-section {
-  margin-top: 16px;
-
-  >h3 {
-    font-family: $font-nerko;
-    font-weight: 400;
-    margin-bottom: 16px;
-  }
+  margin-top: 8px;
 }
 
 .question-block {
@@ -251,14 +240,17 @@ textarea {
 }
 
 .btn-delete-question {
-  font-family: $font-mulish;
-  font-weight: 400;
   background: transparent;
   border: none;
-  color: #fff;
   cursor: pointer;
-  font-size: 13px;
   opacity: 0.85;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
 
   &:hover {
     opacity: 1;
@@ -268,7 +260,7 @@ textarea {
 .answers-section {
   margin-top: 12px;
 
-  >label {
+  > label {
     font-family: $font-mulish;
     font-weight: 600;
     display: block;
@@ -282,36 +274,36 @@ textarea {
   gap: 10px;
   margin-bottom: 8px;
 
+  .answer-letter {
+    font-family: $font-mulish;
+    font-weight: 600;
+    width: 14px;
+  }
+
   input {
     flex: 1;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    padding-top: 7px;
-    padding-right: 13px;
-    padding-bottom: 7px;
-    padding-left: 13px;
-
   }
 }
 
 .btn-remove-answer {
-  font-family: $font-mulish;
   background: transparent;
   border: none;
-  color: #fff;
   cursor: pointer;
-  font-size: 14px;
   opacity: 0.7;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 14px;
+    height: 14px;
+  }
 
   &:hover {
     opacity: 1;
   }
 }
 
-.btn-add-answer,
-.btn-add-question {
+.btn-add-answer {
   font-family: $font-mulish;
   font-weight: 600;
   background: none;
@@ -323,8 +315,19 @@ textarea {
 }
 
 .btn-add-question {
-  display: inline-block;
-  margin-top: 4px;
+  font-family: $font-mulish;
+  font-weight: 600;
+  font-size: 15px;
+  background: $btn-addq-bg;
+  border: none;
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 20px;
+  cursor: pointer;
+
+  &:hover {
+    background: lighten($btn-addq-bg, 6%);
+  }
 }
 
 .btn-publish {
@@ -403,12 +406,22 @@ textarea {
   }
 }
 
-@media (max-width: 720px) {
-  .form-row {
+@media (max-width: 900px) {
+  .form-grid {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "title"
+      "desc"
+      "meta"
+      "questions"
+      "addq";
+  }
+
+  .create-page {
+    padding: 32px 16px;
   }
 
   .create-card {
-    padding: 20px;
+    padding: 24px;
   }
 }

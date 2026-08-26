@@ -1,18 +1,19 @@
-<div class="create-container">
+<div class="create-page">
   <div class="create-card">
     <div class="create-header">
       <div>
-   <span class="badge">Draft</span>
-      <h1> Create New Survey</h1>
+        <span class="badge">Draft</span>
+        <h1>Create New Survey</h1>
       </div>
-   
+
       <button type="button" class="btn-cancel" (click)="cancel()">Cancel ✕</button>
     </div>
 
     <form [formGroup]="surveyForm" (ngSubmit)="onSubmit()">
-      <div class="form-row">
+      <div class="form-grid">
+
         <!-- Survey Name (Pflicht) -->
-        <div class="form-group">
+        <div class="form-group grid-title">
           <label>Survey Name</label>
           <div class="field-with-icon">
             <input type="text" formControlName="title" placeholder="e.g., Customer Feedback 2026" />
@@ -24,60 +25,48 @@
         </div>
 
         <!-- Description (optional) -->
-        <div class="form-group">
+        <div class="form-group grid-desc">
           <label>Describing Text <span class="optional">(optional)</span></label>
           <div class="field-with-icon">
-            <textarea formControlName="description" rows="3" placeholder="Describe the purpose of this survey..."></textarea>
+            <textarea class="descriptionInput" formControlName="description" rows="3" placeholder="Describe the purpose of this survey..."></textarea>
             <button type="button" class="icon-btn" (click)="clearField('description')" aria-label="Clear"><img src="././assets/Delete.svg" alt=""></button>
           </div>
         </div>
-      </div>
 
-      <div class="form-row">
-        <!-- End Date (optional) -->
-        <div class="form-group">
-          <label>Set End Date <span class="optional">(optional)</span></label>
-          <div class="field-with-icon">
-            <input type="date" formControlName="end_date" />
-            <button type="button" class="icon-btn" (click)="clearField('end_date')" aria-label="Clear"><img src="././assets/Delete.svg" alt=""></button>
+        <!-- End Date + Category (optional / Pflicht) -->
+        <div class="meta-row grid-meta">
+          <div class="form-group">
+            <label>Set End Date <span class="optional">(optional)</span></label>
+            <div class="field-with-icon">
+              <input type="date" formControlName="end_date" />
+              <button type="button" class="icon-btn" (click)="clearField('end_date')" aria-label="Clear"><img src="././assets/Delete.svg" alt=""></button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Choose Category *</label>
+            <select formControlName="category">
+              <option value="">Select a category...</option>
+              <option value="Feedback">Feedback</option>
+              <option value="Market Research">Market Research</option>
+              <option value="Employee Satisfaction">Employee Satisfaction</option>
+              <option value="Customer Service">Customer Service</option>
+              <option value="Product">Product</option>
+              <option value="Other">Other</option>
+            </select>
+            <small *ngIf="surveyForm.get('category')?.touched && surveyForm.get('category')?.invalid">
+              Please select a category.
+            </small>
           </div>
         </div>
 
-        <!-- Category (Pflicht) -->
-        <div class="form-group">
-          <label>Choose Category *</label>
-          <select formControlName="category">
-            <option value="">Select a category...</option>
-            <option value="Feedback">Feedback</option>
-            <option value="Market Research">Market Research</option>
-            <option value="Employee Satisfaction">Employee Satisfaction</option>
-            <option value="Customer Service">Customer Service</option>
-            <option value="Product">Product</option>
-            <option value="Other">Other</option>
-          </select>
-          <small *ngIf="surveyForm.get('category')?.touched && surveyForm.get('category')?.invalid">
-            Please select a category.
-          </small>
-        </div>
-      </div>
-
-      <!-- Questions -->
-      <div class="questions-section">
-        <h3>Questions</h3>
-
-        <!--
-          formArrayName="questions" muss auf einem Eltern-Element sitzen, das
-          die *ngFor-Schleife der question-blocks umschließt - ohne dieses
-          Wrapper-Element findet Angular die FormGroup mit Index "0", "1" usw.
-          nicht ("Cannot find control with name: '0'").
-        -->
-        <div formArrayName="questions">
+        <!-- Questions -->
+        <div class="questions-section grid-questions" formArrayName="questions">
           <div class="question-block" *ngFor="let q of questions.controls; let qIndex = index" [formGroupName]="qIndex">
             <div class="question-header">
-              <span class="question-number">{{ qIndex + 1 }}. Question </span>
-              <button type="button" class="btn-delete-question" (click)="removeQuestion(qIndex)">
-                <span *ngIf="qIndex === 0"><img src="././assets/Delete.svg" alt=""></span>
-                <span *ngIf="qIndex > 0">🗑️ Remove question</span>
+              <span class="question-number">{{ qIndex + 1 }}. Question</span>
+              <button type="button" class="btn-delete-question" (click)="removeQuestion(qIndex)" aria-label="Delete question">
+                <img src="././assets/Delete.svg" alt="">
               </button>
             </div>
 
@@ -98,9 +87,10 @@
               <label>Answers *</label>
               <div formArrayName="answers">
                 <div class="answer-row" *ngFor="let a of getAnswers(qIndex).controls; let aIndex = index" [formGroupName]="aIndex">
-                  <input type="text" formControlName="answer_text" placeholder="Answer {{ getAnswerLetter(aIndex) }}" /><img (click)="removeQuestion(qIndex)" src="././assets/Delete.svg" alt="">
-
-                  <button type="button" class="btn-remove-answer" (click)="removeAnswer(qIndex, aIndex)" *ngIf="getAnswers(qIndex).length > 2">
+                  <span class="answer-letter">{{ getAnswerLetter(aIndex) }}.</span>
+                  <input type="text" formControlName="answer_text" placeholder="Answer {{ getAnswerLetter(aIndex) }}" />
+                  <button type="button" class="btn-remove-answer" (click)="removeAnswer(qIndex, aIndex)" *ngIf="getAnswers(qIndex).length > 2" aria-label="Remove answer">
+                    <img src="././assets/Delete.svg" alt="">
                   </button>
                 </div>
                 <button type="button" class="btn-add-answer" (click)="addAnswer(qIndex)">+ Add answer</button>
@@ -109,7 +99,10 @@
           </div>
         </div>
 
-        <button type="button" class="btn-add-question" (click)="addQuestion()">+ Add next question</button>
+        <div class="grid-addq">
+          <button type="button" class="btn-add-question" (click)="addQuestion()">+ Add next question</button>
+        </div>
+
       </div>
 
       <!-- Submit -->
@@ -117,7 +110,7 @@
     </form>
   </div>
 
-  <!-- OVERLAY -->
+  <!-- OVERLAY (Publish-Bestätigung, kein Create-Overlay mehr) -->
   <div class="overlay" *ngIf="showPublishOverlay()">
     <div class="overlay-content">
       <div class="success-icon">🎉</div>

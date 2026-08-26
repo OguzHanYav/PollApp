@@ -14,7 +14,8 @@
           workplace culture. Collect opinions, engage your audience,
           and turn feedback into action.
         </p>
-        <button class="btn-primary" (click)="openCreateModal()">New survey</button>
+        <!-- <button class="btn-primary" (click)="openCreateModal()">New survey</button> -->
+                 <button class="btn-primary" routerLink="/create">New survey</button>
       </div>
 
       <div class="hero-image">
@@ -104,8 +105,4 @@
     <p>Loading surveys...</p>
   </div>
 
-  <!-- CREATE-SURVEY MODAL -->
-  <div class="modal-backdrop" *ngIf="showCreateModal()">
-    <app-poll-create (closed)="closeCreateModal()" (created)="onPollCreated($event)"></app-poll-create>
-  </div>
 </div>
