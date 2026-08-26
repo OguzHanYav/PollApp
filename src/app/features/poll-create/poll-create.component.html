@@ -54,8 +54,9 @@
             <div class="category-select" [class.open]="categoryDropdownOpen()">
               <button type="button" class="category-select__toggle" (click)="toggleCategoryDropdown($event)">
                 <span class="category-select__label">{{ surveyForm.get('category')?.value || 'Choose category' }}</span>
-                <svg class="category-select__arrow" width="16" height="10" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 1L8 9L16 1H0Z"/>
+                <svg class="category-select__arrow" width="16" height="10" viewBox="0 0 16 10"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path d="M0 1L8 9L16 1H0Z" />
                 </svg>
               </button>
 
@@ -109,7 +110,10 @@
                     <img src="./assets/Delete.svg" alt="">
                   </button>
                 </div>
-                <button type="button" class="btn-add-answer" (click)="addAnswer(qIndex)">+ Add answer</button>
+                <button type="button" class="btn-add-answer" (click)="addAnswer(qIndex)">
+                  <span>Add answer</span>
+                  <img src="./assets/add_circle.svg" alt="">
+                </button>
               </div>
             </div>
           </div>
