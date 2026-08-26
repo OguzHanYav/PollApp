@@ -27,7 +27,7 @@
         <!-- Description (optional) -->
         <div class="form-group grid-desc">
           <label>Describing Text <span class="optional">(optional)</span></label>
-          <div class="field-with-icon">
+          <div class="field-with-icon-description">
             <textarea class="descriptionInput" formControlName="description" rows="3" placeholder="Describe the purpose of this survey..."></textarea>
             <button type="button" class="icon-btn" (click)="clearField('description')" aria-label="Clear"><img src="././assets/Delete.svg" alt=""></button>
           </div>
@@ -89,7 +89,7 @@
                 <div class="answer-row" *ngFor="let a of getAnswers(qIndex).controls; let aIndex = index" [formGroupName]="aIndex">
                   <span class="answer-letter">{{ getAnswerLetter(aIndex) }}.</span>
                   <input type="text" formControlName="answer_text" placeholder="Answer {{ getAnswerLetter(aIndex) }}" />
-                  <button type="button" class="btn-remove-answer" (click)="removeAnswer(qIndex, aIndex)" *ngIf="getAnswers(qIndex).length > 2" aria-label="Remove answer">
+                  <button type="button" class="btn-remove-answer" (click)="removeAnswer(qIndex, aIndex)" [disabled]="getAnswers(qIndex).length <= 2" aria-label="Remove answer">
                     <img src="././assets/Delete.svg" alt="">
                   </button>
                 </div>

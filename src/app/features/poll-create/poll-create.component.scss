@@ -3,8 +3,8 @@ $accent-orange: #FFB770;
 $accent-apricot: #FEE9D4;
 $card-light: #FEFDFF;
 $text-dark: #2B2233;
-$btn-cancel-bg: #4A2F39;
-$btn-addq-bg: #6E4A56;
+$btn-cancel-bg: #72524a;
+$btn-addq-bg: #7c5b55;
 
 // Font-Variablen
 $font-nerko: 'Nerko One', cursive;
@@ -83,7 +83,7 @@ $font-nokora: 'Nokora', sans-serif;
   background: $btn-cancel-bg;
   color: #fff;
   border: none;
-  border-radius: 999px;
+  border-radius: 10px;
   padding: 10px 22px;
   cursor: pointer;
   white-space: nowrap;
@@ -101,17 +101,42 @@ $font-nokora: 'Nokora', sans-serif;
   grid-template-rows: auto auto auto;
   column-gap: 32px;
   row-gap: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 80px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding-top: 40px;
+  padding-right: 32px;
+  padding-bottom: 40px;
+  padding-left: 32px;
   grid-template-areas:
     "title desc"
     "meta  desc"
     "questions addq";
 }
 
-.grid-title    { grid-area: title; }
-.grid-desc     { grid-area: desc; }
-.grid-meta     { grid-area: meta; }
-.grid-questions{ grid-area: questions; }
-.grid-addq     { grid-area: addq; align-self: start; margin-top: 12px; }
+.grid-title {
+  grid-area: title;
+}
+
+.grid-desc {
+  grid-area: desc;
+}
+
+.grid-meta {
+  grid-area: meta;
+}
+
+.grid-questions {
+  grid-area: questions;
+}
+
+.grid-addq {
+  grid-area: addq;
+  align-self: start;
+  margin-top: 12px;
+}
 
 .meta-row {
   display: flex;
@@ -170,18 +195,34 @@ $font-nokora: 'Nokora', sans-serif;
     flex: 1;
     width: 100%;
   }
+}
+
+.field-with-icon-description {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
 
   .descriptionInput {
     height: 108px;
   }
 }
 
+// Einheitliche Größe für alle Löschen-Icons (Survey Name, Describing Text,
+// Set End Date, Question, Answer)
+$delete-icon-size: 20px;
+
 .icon-btn {
   background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 16px;
   opacity: 0.8;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: $delete-icon-size;
+    height: $delete-icon-size;
+  }
 
   &:hover {
     opacity: 1;
@@ -220,9 +261,7 @@ textarea {
 }
 
 .question-block {
-  background: rgba(255, 255, 255, 0.06);
   border-radius: 16px;
-  padding: 20px;
   margin-bottom: 20px;
   max-width: 429px;
 }
@@ -243,13 +282,13 @@ textarea {
   background: transparent;
   border: none;
   cursor: pointer;
-  opacity: 0.85;
+  opacity: 0.8;
   display: flex;
   align-items: center;
 
   img {
-    width: 16px;
-    height: 16px;
+    width: $delete-icon-size;
+    height: $delete-icon-size;
   }
 
   &:hover {
@@ -260,7 +299,7 @@ textarea {
 .answers-section {
   margin-top: 12px;
 
-  > label {
+  >label {
     font-family: $font-mulish;
     font-weight: 600;
     display: block;
@@ -289,17 +328,22 @@ textarea {
   background: transparent;
   border: none;
   cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.8;
   display: flex;
   align-items: center;
 
   img {
-    width: 14px;
-    height: 14px;
+    width: $delete-icon-size;
+    height: $delete-icon-size;
   }
 
   &:hover {
     opacity: 1;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 }
 
@@ -331,16 +375,23 @@ textarea {
 }
 
 .btn-publish {
-  font-family: $font-mulish;
+  font-family: $font-nokora;
   font-weight: 700;
+  font-size: 18px;
   display: block;
   margin: 24px 0 0 auto;
-  background: $accent-orange;
+  background: #fdcfa1;
   color: $bg-dark;
   border: none;
-  border-radius: 10px;
-  padding: 12px 28px;
   cursor: pointer;
+  width: 99px;
+  height: 48px;
+  padding-top: 12px;
+  padding-right: 16px;
+  padding-bottom: 12px;
+  padding-left: 16px;
+  border-radius: 10px;
+
 
   &:hover:not(:disabled) {
     filter: brightness(1.05);
