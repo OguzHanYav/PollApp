@@ -96,7 +96,7 @@ $font-nokora: 'Nokora', sans-serif;
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto auto auto;
   column-gap: 32px;
   row-gap: 8px;
   background: rgba(255, 255, 255, 0.06);
@@ -111,7 +111,8 @@ $font-nokora: 'Nokora', sans-serif;
   grid-template-areas:
     "title desc"
     "meta  desc"
-    "questions addq";
+    "questions questions"
+    "addq addq";
 }
 
 .grid-title {
@@ -130,10 +131,11 @@ $font-nokora: 'Nokora', sans-serif;
   grid-area: questions;
 }
 
+// "Add next question" steht jetzt unterhalb aller Fragen-Blöcke,
+// über die volle Breite
 .grid-addq {
   grid-area: addq;
-  align-self: start;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .meta-row {
@@ -422,12 +424,14 @@ textarea {
 
 .questions-section {
   margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 64px;
 }
 
 .question-block {
   border-radius: 16px;
-  margin-bottom: 20px;
-  max-width: 429px;
+  margin-bottom: 0;
 }
 
 .question-header {
@@ -638,6 +642,10 @@ textarea {
       "meta"
       "questions"
       "addq";
+  }
+
+  .questions-section {
+    grid-template-columns: 1fr;
   }
 
   .create-page {
