@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -20,10 +20,23 @@ export class PollCreateComponent {
   showPublishOverlay = signal(false);
   createdPollId = signal<number | undefined>(undefined);
 
+  // Custom "Choose Category"-Dropdown (gleiches Verhalten wie
+  // "Sort by categories" in PollListComponent)
+  categoryOptions: string[] = [
+    'Feedback',
+    'Market Research',
+    'Employee Satisfaction',
+    'Customer Service',
+    'Product',
+    'Other'
+  ];
+  categoryDropdownOpen = signal(false);
+
   constructor(
     private fb: FormBuilder,
     private pollService: PollService,
-    private router: Router
+    private router: Router,
+    private elementRef: ElementRef<HTMLElement>
   ) {
     this.surveyForm = this.fb.group({
       title: ['', Validators.required],
@@ -36,6 +49,28 @@ export class PollCreateComponent {
 
   get questions(): FormArray {
     return this.surveyForm.get('questions') as FormArray;
+  }
+
+  // Schließt das Category-Dropdown bei Klick außerhalb
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.categoryDropdownOpen()) return;
+    const target = event.target as Node;
+    if (!this.elementRef.nativeElement.contains(target)) {
+      this.categoryDropdownOpen.set(false);
+    }
+  }
+
+  toggleCategoryDropdown(event: MouseEvent): void {
+    event.stopPropagation();
+    this.categoryDropdownOpen.update(open => !open);
+  }
+
+  selectCategory(value: string): void {
+    const control = this.surveyForm.get('category');
+    control?.setValue(value);
+    control?.markAsTouched();
+    this.categoryDropdownOpen.set(false);
   }
 
   createQuestionBlock(): FormGroup {
@@ -125,4 +160,5 @@ export class PollCreateComponent {
       this.router.navigate(['/']);
     }
   }
+  
 }
