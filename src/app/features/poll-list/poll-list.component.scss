@@ -147,8 +147,25 @@ $font-nokora: 'Nokora', sans-serif;
   background: $accent-orange;
   color: $bg-dark;
 
+  .btn-icon {
+    display: inline-block;
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    margin-left: 0;
+    transform: scale(0);
+    transition: opacity 0.2s ease, width 0.2s ease, margin-left 0.2s ease, transform 0.2s ease;
+  }
+
   &:hover {
     filter: brightness(1.05);
+
+    .btn-icon {
+      opacity: 1;
+      width: 1em;
+      margin-left: 8px;
+      transform: scale(1);
+    }
   }
 }
 

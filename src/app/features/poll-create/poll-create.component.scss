@@ -604,23 +604,30 @@ textarea {
 
 .publish-toast {
   position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 32px;
+  right: 32px;
   background: $accent-apricot;
   color: $text-dark;
-  border-radius: 14px;
-  padding: 14px 20px;
+  border-radius: 12px 32px 12px 12px;
+  padding: 16px 44px 16px 20px;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 16px;
-  font-family: $font-mulish;
-  font-weight: 600;
-  font-size: 14px;
+  font-family: $font-nerko;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.2;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
   z-index: 1000;
 
+  span {
+    white-space: pre-line;
+  }
+
   &__close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
     background: transparent;
     border: none;
     cursor: pointer;
