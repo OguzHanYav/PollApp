@@ -147,8 +147,28 @@ $font-nokora: 'Nokora', sans-serif;
   background: $accent-orange;
   color: $bg-dark;
 
+  .btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    width: 0;
+    height: 24px;
+    overflow: hidden;
+    margin-left: 0;
+    transform: scale(0);
+    transition: opacity 0.2s ease, width 0.2s ease, margin-left 0.2s ease, transform 0.2s ease;
+  }
+
   &:hover {
     filter: brightness(1.05);
+
+    .btn-icon {
+      opacity: 1;
+      width: 24px;
+      margin-left: 8px;
+      transform: scale(1);
+    }
   }
 }
 
@@ -242,6 +262,7 @@ $font-nokora: 'Nokora', sans-serif;
 /* ========================================
    FILTER BAR
    ======================================== */
+
 .filter-bar {
   max-width: 1042px;
   margin: 0 auto 24px;
@@ -254,29 +275,35 @@ $font-nokora: 'Nokora', sans-serif;
 
 .filter-tabs {
   display: flex;
-  width: 249px;
-  height: 25px;
-  gap: 24px;
+  gap: 12px;
+  /* etwas Abstand zwischen den Buttons */
 
   button {
     font-family: $font-nokora;
-    font-weight: 400;
+    font-weight: 600;
+    /* etwas fetter für bessere Lesbarkeit */
     font-size: 16px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    background: #fee8d5;
+    background: transparent;
+    /* transparenter Hintergrund, wie im Design */
+    color: rgba(255, 255, 255, 0.7);
+    /* helle Schrift für inaktive Tabs */
     cursor: pointer;
-    width: 120px;
-    height: 25px;
+    padding: 10px 24px;
+    /* ausreichend Padding für gute Größe */
     border-radius: 20px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    padding-left: 4px;
-    padding-right: 4px;
+    transition: all 0.2s ease;
 
     &.active {
       background: $accent-orange;
       border-color: $accent-orange;
       color: $bg-dark;
+      /* dunkle Schrift auf orangem Hintergrund */
+    }
+
+    &:hover:not(.active) {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
     }
   }
 }
@@ -419,19 +446,20 @@ $font-nokora: 'Nokora', sans-serif;
 .poll-grid-wrapper {
   max-width: 1042px;
   margin: 0 auto;
-  max-height: 600px; /* Maximale Höhe, danach wird gescrollt */
+  max-height: 340px;
+  /* ~2 Zeilen (4 Cards), danach wird gescrollt */
   overflow-y: auto;
   overflow-x: hidden;
   padding: 4px 8px 16px 4px;
-  
+
   /* --- SCROLLBAR STYLING --- */
   /* WebKit (Chrome, Safari, Edge) */
   &::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
   }
 
   &::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.05);
+    background: transparent;
     border-radius: 10px;
   }
 
@@ -446,7 +474,7 @@ $font-nokora: 'Nokora', sans-serif;
 
   /* Firefox */
   scrollbar-width: thin;
-  scrollbar-color: $accent-orange rgba(255, 255, 255, 0.05);
+  scrollbar-color: $accent-orange transparent;
 }
 
 .poll-grid {
@@ -466,6 +494,13 @@ $font-nokora: 'Nokora', sans-serif;
   gap: 10px;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s;
+  width: 513px;
+  height: 130px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+
+
 
   &:hover {
     transform: translateY(-4px);

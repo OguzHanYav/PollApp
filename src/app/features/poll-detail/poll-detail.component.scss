@@ -35,17 +35,11 @@ $font-nokora: 'Nokora', sans-serif;
   .hero-brand {
     text-decoration: none;
     cursor: pointer;
-    color: #35273A;
-      font-family: $font-nerko;
-    font-weight: 400;
-    line-height: 62%;
-    font-size: 26px;
 
     img {
       width: auto;
       height: 50px;
     }
-
   }
 }
 
@@ -72,7 +66,7 @@ $font-nokora: 'Nokora', sans-serif;
     font-family: $font-nerko;
     font-weight: 400;
     font-size: 20px;
-    color: #35273A; 
+    color: $accent-orange;
   }
 }
 
@@ -92,6 +86,7 @@ $font-nokora: 'Nokora', sans-serif;
     display: inline-block;
     opacity: 0;
     width: 0;
+    height: 24px;
     overflow: hidden;
     margin-left: 0;
     transform: scale(0);
@@ -108,7 +103,7 @@ $font-nokora: 'Nokora', sans-serif;
 
     .btn-icon {
       opacity: 1;
-      width: 1em;
+      width: 24px;
       margin-left: 8px;
       transform: scale(1);
     }

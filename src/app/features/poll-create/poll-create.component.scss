@@ -567,6 +567,14 @@ textarea {
   border-radius: 12px;
   padding: 12px 20px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  img {
+    display: inline-block;
+    flex-shrink: 0;
+  }
 
   &:hover {
     background: lighten($btn-addq-bg, 6%);

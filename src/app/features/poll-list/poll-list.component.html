@@ -17,7 +17,7 @@
         <!-- <button class="btn-primary" (click)="openCreateModal()">New survey</button> -->
                  <button class="btn-primary" routerLink="/create">
                    New survey
-                   <span class="btn-icon">+</span>
+                   <img class="btn-icon" src="assets/add_circle_newsurvey.svg" alt="">
                  </button>
       </div>
 
@@ -89,20 +89,22 @@
 </div>
 
   <!-- POLL LIST -->
-  <div class="poll-grid" *ngIf="!loading()">
-    <div class="poll-card" [routerLink]="['/poll', poll.id]" *ngFor="let poll of filteredPolls()">
-      <div class="poll-header">
-        <span class="category">{{ poll.category }}</span>
+  <div class="poll-grid-wrapper" *ngIf="!loading()">
+    <div class="poll-grid">
+      <div class="poll-card" [routerLink]="['/poll', poll.id]" *ngFor="let poll of filteredPolls()">
+        <div class="poll-header">
+          <span class="category">{{ poll.category }}</span>
+        </div>
+        <h3 class="poll-title">{{ poll.title }}</h3>
+        <div class="poll-footer">
+          <span *ngIf="poll.end_date">{{ getDaysLabel(poll.end_date) }}</span>
+        </div>
       </div>
-      <h3 class="poll-title">{{ poll.title }}</h3>
-      <div class="poll-footer">
-        <span *ngIf="poll.end_date">{{ getDaysLabel(poll.end_date) }}</span>
-      </div>
-    </div>
 
-    <p class="empty-state" *ngIf="filteredPolls().length === 0">
-      No surveys found for this filter.
-    </p>
+      <p class="empty-state" *ngIf="filteredPolls().length === 0">
+        No surveys found for this filter.
+      </p>
+    </div>
   </div>
 
   <div class="loading" *ngIf="loading()">
