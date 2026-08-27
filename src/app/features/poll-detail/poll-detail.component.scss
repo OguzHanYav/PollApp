@@ -31,6 +31,11 @@ $font-nokora: 'Nokora', sans-serif;
   align-items: center;
   justify-content: space-between;
   padding: 24px 40px;
+
+  .hero-brand {
+    text-decoration: none;
+    cursor: pointer;
+  }
 }
 
 .brand {

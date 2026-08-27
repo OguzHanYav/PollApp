@@ -8,11 +8,10 @@
 -->
 <div class="detail" *ngIf="!loading() && poll() as p">
   <header class="detail__topbar">
-     <div class="hero-brand">
+    <a class="hero-brand" routerLink="/">
       <img src="././assets/Frame 548.svg" alt="">
       <span class="hero-brand__name">Poll<br />App</span>
-    </div>
-    <button class="btn-primary" routerLink="/">Back to surveys</button>
+    </a>
   </header>
 
   <div class="detail__content">

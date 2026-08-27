@@ -602,57 +602,37 @@ textarea {
   }
 }
 
-.overlay {
+.publish-toast {
   position: fixed;
-  inset: 0;
-  background: rgba(53, 39, 58, 0.7);
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: $accent-apricot;
+  color: $text-dark;
+  border-radius: 14px;
+  padding: 14px 20px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.overlay-content {
-  background: $card-light;
-  color: $text-dark;
-  border-radius: 20px;
-  padding: 40px;
-  text-align: center;
-  max-width: 360px;
-
-  .success-icon {
-    font-size: 40px;
-    margin-bottom: 12px;
-  }
-
-  h2 {
-    font-family: $font-nerko;
-    font-weight: 400;
-    font-size: 20px;
-    margin: 0 0 8px;
-    color: $text-dark;
-  }
-
-  p {
-    font-family: $font-mulish;
-    font-weight: 400;
-    color: rgba(43, 34, 51, 0.7);
-    margin: 0 0 20px;
-  }
-}
-
-.btn-primary {
+  gap: 16px;
   font-family: $font-mulish;
-  font-weight: 700;
-  background: $accent-orange;
-  color: $bg-dark;
-  border: none;
-  border-radius: 10px;
-  padding: 12px 24px;
-  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
 
-  &:hover {
-    filter: brightness(1.05);
+  &__close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: $text-dark;
+    font-size: 14px;
+    line-height: 1;
+    padding: 0;
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 

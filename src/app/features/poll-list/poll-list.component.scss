@@ -90,25 +90,45 @@ $font-nokora: 'Nokora', sans-serif;
    HERO IMAGE - HOVER ANIMATION
    ======================================== */
 .hero-image {
+  position: relative;
   flex: 1 1 360px;
   display: flex;
   justify-content: center;
   align-items: center;
   max-width: 480px;
 
-  img {
+  &__base,
+  &__hover {
     width: 100%;
     height: auto;
     object-fit: cover;
-    transform: translateY(0) scale(1) rotate(0deg);
-    transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  &__base {
+    position: relative;
+    z-index: 1;
+  }
+
+  &__hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .hero-image:hover img {
-    transform: translateY(-10px) scale(1.04) rotate(-1.5deg);
-    filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.35));
+  .hero-image:hover .hero-image__base {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+
+  .hero-image:hover .hero-image__hover {
+    opacity: 1;
+    transform: scale(1.02);
   }
 }
 

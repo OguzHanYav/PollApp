@@ -132,12 +132,8 @@
   </div> <!-- Ende create-card -->
 
   <!-- OVERLAY -->
-  <div class="overlay" *ngIf="showPublishOverlay()">
-    <div class="overlay-content">
-      <div class="success-icon">🎉</div>
-      <h2>Your survey is now published!</h2>
-      <p>You can view the results in the detail view.</p>
-      <button class="btn-primary" (click)="closeOverlay()">Go to Survey</button>
-    </div>
+  <div class="publish-toast" *ngIf="showPublishOverlay()">
+    <span>Your survey is now published</span>
+    <button type="button" class="publish-toast__close" (click)="closeOverlay()" aria-label="Close">✕</button>
   </div>
 </div> <!-- Ende create-page -->
