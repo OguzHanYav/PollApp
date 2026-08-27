@@ -20,8 +20,11 @@
         <span class="badge" [class.badge--inactive]="!p.is_active">
           {{ p.is_active ? 'Published' : 'Closed' }}
         </span>
+        <div class="badge-div">
         <span class="end-date" *ngIf="p.end_date">Ends on {{ p.end_date | date: 'dd.MM.yyyy' }}</span>
         <span class="category" *ngIf="p.category">Category: {{ p.category }}</span>
+        </div>
+
       </div>
 
       <h1>{{ p.title }}</h1>

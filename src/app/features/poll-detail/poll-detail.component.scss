@@ -72,7 +72,7 @@ $font-nokora: 'Nokora', sans-serif;
   border-radius: 10px;
   padding: 12px 24px;
   cursor: pointer;
-  background: $accent-orange;
+  background: #FFB7704D;
   color: $bg-dark;
 
   &:disabled {
@@ -95,27 +95,39 @@ $font-nokora: 'Nokora', sans-serif;
 
 .survey-card {
   background: $card-light-alt;
-  border-radius: 24px;
+  max-width: 702px;
+  max-height: 855px;
+  gap: 8px;
+  border-top-right-radius: 160px;
   padding: 40px;
+
 
   &__meta {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
     flex-wrap: wrap;
     margin-bottom: 16px;
     font-family: $font-mulish;
-    font-weight: 400;
-    font-size: 13px;
+    font-weight: 500;
+    font-size: 14px;
     color: rgba(43, 34, 51, 0.7);
+
+
   }
 
   h1 {
     font-family: $font-nerko;
     font-weight: 400;
-    color: $accent-orange;
-    font-size: 30px;
+    color: #EE9236;
     margin: 0 0 16px;
+    font-weight: 400;
+    font-style: Regular;
+    font-size: 56px;
+    line-height: 50px;
+    letter-spacing: 0%;
+
   }
 
   .description {
@@ -136,14 +148,28 @@ $font-nokora: 'Nokora', sans-serif;
 .badge {
   font-family: $font-mulish;
   font-weight: 600;
-  background: $accent-apricot;
+  font-size: 16px;
+  background: #FFB770;
   color: $text-dark;
-  padding: 4px 12px;
-  border-radius: 6px;
+  width: 94px;
+  height: 26px;
+  gap: 10px;
+  border-top-right-radius: 14px;
+  padding-top: 3px;
+  padding-right: 12px;
+  padding-bottom: 3px;
+  padding-left: 8px;
+
 
   &--inactive {
     background: rgba(43, 34, 51, 0.1);
   }
+}
+
+.badge-div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .questions {
@@ -197,7 +223,7 @@ $font-nokora: 'Nokora', sans-serif;
   h2 {
     font-family: $font-nerko;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 32px;
     color: $text-dark;
     margin-bottom: 24px;
 
@@ -255,10 +281,13 @@ $font-nokora: 'Nokora', sans-serif;
 
   &__percent {
     font-family: $font-mulish;
-    font-weight: 600;
-    font-size: 13px;
+    font-weight: 800;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0%;
     text-align: right;
-    color: $text-dark;
+    color: #D79451;
+
   }
 }
 
