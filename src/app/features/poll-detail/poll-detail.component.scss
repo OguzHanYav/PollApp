@@ -35,6 +35,11 @@ $font-nokora: 'Nokora', sans-serif;
   .hero-brand {
     text-decoration: none;
     cursor: pointer;
+
+    img {
+      width: auto;
+      height: 50px;
+    }
   }
 }
 
