@@ -32,13 +32,21 @@ $font-nokora: 'Nokora', sans-serif;
   justify-content: space-between;
   padding: 24px 40px;
 
-  .hero-brand {
-    text-decoration: none;
+  .hero-brand2 {
+    text-decoration: unset;
     cursor: pointer;
 
     img {
       width: auto;
       height: 50px;
+    }
+
+    &__name {
+      font-family: $font-nerko;
+      font-weight: 400;
+      line-height: 62%;
+      color: $bg-dark;
+      font-size: 26px;
     }
   }
 }
@@ -113,60 +121,55 @@ $font-nokora: 'Nokora', sans-serif;
 .detail__content {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 40px;
+  gap: 42px;
   padding: 0 40px 60px;
   align-items: start;
+  max-width: 1059px;
+  margin: 0 auto;
 }
 
 .survey-card {
   background: $card-light-alt;
-  max-width: 702px;
-  max-height: 855px;
-  gap: 8px;
+  max-width: 100%;
+  gap: 6px;
   border-top-right-radius: 160px;
-  padding: 40px;
-
+  padding: 40px 48px;
 
   &__meta {
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     font-family: $font-mulish;
     font-weight: 500;
     font-size: 14px;
     color: rgba(43, 34, 51, 0.7);
-
-
   }
 
   h1 {
     font-family: $font-nerko;
     font-weight: 400;
     color: #EE9236;
-    margin: 0 0 16px;
-    font-weight: 400;
-    font-style: Regular;
+    margin: 0 0 12px;
     font-size: 56px;
-    line-height: 50px;
+    line-height: 1.1;
     letter-spacing: 0%;
-
   }
 
   .description {
     font-family: $font-mulish;
     font-weight: 400;
     color: rgba(43, 34, 51, 0.8);
-    margin-bottom: 32px;
+    margin-bottom: 24px;
     line-height: 1.6;
   }
 
   &__footer {
     display: flex;
     justify-content: flex-end;
-    margin-top: 24px;
+    margin-top: 20px;
   }
 }
 
@@ -176,15 +179,13 @@ $font-nokora: 'Nokora', sans-serif;
   font-size: 16px;
   background: #FFB770;
   color: $text-dark;
-  width: 94px;
+  width: auto;
   height: 26px;
-  gap: 10px;
+  padding: 3px 12px;
   border-top-right-radius: 14px;
-  padding-top: 3px;
-  padding-right: 12px;
-  padding-bottom: 3px;
-  padding-left: 8px;
-
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
   &--inactive {
     background: rgba(43, 34, 51, 0.1);
@@ -195,12 +196,13 @@ $font-nokora: 'Nokora', sans-serif;
   display: flex;
   justify-content: space-between;
   width: 100%;
+  gap: 16px;
 }
 
 .questions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  gap: 20px 48px;
 }
 
 .question {
@@ -208,7 +210,7 @@ $font-nokora: 'Nokora', sans-serif;
     font-family: $font-nokora;
     font-weight: 700;
     font-size: 16px;
-    margin: 0 0 4px;
+    margin: 0 0 6px;
     color: $text-dark;
   }
 
@@ -218,14 +220,14 @@ $font-nokora: 'Nokora', sans-serif;
     display: block;
     font-size: 12px;
     color: rgba(43, 34, 51, 0.6);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 }
 
 .answer-options {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .answer-option {
@@ -250,7 +252,7 @@ $font-nokora: 'Nokora', sans-serif;
     font-weight: 400;
     font-size: 32px;
     color: $text-dark;
-    margin-bottom: 24px;
+    margin: 0 0 20px;
 
     .live {
       color: $accent-orange;
@@ -265,13 +267,13 @@ $font-nokora: 'Nokora', sans-serif;
 }
 
 .result-question {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 
   h4 {
     font-family: $font-mulish;
     font-weight: 600;
     font-size: 15px;
-    margin: 0 0 10px;
+    margin: 0 0 8px;
     color: $text-dark;
   }
 }
@@ -280,8 +282,8 @@ $font-nokora: 'Nokora', sans-serif;
   display: grid;
   grid-template-columns: 16px 1fr 40px;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 6px;
 
   &__letter {
     font-family: $font-mulish;
@@ -312,7 +314,6 @@ $font-nokora: 'Nokora', sans-serif;
     letter-spacing: 0%;
     text-align: right;
     color: #D79451;
-
   }
 }
 
@@ -327,13 +328,23 @@ $font-nokora: 'Nokora', sans-serif;
 @media (max-width: 900px) {
   .detail__content {
     grid-template-columns: 1fr;
+    padding: 0 20px 40px;
   }
 
   .questions {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
   .detail__topbar {
     padding: 16px 20px;
+  }
+
+  .survey-card {
+    padding: 24px 20px;
+  }
+
+  .survey-card h1 {
+    font-size: 36px;
   }
 }
