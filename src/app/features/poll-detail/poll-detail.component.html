@@ -6,6 +6,7 @@
   poll, loading und submitting sind Signals (Funktionen) -> im Template immer
   mit () aufrufen. "as p" erspart wiederholte poll()-Aufrufe.
 -->
+
 <div class="detail" *ngIf="!loading() && poll() as p">
   <header class="detail__topbar">
     <a class="hero-brand" routerLink="/">
