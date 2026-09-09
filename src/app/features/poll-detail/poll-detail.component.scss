@@ -348,3 +348,83 @@ $font-nokora: 'Nokora', sans-serif;
     font-size: 36px;
   }
 }
+
+/* ========================================
+   MOBILE (Figma: 375px)
+   ======================================== */
+@media (max-width: 480px) {
+  .detail__topbar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .hero-brand img {
+    height: 36px;
+  }
+
+  .hero-brand2__name {
+    font-size: 20px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .detail__content {
+    padding: 0 16px 32px;
+    gap: 24px;
+  }
+
+  .survey-card {
+    padding: 24px 16px;
+    border-top-right-radius: 60px;
+  }
+
+  .survey-card h1 {
+    font-size: 28px;
+  }
+
+  .survey-card__meta {
+    font-size: 13px;
+  }
+
+  .badge-div {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .questions {
+    gap: 20px;
+  }
+
+  .answer-option {
+    min-height: 44px;
+  }
+
+  .survey-card__footer .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .results h2 {
+    font-size: 24px;
+  }
+}
+
+/* No hover effects on touch devices */
+@media (hover: none) {
+  .btn-primary:hover:not(:disabled) {
+    filter: none;
+  }
+
+  .btn-primary:hover:not(:disabled) .btn-icon {
+    opacity: 0;
+    width: 0;
+    margin-left: 0;
+    transform: scale(0);
+  }
+}

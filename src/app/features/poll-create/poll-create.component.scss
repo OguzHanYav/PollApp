@@ -674,3 +674,122 @@ textarea {
     padding: 24px;
   }
 }
+
+/* ========================================
+   MOBILE (Figma: 375px)
+   ======================================== */
+@media (max-width: 480px) {
+  .create-page {
+    padding: 16px;
+  }
+
+  .create-card {
+    padding: 16px;
+    border-top-right-radius: 40px;
+  }
+
+  .create-header {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .create-header h1 {
+    font-size: 32px;
+  }
+
+  .btn-cancel {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .form-grid {
+    padding: 24px 16px;
+    border-top-right-radius: 40px;
+    row-gap: 4px;
+  }
+
+  .form-group {
+    max-width: 100%;
+  }
+
+  .form-group label {
+    font-size: 16px;
+  }
+
+  .field-with-icon input,
+  .field-with-icon textarea,
+  .field-with-icon-description .descriptionInput {
+    max-width: 100%;
+  }
+
+  .meta-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .meta-row .form-group {
+    width: 100%;
+  }
+
+  .questions-section {
+    gap: 32px;
+  }
+
+  input[type='text'],
+  input[type='date'],
+  textarea,
+  .category-select__toggle {
+    min-height: 44px;
+  }
+
+  .btn-add-question {
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .btn-publish {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    margin-top: 24px;
+  }
+
+  .publish-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+}
+
+/* No hover effects on touch devices */
+@media (hover: none) {
+  .btn-cancel:hover {
+    background: $btn-cancel-bg;
+  }
+
+  .btn-add-question:hover {
+    background: $btn-addq-bg;
+  }
+
+  .btn-publish:hover:not(:disabled) {
+    filter: none;
+  }
+
+  .icon-btn:hover,
+  .btn-remove-answer:hover,
+  .btn-delete-question:hover {
+    opacity: 0.8;
+  }
+
+  .category-select__toggle:hover {
+    background: transparent;
+  }
+
+  .category-select__menu li:hover {
+    background: transparent;
+  }
+}

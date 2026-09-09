@@ -38,6 +38,7 @@ $font-nokora: 'Nokora', sans-serif;
   align-items: flex-start;
   gap: 10px;
   text-decoration: none;
+
   img {
     width: 69px;
     height: 50px;
@@ -626,6 +627,33 @@ $font-nokora: 'Nokora', sans-serif;
   .hero-image {
     order: 2;
     max-width: 100%;
+
+    // Mobile: dauerhaft das Hover-Bild (position2.svg) zeigen statt
+    // des Base-Bilds; die Desktop-Hover-Animation bleibt unberührt.
+    &__base {
+      display: none;
+    }
+
+    &__hover {
+      position: relative;
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .btn-primary {
+    align-self: center;
+    justify-content: center;
+    width: auto;
+
+    .btn-icon {
+      opacity: 1;
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+      transform: scale(1);
+      overflow: visible;
+    }
   }
 
   .category-dropdown__menu {
@@ -654,5 +682,195 @@ $font-nokora: 'Nokora', sans-serif;
 
   .section-title {
     font-size: 36px;
+  }
+}
+
+/* ========================================
+   MOBILE (Figma: 375px)
+   ======================================== */
+@media (max-width: 480px) {
+  .poll-container {
+    padding: 20px 16px 40px;
+  }
+
+  .hero {
+    gap: 24px;
+  }
+
+  .hero-brand img {
+    width: 56px;
+    height: 40px;
+  }
+
+  .hero-brand__name {
+    font-size: 22px;
+  }
+
+  .hero-main {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+
+  // .hero-content wird "aufgelöst": ihre Kinder (h1, p, button) werden
+  // dadurch direkte Flex-Items von .hero-main und können per order:
+  // zusammen mit .hero-image neu angeordnet werden (Logo -> H1 -> Bild ->
+  // Text -> Button), ohne das Desktop-Markup zu verändern.
+  .hero-content {
+    display: contents;
+  }
+
+  .hero-content h1 {
+    order: 1;
+    font-size: 62px;
+    line-height: 50px;
+    letter-spacing: 0%;
+
+  }
+
+  .hero-image {
+    order: 2;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto;
+    flex: 0 0 auto;
+  }
+
+  .hero-content p {
+    order: 3;
+    font-size: 18px;
+    line-height: 100%;
+    letter-spacing: 0%;
+
+  }
+
+  .hero-content .btn-primary {
+    order: 4;
+    padding-top: 12px;
+    padding-right: 16px;
+    padding-bottom: 12px;
+    padding-left: 16px;
+    gap: 10px;
+    opacity: 1;
+    border-radius: 10px;
+  }
+
+  .btn-primary {
+    width: auto;
+    min-height: 44px;
+  }
+
+  .section-title {
+    font-size: 28px;
+    margin: 48px auto 24px;
+  }
+
+  .ending-soon h3 {
+    font-size: 20px;
+  }
+
+  .ending-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ending-card {
+    width: 100%;
+    height: auto;
+    padding: 24px 18px;
+  }
+
+  .ending-card h4 {
+    font-size: 20px;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .filter-tabs {
+    width: 100%;
+  }
+
+  .filter-tabs button {
+    flex: 1;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .category-dropdown {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .category-dropdown__toggle {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+  }
+
+  .category-dropdown__menu {
+    min-width: 0;
+  }
+
+  .poll-grid-wrapper {
+    max-height: none;
+    padding: 4px 4px 16px 4px;
+  }
+
+  .poll-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .poll-card {
+    width: 100%;
+    height: auto;
+    min-height: 110px;
+    padding: 16px;
+  }
+
+  .poll-title {
+    font-size: 20px;
+  }
+}
+
+/* No hover effects on touch devices */
+@media (hover: none) {
+  .poll-card:hover {
+    transform: none;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .ending-card:hover {
+    transform: none;
+  }
+
+  .filter-tabs button:hover:not(.active) {
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .btn-primary:hover {
+    filter: none;
+  }
+
+  .btn-primary:hover .btn-icon {
+    opacity: 0;
+    width: 0;
+    margin-left: 0;
+    transform: scale(0);
+  }
+
+  .category-dropdown__toggle:hover {
+    background: transparent;
+  }
+
+  .category-dropdown__menu li:hover {
+    background: transparent;
   }
 }
