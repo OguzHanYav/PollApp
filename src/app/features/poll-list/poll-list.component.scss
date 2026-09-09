@@ -282,16 +282,12 @@ $font-nokora: 'Nokora', sans-serif;
   button {
     font-family: $font-nokora;
     font-weight: 600;
-    /* etwas fetter für bessere Lesbarkeit */
     font-size: 16px;
     border: 1px solid rgba(255, 255, 255, 0.3);
     background: transparent;
-    /* transparenter Hintergrund, wie im Design */
     color: rgba(255, 255, 255, 0.7);
-    /* helle Schrift für inaktive Tabs */
     cursor: pointer;
     padding: 10px 24px;
-    /* ausreichend Padding für gute Größe */
     border-radius: 20px;
     transition: all 0.2s ease;
 
@@ -619,9 +615,42 @@ $font-nokora: 'Nokora', sans-serif;
     font-size: 32px;
   }
 
+  // FILTER-BAR - Vertical (Figma: Flow Vertical, Fill 343px, Gap 12px)
   .filter-bar {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 12px;
+    max-width: 343px;
+    margin: 0 auto 16px;
+  }
+
+  .filter-tabs {
+    justify-content: center;
+    gap: 8px;
+
+    button {
+      flex: 1;
+      text-align: center;
+      padding: unset;
+      font-size: 16px;
+    }
+  }
+
+  .category-dropdown {
+    width: 100%;
+    align-items: stretch;
+
+    &__toggle {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: 10px 16px;
+      font-size: 16px;
+    }
+
+    &__menu {
+      min-width: 0;
+    }
   }
 
   .hero-image {
@@ -662,13 +691,45 @@ $font-nokora: 'Nokora', sans-serif;
     min-width: 0;
   }
 
-  .poll-grid {
-    grid-template-columns: 1fr;
+  // POLL GRID WRAPPER - alle Karten sichtbar, kein Scroll-Container
+  .poll-grid-wrapper {
+    max-height: none;
+    overflow: visible;
+    padding: 0;
+    max-width: 343px;
+    margin: 0 auto;
   }
 
+  // POLL GRID - 1 Spalte
+  .poll-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  // POLL CARD - Figma-Maße: 343 x 150px, Radius 5/50/5/5, Padding 12px 16px
   .poll-card {
     width: 100%;
-    max-width: 513px;
+    max-width: 343px;
+    height: auto;
+    min-height: 150px;
+    padding: 12px 16px;
+    border-radius: 5px 50px 5px 5px;
+    gap: 8px;
+    margin: 0 auto;
+
+    .poll-header .category {
+      font-size: 14px;
+    }
+
+    .poll-title {
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .poll-footer {
+      font-size: 14px;
+      padding: 2px 10px;
+    }
   }
 
   // ENDING SOON - horizontale Swipe-Leiste (Figma: 250 x 233px Karten,
@@ -804,57 +865,19 @@ $font-nokora: 'Nokora', sans-serif;
     font-size: 20px;
   }
 
-  .filter-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-  }
+}
 
-  .filter-tabs {
-    width: 100%;
-  }
-
-  .filter-tabs button {
-    flex: 1;
-    min-height: 44px;
-    padding: 10px 12px;
-    font-size: 14px;
-  }
-
-  .category-dropdown {
-    width: 100%;
-    align-items: stretch;
-  }
-
-  .category-dropdown__toggle {
-    width: 100%;
-    min-width: 0;
-    min-height: 44px;
-  }
-
-  .category-dropdown__menu {
-    min-width: 0;
-  }
-
-  .poll-grid-wrapper {
-    max-height: none;
-    padding: 4px 4px 16px 4px;
-  }
-
-  .poll-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
+// Extra kleiner Bildschirm (Figma: 375px - 430px)
+@media (max-width: 430px) {
   .poll-card {
-    width: 100%;
-    height: auto;
-    min-height: 110px;
-    padding: 16px;
-  }
+    width: 343px;
+    height: 150px;
 
-  .poll-title {
-    font-size: 20px;
+
+
+    .poll-title {
+      font-size: 20px;
+    }
   }
 }
 
@@ -883,6 +906,10 @@ $font-nokora: 'Nokora', sans-serif;
     width: 0;
     margin-left: 0;
     transform: scale(0);
+  }
+
+  .category-dropdown__toggle {
+    justify-content: unset;
   }
 
   .category-dropdown__toggle:hover {
