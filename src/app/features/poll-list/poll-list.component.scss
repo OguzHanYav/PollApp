@@ -671,13 +671,43 @@ $font-nokora: 'Nokora', sans-serif;
     max-width: 513px;
   }
 
+  // ENDING SOON - horizontale Swipe-Leiste (Figma: 250 x 233px Karten,
+  // 16px Gap, kein Zeilenumbruch)
   .ending-grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 16px;
+    padding: 8px 4px 16px 4px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: $accent-orange;
+      border-radius: 10px;
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: $accent-orange rgba(255, 255, 255, 0.1);
   }
 
   .ending-card {
-    width: 100%;
-    height: auto;
+    flex: 0 0 250px;
+    width: 250px;
+    height: 233px;
+    min-height: 233px;
+    padding: 24px 16px;
+    scroll-snap-align: start;
   }
 
   .section-title {
@@ -768,17 +798,6 @@ $font-nokora: 'Nokora', sans-serif;
 
   .ending-soon h3 {
     font-size: 20px;
-  }
-
-  .ending-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .ending-card {
-    width: 100%;
-    height: auto;
-    padding: 24px 18px;
   }
 
   .ending-card h4 {
