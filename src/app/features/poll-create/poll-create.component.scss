@@ -23,6 +23,12 @@ $font-nokora: 'Nokora', sans-serif;
   justify-content: center;
 }
 
+// Logo (nur Mobile sichtbar) -> auf Desktop standardmäßig ausgeblendet,
+// erst in der Mobile-Media-Query sichtbar gemacht.
+.create-logo {
+  display: none;
+}
+
 .create-card {
   background: $bg-dark;
   color: #fff;
@@ -87,6 +93,10 @@ $font-nokora: 'Nokora', sans-serif;
   padding: 10px 22px;
   cursor: pointer;
   white-space: nowrap;
+
+  &__icon {
+    display: none;
+  }
 
   &:hover {
     background: lighten($btn-cancel-bg, 6%);
@@ -599,6 +609,9 @@ textarea {
   padding-left: 16px;
   border-radius: 10px;
 
+  &__icon {
+    display: none;
+  }
 
   &:hover:not(:disabled) {
     filter: brightness(1.05);
@@ -676,18 +689,143 @@ textarea {
 }
 
 /* ========================================
-   MOBILE (Figma: 375px)
+   MOBILE (Figma: Create New Survey)
    ======================================== */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .create-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: #fff;
+
+    img {
+      height: 40px;
+      width: auto;
+    }
+
+    &__name {
+      font-family: $font-nerko;
+      font-weight: 400;
+      font-size: 22px;
+      line-height: 62%;
+      color: $bg-dark;
+    }
+  }
+
   .create-page {
-    padding: 16px;
+    padding: 0;
+    background: #fff;
+    display: block;
   }
 
   .create-card {
-    padding: 16px;
+    width: 100%;
+    max-width: 100%;
+    border-radius: 0;
+    padding: 24px 20px 40px;
+    min-height: calc(100vh - 72px);
+  }
+
+  .create-header {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 36px;
+      line-height: 1.1;
+    }
+
+    .badge {
+      width: auto;
+      padding: 0 10px;
+      font-size: 14px;
+      height: 24px;
+    }
+  }
+
+  .btn-cancel {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 8px;
+    background: #5A4A52;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+
+    &__text {
+      display: none;
+    }
+
+    &__icon {
+      display: inline;
+    }
+  }
+
+  .form-grid {
+    padding: 20px 16px;
     border-top-right-radius: 40px;
   }
 
+  .meta-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .meta-row .form-group {
+    width: 100%;
+  }
+
+  .answer-row {
+    gap: 8px;
+
+    .answer-letter {
+      width: 16px;
+    }
+  }
+
+  .btn-add-answer {
+    font-size: 14px;
+  }
+
+  .btn-add-question {
+    width: 100%;
+    justify-content: center;
+    padding: 14px 20px;
+  }
+
+  .btn-publish {
+    width: 100%;
+    height: 48px;
+    margin: 20px 0 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+
+    &__icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+  }
+
+  .questions-section {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ========================================
+   MOBILE (Figma: 375px)
+   ======================================== */
+@media (max-width: 480px) {
   .create-header {
     align-items: flex-start;
     gap: 12px;
@@ -695,12 +833,6 @@ textarea {
 
   .create-header h1 {
     font-size: 32px;
-  }
-
-  .btn-cancel {
-    min-height: 44px;
-    padding: 10px 16px;
-    font-size: 14px;
   }
 
   .form-grid {
@@ -721,19 +853,6 @@ textarea {
   .field-with-icon textarea,
   .field-with-icon-description .descriptionInput {
     max-width: 100%;
-  }
-
-  .meta-row {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .meta-row .form-group {
-    width: 100%;
-  }
-
-  .questions-section {
-    gap: 32px;
   }
 
   input[type='text'],

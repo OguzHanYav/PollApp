@@ -1,11 +1,20 @@
 <div class="create-page">
+  <!-- Logo (nur Mobile sichtbar) -->
+  <div class="create-logo">
+    <img src="assets/home-logo-results.svg" alt="Poll App" />
+    <span class="create-logo__name">Poll<br />App</span>
+  </div>
+
   <div class="create-card">
     <div class="create-header">
       <div>
         <span class="badge">Draft</span>
         <h1>Create New Survey</h1>
       </div>
-      <button type="button" class="btn-cancel" (click)="cancel()">Cancel ✕</button>
+      <button type="button" class="btn-cancel" (click)="cancel()">
+        <span class="btn-cancel__text">Cancel ✕</span>
+        <span class="btn-cancel__icon">✕</span>
+      </button>
     </div>
 
     <form [formGroup]="surveyForm" (ngSubmit)="onSubmit()">
@@ -130,7 +139,12 @@
       </div> <!-- Ende form-grid -->
 
       <!-- Publish Button -->
-      <button type="submit" class="btn-publish" [disabled]="surveyForm.invalid">Publish</button>
+      <button type="submit" class="btn-publish" [disabled]="surveyForm.invalid">
+        <span>Publish</span>
+        <svg class="btn-publish__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 8L6.5 12.5L14 4" stroke="#35273A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </form>
   </div> <!-- Ende create-card -->
 
