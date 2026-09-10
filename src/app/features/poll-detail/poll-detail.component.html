@@ -69,12 +69,20 @@
 
       <div class="survey-card__footer">
         <button
-          class="btn-primary"
+          class="btn-primary btn-complete"
           *ngIf="p.is_active"
           [disabled]="submitting()"
           (click)="completeSurvey()"
         >
-          {{ submitting() ? 'Submitting…' : 'Complete survey' }}
+          <span class="btn-text-desktop">
+            {{ submitting() ? 'Submitting…' : 'Complete survey' }}
+          </span>
+          <span class="btn-text-mobile">
+            {{ submitting() ? 'Submitting…' : 'Complete' }}
+          </span>
+          <svg class="btn-icon-mobile" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 8L6.5 12.5L14 4" stroke="#000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </button>
         <p class="closed-note" *ngIf="!p.is_active">This survey has ended – voting is closed.</p>
       </div>

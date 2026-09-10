@@ -272,7 +272,7 @@ $font-nokora: 'Nokora', sans-serif;
   h4 {
     font-family: $font-mulish;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 18px;
     margin: 0 0 8px;
     color: $text-dark;
   }
@@ -288,7 +288,7 @@ $font-nokora: 'Nokora', sans-serif;
   &__letter {
     font-family: $font-mulish;
     font-weight: 600;
-    font-size: 13px;
+    font-size: 14px;
     color: rgba(43, 34, 51, 0.6);
   }
 
@@ -322,6 +322,13 @@ $font-nokora: 'Nokora', sans-serif;
 // sichtbar gemacht.
 .btn-close-mobile,
 .btn-close-results {
+  display: none;
+}
+
+// "Complete survey" Button: auf Desktop nur der volle Text, Mobile-Text
+// und Häkchen-Icon bleiben ausgeblendet.
+.btn-text-mobile,
+.btn-icon-mobile {
   display: none;
 }
 
@@ -403,20 +410,55 @@ $font-nokora: 'Nokora', sans-serif;
       align-items: flex-start;
     }
 
-    &__footer {
-      justify-content: stretch;
-
-      .btn-primary {
-        width: 100%;
-        justify-content: center;
-        padding: 14px 24px;
-      }
-    }
   }
 
   .questions {
     grid-template-columns: 1fr;
     gap: 20px;
+  }
+
+  // Desktop-Text ausblenden
+  .btn-text-desktop {
+    display: none;
+  }
+
+  // Mobile-Text + Häkchen-Icon einblenden
+  .btn-text-mobile {
+    display: inline;
+  }
+
+  .btn-icon-mobile {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: 10px;
+    flex-shrink: 0;
+  }
+
+  // "Complete" Button Mobile: Hug-Breite statt volle Breite (Figma: 147x48px)
+  .btn-complete {
+    width: auto;
+    max-width: 100%;
+    min-width: 147px;
+    height: 48px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: $accent-orange;
+    color: #000;
+    font-weight: 700;
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  // Footer: Button rechts ausrichten
+  .survey-card__footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
   }
 
   .btn-close-results {
@@ -428,15 +470,12 @@ $font-nokora: 'Nokora', sans-serif;
     color: $text-dark;
     font-family: $font-mulish;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 18px;
     padding: 8px 0;
     cursor: pointer;
     margin-bottom: 12px;
   }
 
-  .results {
-    margin-top: 24px;
-  }
 
   .result-row {
     grid-template-columns: 20px 1fr 45px;
@@ -466,6 +505,12 @@ $font-nokora: 'Nokora', sans-serif;
   .btn-primary {
     width: 100%;
     min-height: 44px;
+  }
+
+  // "Complete" Button behält seine Hug-Breite (147px) auch < 480px
+  .btn-complete {
+    width: auto;
+    min-width: 147px;
   }
 
   .detail__content {
@@ -512,16 +557,11 @@ $font-nokora: 'Nokora', sans-serif;
   }
 
   .answer-option {
-    min-height: 44px;
-  }
-
-  .survey-card__footer .btn-primary {
-    width: 100%;
-    justify-content: center;
+    min-height: 21px;
   }
 
   .results h2 {
-    font-size: 24px;
+    font-size: 32px;
   }
 }
 
