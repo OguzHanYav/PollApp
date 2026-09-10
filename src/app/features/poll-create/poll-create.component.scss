@@ -82,6 +82,12 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
+// Zeilenumbruch im Titel (nur Mobile sichtbar) -> auf Desktop
+// standardmäßig ausgeblendet, erst in der Mobile-Media-Query aktiv.
+.h1-mobile-break {
+  display: none;
+}
+
 .btn-cancel {
   font-family: $font-mulish;
   font-weight: 600;
@@ -466,8 +472,8 @@ textarea {
   align-items: center;
 
   img {
-    width: $delete-icon-size;
-    height: $delete-icon-size;
+    width: 26px;
+    height: 26px;
   }
 
   &:hover {
@@ -722,7 +728,10 @@ textarea {
   .create-card {
     width: 100%;
     max-width: 100%;
-    border-radius: 0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 80px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
     padding: 24px 20px 40px;
     min-height: calc(100vh - 72px);
   }
@@ -734,25 +743,45 @@ textarea {
     gap: 12px;
     margin-bottom: 20px;
 
+    > div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      width: auto;
+    }
+
     h1 {
-      font-size: 36px;
-      line-height: 1.1;
+      font-size: 42px;
+      line-height: 1.05;
     }
 
     .badge {
       width: auto;
-      padding: 0 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 12px;
+      height: 26px;
       font-size: 14px;
-      height: 24px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 14px;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      align-self: flex-start;
     }
+  }
+
+  .h1-mobile-break {
+    display: inline;
   }
 
   .btn-cancel {
     width: 32px;
     height: 32px;
     padding: 0;
+    margin: 6px;
     border-radius: 8px;
-    background: #5A4A52;
+    background: #FFB7704D;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -768,25 +797,120 @@ textarea {
   }
 
   .form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     padding: 20px 16px;
     border-top-right-radius: 40px;
   }
 
+  // Reihenfolge der Formularfelder (Figma Mobile):
+  // Survey Name -> Choose category -> Describing Text -> Set End Date -> Questions
   .meta-row {
-    flex-direction: column;
-    gap: 16px;
+    display: contents;
   }
 
   .meta-row .form-group {
     width: 100%;
   }
 
+  .grid-title { order: 1; }
+  .grid-category { order: 2; }
+  .grid-desc { order: 3; }
+  .grid-enddate { order: 4; }
+  .grid-questions { order: 5; }
+  .grid-addq { order: 6; }
+
+  // Blauen Browser-Focus-Rahmen auf dem Category-Dropdown entfernen
+  .category-select__toggle {
+    &:focus,
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  // === Survey Name, Set End Date: Mülltonne nach oben rechts ===
+  .field-with-icon {
+    position: relative;
+    display: block;
+    width: 100%;
+
+    input {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .icon-btn {
+      position: absolute;
+      top: -28px;
+      right: 0;
+      z-index: 1;
+    }
+    img {
+      width: 26px;
+      height: 26px;
+    }
+  }
+
+  // === Describing Text: Mülltonne nach oben rechts ===
+  .field-with-icon-description {
+    position: relative;
+    display: block;
+    width: 100%;
+
+    .descriptionInput {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .icon-btn {
+      position: absolute;
+      top: -28px;
+      right: 0;
+      z-index: 1;
+    }
+  }
+
+  // Platz für die nach oben verschobene Mülltonne neben dem Label schaffen
+  .form-group > label {
+    display: inline-block;
+    padding-right: 32px;
+    max-width: calc(100% - 32px);
+  }
+
+  // Answer Row: Buchstabe oben links, Mülltonne oben rechts, Input darunter
   .answer-row {
-    gap: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    margin-bottom: 12px;
+    padding-right: 0;
 
     .answer-letter {
-      width: 16px;
+      align-self: flex-start;
+      width: auto;
+      margin-bottom: 2px;
     }
+
+    input {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .btn-remove-answer {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+    }
+  }
+
+  .icon-btn img,
+  .btn-remove-answer img {
+    width: 26px;
+    height: 26px;
   }
 
   .btn-add-answer {
@@ -832,7 +956,7 @@ textarea {
   }
 
   .create-header h1 {
-    font-size: 32px;
+    font-size: 42px;
   }
 
   .form-grid {

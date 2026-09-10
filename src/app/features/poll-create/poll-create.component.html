@@ -9,7 +9,7 @@
     <div class="create-header">
       <div>
         <span class="badge">Draft</span>
-        <h1>Create New Survey</h1>
+        <h1>Create New<span class="h1-mobile-break"><br /></span> Survey</h1>
       </div>
       <button type="button" class="btn-cancel" (click)="cancel()">
         <span class="btn-cancel__text">Cancel ✕</span>
@@ -48,7 +48,7 @@
 
         <!-- End Date + Category -->
         <div class="meta-row grid-meta">
-          <div class="form-group">
+          <div class="form-group grid-enddate">
             <label>Set End Date <span class="optional">(optional)</span></label>
             <div class="field-with-icon">
               <input type="date" formControlName="end_date" class="date-input-custom"
@@ -59,7 +59,7 @@
             </div>
           </div>
 
-          <div class="form-group">
+          <div class="form-group grid-category">
             <div class="category-select" [class.open]="categoryDropdownOpen()">
               <button type="button" class="category-select__toggle" (click)="toggleCategoryDropdown($event)">
                 <span class="category-select__label">{{ surveyForm.get('category')?.value || 'Choose category' }}</span>
