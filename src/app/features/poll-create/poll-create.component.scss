@@ -878,6 +878,36 @@ textarea {
     max-width: calc(100% - 32px);
   }
 
+  // Checkbox "Allow multiple answers": nur Rahmen, innen transparent
+  .form-group.checkbox input[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border: 1.5px solid #fff;
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+
+    &:checked {
+      border-color: $accent-orange;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 1px;
+        width: 4px;
+        height: 8px;
+        border: solid $accent-orange;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    }
+  }
+
   // Answer Row: Buchstabe oben links, Mülltonne oben rechts, Input darunter
   .answer-row {
     position: relative;
@@ -917,20 +947,29 @@ textarea {
     font-size: 14px;
   }
 
-  .btn-add-question {
-    width: 100%;
+  // "Add next question": Hug-Breite statt volle Breite, zentriert
+  .grid-addq {
+    display: flex;
     justify-content: center;
-    padding: 14px 20px;
+    margin-top: 88px;
   }
 
+  .btn-add-question {
+    width: auto;
+    justify-content: center;
+  }
+
+  // "Publish": Hug-Breite statt volle Breite, zentriert, orange
   .btn-publish {
-    width: 100%;
+    width: auto;
     height: 48px;
-    margin: 20px 0 0 0;
+    margin: 20px auto 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
+    background: $accent-orange;
+    color: $bg-dark;
 
     &__icon {
       display: inline-block;
@@ -987,18 +1026,18 @@ textarea {
   }
 
   .btn-add-question {
-    width: 100%;
+    width: auto;
     justify-content: center;
     min-height: 44px;
   }
 
   .btn-publish {
-    width: 100%;
+    width: auto;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 48px;
-    margin-top: 24px;
+    margin-top: 40px;
   }
 
   .publish-toast {
