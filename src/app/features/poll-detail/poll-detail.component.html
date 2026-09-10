@@ -13,7 +13,7 @@
       <img src="assets/home-logo-results.svg" alt="">
       <span class="hero-brand2__name">Poll<br />App</span>
     </a>
-    <button type="button" class="btn-primary" routerLink="/create">
+    <button type="button" class="btn-primary" routerLink="/" [queryParams]="{ create: true }">
       Create survey
       <img class="btn-icon" src="assets/add_circle_newsurvey.svg" alt="">
     </button>

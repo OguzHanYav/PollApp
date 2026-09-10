@@ -1,60 +1,59 @@
-# PollApp
+# Poll App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.21.
+Eine Angular-Anwendung zum Erstellen, Teilen und live Auswerten von Umfragen. Nutzer:innen legen Umfragen mit mehreren Fragen und Antwortoptionen an, stimmen ab und sehen die Ergebnisse in Echtzeit.
 
-## Development server
+## Tech Stack
 
-To start a local development server, run:
+- [Angular](https://angular.dev/) 21 (Standalone Components, Signals)
+- TypeScript
+- SCSS
+- [Supabase](https://supabase.com/) (Datenbank, Realtime)
+
+## Features
+
+- **Bald endende Umfragen** – aktive Umfragen mit nahendem Enddatum werden oberhalb der allgemeinen Liste hervorgehoben, sortiert nach frühestem Enddatum.
+- **Übersichtsliste mit Filter** – Umfragen lassen sich per Reiter zwischen *Active* und *Past* wechseln.
+- **Kategorien-Filter** – Umfragen können nach Kategorie gefiltert werden (inkl. Zurücksetzen auf "Alle").
+- **Umfragen erstellen** – Formular als Overlay mit klar getrennten Pflicht- und optionalen Angaben inkl. Validierung.
+- **Detailansicht mit Live-Auswertung** – Fragestellung, Antwortoptionen und aktueller Auswertungsstand einer Umfrage.
+- **Abstimmen mit Live-Update** – abgegebene Stimmen aktualisieren die Auswertung in Echtzeit, auch in anderen geöffneten Tabs.
+
+## Installation / Setup
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Die Anwendung ist anschließend unter `http://localhost:4200/` erreichbar.
 
-## Code scaffolding
+### Supabase-Konfiguration
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Die Verbindungsdaten liegen in `src/environments/environment.ts`:
 
-```bash
-ng generate component component-name
+```ts
+export const environment = {
+  production: false,
+  supabaseUrl: '...',
+  supabaseKey: '...' // Anon-Key
+};
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Für ein eigenes Supabase-Projekt werden die Tabellen `polls`, `questions` und `answers` sowie (optional) die Postgres-Funktion `increment_vote` für atomares Stimmen-Zählen benötigt.
 
-```bash
-ng generate --help
+## Projektstruktur
+
+```
+src/app/
+├── features/
+│   ├── poll-list/      # Homescreen: Übersicht, Filter, "New Survey"
+│   ├── poll-create/     # Formular zum Anlegen einer Umfrage (Overlay)
+│   └── poll-detail/     # Detailansicht: Abstimmen + Live-Auswertung
+└── shared/
+    ├── models/          # Poll-, Question-, Answer-Interfaces
+    └── services/        # PollService (Supabase-Zugriff, Realtime)
 ```
 
-## Building
+## Code Conventions
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-# PollApp
+Das Projekt folgt den bereitgestellten Coding-Konventionen für TypeScript und HTML (u. a. kebab-case Dateinamen, camelCase Funktionen, keine `any`-Typen, semantisches HTML, Barrierefreiheit).

@@ -14,11 +14,10 @@
           workplace culture. Collect opinions, engage your audience,
           and turn feedback into action.
         </p>
-        <!-- <button class="btn-primary" (click)="openCreateModal()">New survey</button> -->
-                 <button class="btn-primary" routerLink="/create">
-                   New survey
-                   <img class="btn-icon" src="assets/add_circle_newsurvey.svg" alt="">
-                 </button>
+        <button class="btn-primary" (click)="openCreateModal()">
+          New survey
+          <img class="btn-icon" src="assets/add_circle_newsurvey.svg" alt="">
+        </button>
       </div>
 
       <div class="hero-image">
@@ -59,6 +58,9 @@
     type="button"
     class="category-dropdown__toggle"
     (click)="toggleCategoryDropdown($event)"
+    aria-label="Sort by categories"
+    aria-haspopup="listbox"
+    [attr.aria-expanded]="categoryDropdownOpen()"
   >
     <span class="category-dropdown__label">Sort by categories</span>
     <svg class="category-dropdown__arrow" width="16" height="10" viewBox="0 0 16 10" xmlns="http://www.w3.org/2000/svg">
@@ -111,4 +113,12 @@
     <p>Loading surveys...</p>
   </div>
 
+</div>
+
+<!-- "New Survey" Overlay (User Story 3: Modal statt eigene Route) -->
+<div class="create-modal-overlay" *ngIf="showCreateModal()">
+  <app-poll-create
+    (closed)="closeCreateModal()"
+    (created)="onPollCreated($event)"
+  ></app-poll-create>
 </div>

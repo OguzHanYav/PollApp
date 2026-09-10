@@ -4,6 +4,8 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { PollService } from '../../shared/services/poll.service';
 import { Poll } from '../../shared/models/poll.model';
+import { Question } from '../../shared/models/question.model';
+import { Answer } from '../../shared/models/answer.model';
 
 @Component({
   selector: 'app-poll-detail',
@@ -101,19 +103,19 @@ export class PollDetailComponent implements OnInit, OnDestroy {
   // (aufsteigend = Erstellungsreihenfolge, also exakt A vor B vor C ...).
   // Wird sowohl für die Abstimmungs-Optionen als auch für das
   // Balkendiagramm verwendet, damit beide Seiten immer synchron sind.
-  sortedAnswers(question: any): any[] {
-    return [...(question.answers ?? [])].sort((a: any, b: any) => a.id - b.id);
+  sortedAnswers(question: Question): Answer[] {
+    return [...(question.answers ?? [])].sort((a: Answer, b: Answer) => a.id - b.id);
   }
 
   hasResults(): boolean {
     const p = this.poll();
     if (!p?.questions) return false;
-    return p.questions.some((q: any) =>
-      (q.answers ?? []).some((a: any) => a.votes > 0)
+    return p.questions.some((q: Question) =>
+      (q.answers ?? []).some((a: Answer) => a.votes > 0)
     );
   }
 
-  questionTotalVotes(answers: any[] | undefined): number {
+  questionTotalVotes(answers: Answer[] | undefined): number {
     return (answers ?? []).reduce((sum, a) => sum + (a.votes ?? 0), 0);
   }
 
@@ -124,11 +126,11 @@ export class PollDetailComponent implements OnInit, OnDestroy {
   // TrackBy-Funktionen: verhindern, dass Angular bei jedem Live-Update
   // (Realtime-Push) die kompletten Frage-/Antwort-DOM-Knoten neu aufbaut –
   // dadurch bleiben z.B. Balken-Transitions sauber und flackerfrei.
-  trackByQuestion(_index: number, question: any): number {
+  trackByQuestion(_index: number, question: Question): number {
     return question.id;
   }
 
-  trackByAnswer(_index: number, answer: any): number {
+  trackByAnswer(_index: number, answer: Answer): number {
     return answer.id;
   }
 

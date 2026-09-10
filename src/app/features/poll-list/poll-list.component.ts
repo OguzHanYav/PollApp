@@ -1,6 +1,6 @@
 import { Component, OnInit, signal, computed, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PollService } from '../../shared/services/poll.service';
 import { Poll } from '../../shared/models/poll.model';
 import { PollCreateComponent } from '../poll-create/poll-create.component';
@@ -46,12 +46,19 @@ export class PollListComponent implements OnInit {
   constructor(
     private pollService: PollService,
     private router: Router,
+    private route: ActivatedRoute,
     private elementRef: ElementRef<HTMLElement>
   ) {}
 
   ngOnInit(): void {
     this.loadPolls();
     this.loadEndingSoon();
+
+    // Öffnet das "New Survey"-Overlay automatisch, wenn von woanders
+    // (z.B. der Single Survey View) mit ?create=true verlinkt wurde.
+    if (this.route.snapshot.queryParamMap.get('create')) {
+      this.openCreateModal();
+    }
   }
 
   // Schließt Dropdown bei Klick außerhalb

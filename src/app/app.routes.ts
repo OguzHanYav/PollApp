@@ -9,13 +9,6 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'create',
-    loadComponent: () =>
-      import('./features/poll-create/poll-create.component').then(
-        (m) => m.PollCreateComponent
-      ),
-  },
-  {
     path: 'poll/:id',
     loadComponent: () =>
       import('./features/poll-detail/poll-detail.component').then(

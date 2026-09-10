@@ -1,12 +1,9 @@
-import { Component, signal, HostListener, ElementRef } from '@angular/core';
+import { Component, signal, HostListener, ElementRef, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormArray, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { PollService } from '../../shared/services/poll.service';
+import { CreatePollPayload } from '../../shared/models/poll.model';
 
-// PollCreateComponent ist jetzt eine eigene Route (/create) statt
-// Overlay/Modal. Navigation läuft daher über den Router statt über
-// (closed)/(created) EventEmitter zum Parent.
 @Component({
   selector: 'app-poll-create',
   standalone: true,
@@ -15,6 +12,9 @@ import { PollService } from '../../shared/services/poll.service';
   styleUrls: ['./poll-create.component.scss']
 })
 export class PollCreateComponent {
+  @Output() closed = new EventEmitter<void>();
+  @Output() created = new EventEmitter<number>();
+
   surveyForm: FormGroup;
 
   showPublishOverlay = signal(false);
@@ -35,7 +35,6 @@ export class PollCreateComponent {
   constructor(
     private fb: FormBuilder,
     private pollService: PollService,
-    private router: Router,
     private elementRef: ElementRef<HTMLElement>
   ) {
     this.surveyForm = this.fb.group({
@@ -138,7 +137,7 @@ export class PollCreateComponent {
       return;
     }
 
-    const formValue = this.surveyForm.value;
+    const formValue = this.surveyForm.value as CreatePollPayload;
     this.pollService.createPoll(formValue).then((poll) => {
       this.createdPollId.set(poll.id);
       this.showPublishOverlay.set(true);
@@ -148,17 +147,16 @@ export class PollCreateComponent {
   }
 
   cancel(): void {
-    this.router.navigate(['/']);
+    this.closed.emit();
   }
 
   closeOverlay(): void {
     this.showPublishOverlay.set(false);
     const id = this.createdPollId();
     if (id) {
-      this.router.navigate(['/poll', id]);
+      this.created.emit(id);
     } else {
-      this.router.navigate(['/']);
+      this.closed.emit();
     }
   }
-  
 }

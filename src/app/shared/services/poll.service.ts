@@ -1,8 +1,12 @@
 import { Injectable } from '@angular/core';
 import { createClient, SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
-import { Poll } from '../models/poll.model';
+import { Poll, CreatePollPayload } from '../models/poll.model';
+import { Question, CreateQuestionPayload } from '../models/question.model';
+import { CreateAnswerPayload } from '../models/answer.model';
 import { Observable, from, map } from 'rxjs';
 import { environment } from '../../../environments/environment';
+
+const ENDING_SOON_LIMIT = 3;
 
 @Injectable({
   providedIn: 'root'
@@ -74,7 +78,7 @@ export class PollService {
         .eq('is_active', true)
         .gte('end_date', today)
         .order('end_date', { ascending: true })
-        .limit(3)
+        .limit(ENDING_SOON_LIMIT)
     ).pipe(
       map(response => {
         if (response.error) throw response.error;
@@ -83,10 +87,23 @@ export class PollService {
     );
   }
 
-  async createPoll(pollData: any): Promise<any> {
-    const { title, description, category, end_date, questions } = pollData;
+  /** Legt eine Umfrage samt Fragen und Antwortoptionen an. */
+  async createPoll(pollData: CreatePollPayload): Promise<Poll> {
+    const poll = await this.insertPoll(pollData);
 
-    const { data: poll, error: pollError } = await this.supabase
+    for (const q of pollData.questions) {
+      const question = await this.insertQuestion(poll.id, q);
+      if (q.answers && q.answers.length > 0) {
+        await this.insertAnswers(question.id, q.answers);
+      }
+    }
+
+    return poll;
+  }
+
+  private async insertPoll(pollData: CreatePollPayload): Promise<Poll> {
+    const { title, description, category, end_date } = pollData;
+    const { data, error } = await this.supabase
       .from('polls')
       .insert({
         title,
@@ -98,44 +115,41 @@ export class PollService {
       .select()
       .single();
 
-    if (pollError) throw pollError;
+    if (error) throw error;
+    return data as Poll;
+  }
 
-    for (const q of questions) {
-      const { data: question, error: questionError } = await this.supabase
-        .from('questions')
-        .insert({
-          poll_id: poll.id,
-          question_text: q.question_text,
-          allow_multiple: q.allow_multiple || false
-        })
-        .select()
-        .single();
+  private async insertQuestion(pollId: number, q: CreateQuestionPayload): Promise<Question> {
+    const { data, error } = await this.supabase
+      .from('questions')
+      .insert({
+        poll_id: pollId,
+        question_text: q.question_text,
+        allow_multiple: q.allow_multiple || false
+      })
+      .select()
+      .single();
 
-      if (questionError) throw questionError;
+    if (error) throw error;
+    return data as Question;
+  }
 
-      if (q.answers && q.answers.length > 0) {
-        const answers = q.answers.map((a: any) => ({
-          question_id: question.id,
-          answer_text: a.answer_text,
-          votes: 0
-        }));
+  private async insertAnswers(questionId: number, answers: CreateAnswerPayload[]): Promise<void> {
+    const payload = answers.map(a => ({
+      question_id: questionId,
+      answer_text: a.answer_text,
+      votes: 0
+    }));
 
-        const { error: answersError } = await this.supabase
-          .from('answers')
-          .insert(answers);
-
-        if (answersError) throw answersError;
-      }
-    }
-
-    return poll;
+    const { error } = await this.supabase.from('answers').insert(payload);
+    if (error) throw error;
   }
 
   // Task 3: Live-Voting. Versucht zuerst die atomare Postgres-Funktion
   // "increment_vote" (siehe Supabase-Hinweis) zu nutzen, um Race Conditions
   // bei gleichzeitigen Stimmen zu vermeiden. Falls die Funktion (noch) nicht
   // existiert, wird auf das bisherige read-then-update Verhalten zurückgefallen.
-  async vote(answerId: number): Promise<any> {
+  async vote(answerId: number): Promise<{ success: boolean }> {
     const { error: rpcError } = await this.supabase.rpc('increment_vote', {
       answer_id: answerId
     });
@@ -162,7 +176,7 @@ export class PollService {
     return { success: true };
   }
 
-  async deletePoll(id: number): Promise<any> {
+  async deletePoll(id: number): Promise<{ success: boolean }> {
     const { error } = await this.supabase
       .from('polls')
       .delete()
@@ -172,7 +186,7 @@ export class PollService {
     return { success: true };
   }
 
-  async togglePollStatus(id: number): Promise<any> {
+  async togglePollStatus(id: number): Promise<{ success: boolean }> {
     const { data: poll, error: fetchError } = await this.supabase
       .from('polls')
       .select('is_active')

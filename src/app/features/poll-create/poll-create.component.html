@@ -22,7 +22,7 @@
 
         <!-- Survey Name (Pflicht) -->
         <div class="form-group grid-title">
-          <label>Survey Name</label>
+          <label>Survey Name *</label>
           <div class="field-with-icon">
             <input type="text" formControlName="title" placeholder="e.g., Customer Feedback 2026" />
             <button type="button" class="icon-btn" (click)="clearField('title')" aria-label="Clear">
@@ -61,7 +61,14 @@
 
           <div class="form-group grid-category">
             <div class="category-select" [class.open]="categoryDropdownOpen()">
-              <button type="button" class="category-select__toggle" (click)="toggleCategoryDropdown($event)">
+              <button
+                type="button"
+                class="category-select__toggle"
+                (click)="toggleCategoryDropdown($event)"
+                aria-label="Category (required)"
+                aria-haspopup="listbox"
+                [attr.aria-expanded]="categoryDropdownOpen()"
+              >
                 <span class="category-select__label">{{ surveyForm.get('category')?.value || 'Choose category' }}</span>
                 <svg class="category-select__arrow" width="16" height="10" viewBox="0 0 16 10"
                   xmlns="http://www.w3.org/2000/svg">
