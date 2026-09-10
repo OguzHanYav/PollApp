@@ -22,9 +22,14 @@
   <div class="detail__content">
     <div class="survey-card">
       <div class="survey-card__meta">
-        <span class="badge" [class.badge--inactive]="!p.is_active">
-          {{ p.is_active ? 'Published' : 'Closed' }}
-        </span>
+        <div class="survey-card__meta-row">
+          <span class="badge" [class.badge--inactive]="!p.is_active">
+            {{ p.is_active ? 'Published' : 'Closed' }}
+          </span>
+          <button type="button" class="btn-close-mobile" (click)="closeSurvey()" aria-label="Close">
+            ✕
+          </button>
+        </div>
         <div class="badge-div">
         <span class="end-date" *ngIf="p.end_date">Ends on {{ p.end_date | date: 'dd.MM.yyyy' }}</span>
         <span class="category" *ngIf="p.category">Category: {{ p.category }}</span>
@@ -75,7 +80,11 @@
       </div>
     </div>
 
-    <div class="results">
+    <button type="button" class="btn-close-results" (click)="toggleResults()">
+      {{ resultsOpen() ? 'Close results ▲' : 'Show results ▼' }}
+    </button>
+
+    <div class="results" *ngIf="resultsOpen()">
       <h2>Survey results <span class="live" *ngIf="p.is_active">LIVE</span></h2>
 
       <ng-container *ngIf="hasResults(); else noResults">

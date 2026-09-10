@@ -317,6 +317,14 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
+// Mobile-only Elemente (Close X neben "Published", "Close/Show results")
+// -> auf Desktop standardmäßig ausgeblendet, erst in der Mobile-Media-Query
+// sichtbar gemacht.
+.btn-close-mobile,
+.btn-close-results {
+  display: none;
+}
+
 .closed-note {
   font-family: $font-mulish;
   font-weight: 400;
@@ -346,6 +354,92 @@ $font-nokora: 'Nokora', sans-serif;
 
   .survey-card h1 {
     font-size: 36px;
+  }
+}
+
+/* ========================================
+   MOBILE (Figma: Single Survey View)
+   ======================================== */
+@media (max-width: 768px) {
+  .detail__topbar {
+    justify-content: flex-start;
+
+    // "Create survey" Button im Topbar ausblenden (Figma Mobile)
+    .btn-primary {
+      display: none;
+    }
+  }
+
+  .survey-card__meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .btn-close-mobile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: #FFCFA1;
+    border: none;
+    color: $bg-dark;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .survey-card {
+    padding: 24px 20px;
+    border-top-right-radius: 80px;
+
+    .badge-div {
+      flex-direction: column;
+      gap: 4px;
+      align-items: flex-start;
+    }
+
+    &__footer {
+      justify-content: stretch;
+
+      .btn-primary {
+        width: 100%;
+        justify-content: center;
+        padding: 14px 24px;
+      }
+    }
+  }
+
+  .questions {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .btn-close-results {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    color: $text-dark;
+    font-family: $font-mulish;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 8px 0;
+    cursor: pointer;
+    margin-bottom: 12px;
+  }
+
+  .results {
+    margin-top: 24px;
+  }
+
+  .result-row {
+    grid-template-columns: 20px 1fr 45px;
   }
 }
 
@@ -382,10 +476,22 @@ $font-nokora: 'Nokora', sans-serif;
   .survey-card {
     padding: 24px 16px;
     border-top-right-radius: 60px;
+    font-size: 14px;
+
+    .badge-div {
+      flex-direction: unset;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+
+    .description {
+      font-size: 16px;
+
+    }
   }
 
   .survey-card h1 {
-    font-size: 28px;
+    font-size: 48px;
   }
 
   .survey-card__meta {
@@ -393,12 +499,16 @@ $font-nokora: 'Nokora', sans-serif;
   }
 
   .badge-div {
-    flex-direction: column;
+    justify-content: space-between !important;
     gap: 4px;
   }
 
   .questions {
     gap: 20px;
+
+    h3 {
+      font-size: 18px;
+    }
   }
 
   .answer-option {

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { PollService } from '../../shared/services/poll.service';
 import { Poll } from '../../shared/models/poll.model';
@@ -16,6 +16,9 @@ export class PollDetailComponent implements OnInit, OnDestroy {
   poll = signal<Poll | undefined>(undefined);
   loading = signal(false);
   submitting = signal(false);
+  // Mobile-only: steuert Ein-/Ausklappen des "Survey results"-Bereichs
+  // über den "Close results" / "Show results" Button (Figma Mobile View).
+  resultsOpen = signal(true);
 
   answerLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   selectedAnswers: Record<number, Set<number>> = {};
@@ -24,6 +27,7 @@ export class PollDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private pollService: PollService
   ) {}
 
@@ -126,6 +130,17 @@ export class PollDetailComponent implements OnInit, OnDestroy {
 
   trackByAnswer(_index: number, answer: any): number {
     return answer.id;
+  }
+
+  // Mobile-only: Close-Button oben rechts neben "Published" -> zurück zur
+  // Übersicht (poll-list).
+  closeSurvey(): void {
+    this.router.navigate(['/']);
+  }
+
+  // Mobile-only: "Close results" / "Show results" Toggle.
+  toggleResults(): void {
+    this.resultsOpen.update(open => !open);
   }
 
   completeSurvey(): void {
