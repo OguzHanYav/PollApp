@@ -38,7 +38,7 @@
         [routerLink]="['/poll', poll.id]"
         *ngFor="let poll of endingSoonPolls()"
       >
-        <span class="badge">{{ poll.category }}</span>
+        <span class="badge">{{ categoryLabel(poll.category) }}</span>
         <h4>{{ poll.title }}</h4>
         <span class="ends-in">{{ getDaysLabel(poll.end_date) }}</span>
       </div>
@@ -68,7 +68,7 @@
     </svg>
   </button>
 
-  <ul class="category-dropdown__menu" *ngIf="categoryDropdownOpen()">
+  <ul class="category-dropdown__menu" *ngIf="categoryDropdownOpen()" (wheel)="onDropdownWheel($event)">
     <li
       [class.active]="categoryFilter() === 'all'"
       (click)="selectCategory('all')"
@@ -80,13 +80,13 @@
       [class.active]="categoryFilter() === category"
       (click)="selectCategory(category)"
     >
-      {{ category }}
+      {{ categoryLabel(category) }}
     </li>
   </ul>
 
   <!-- AUSGEWÄHLTE KATEGORIE UNTEN (ORANGE) -->
   <span class="category-dropdown__selected" *ngIf="categoryFilter() !== 'all'">
-    {{ categoryFilter() }}
+    {{ categoryLabel(categoryFilter()) }}
   </span>
 </div>
 
@@ -95,7 +95,7 @@
     <div class="poll-grid">
       <div class="poll-card" [routerLink]="['/poll', poll.id]" *ngFor="let poll of filteredPolls()">
         <div class="poll-header">
-          <span class="category">{{ poll.category }}</span>
+          <span class="category">{{ categoryLabel(poll.category) }}</span>
         </div>
         <h3 class="poll-title">{{ poll.title }}</h3>
         <div class="poll-footer">

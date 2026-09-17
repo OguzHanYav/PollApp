@@ -268,7 +268,29 @@ $font-nokora: 'Nokora', sans-serif;
   }
 }
 
+// Animiertes Ein-/Ausklappen (Mobile "Show results"/"Close results"):
+// grid-template-rows 1fr <-> 0fr lässt sich anders als max-height sauber
+// animieren, ohne die tatsächliche Inhaltshöhe kennen/schätzen zu müssen.
 .results {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 0.3s ease-in-out;
+
+  &--collapsed {
+    grid-template-rows: 0fr;
+
+    .results__inner {
+      opacity: 0;
+    }
+  }
+
+  &__inner {
+    overflow: hidden;
+    min-height: 0;
+    opacity: 1;
+    transition: opacity 0.25s ease-in-out;
+  }
+
   h2 {
     font-family: $font-nerko;
     font-weight: 400;

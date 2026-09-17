@@ -1,9 +1,10 @@
-import { Component, OnInit, signal, computed, HostListener, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, signal, computed, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { PollService } from '../../shared/services/poll.service';
 import { Poll } from '../../shared/models/poll.model';
 import { PollCreateComponent } from '../poll-create/poll-create.component';
+import { categoryLabel } from '../../shared/utils/category-label';
 
 @Component({
   selector: 'app-poll-list',
@@ -12,7 +13,7 @@ import { PollCreateComponent } from '../poll-create/poll-create.component';
   templateUrl: './poll-list.component.html',
   styleUrls: ['./poll-list.component.scss']
 })
-export class PollListComponent implements OnInit {
+export class PollListComponent implements OnInit, OnDestroy {
   // Signals
   polls = signal<Poll[]>([]);
   endingSoonPolls = signal<Poll[]>([]);
@@ -21,6 +22,10 @@ export class PollListComponent implements OnInit {
   loading = signal(false);
   showCreateModal = signal(false);
   categoryDropdownOpen = signal(false);
+
+  // Zeigt Kategorien im Template einheitlich auf Englisch an (Rohwert
+  // bleibt für Filter-Logik/DB unverändert, siehe category-label.ts).
+  readonly categoryLabel = categoryLabel;
 
   // Kategorien dynamisch aus vorhandenen Umfragen
   categories = computed(() => {
@@ -67,8 +72,39 @@ export class PollListComponent implements OnInit {
     if (!this.categoryDropdownOpen()) return;
     const target = event.target as Node;
     if (!this.elementRef.nativeElement.contains(target)) {
-      this.categoryDropdownOpen.set(false);
+      this.setDropdownOpen(false);
     }
+  }
+
+  ngOnDestroy(): void {
+    // Falls die Komponente (z.B. durch Navigation) zerstört wird, während
+    // das Dropdown offen ist, Body-Scroll-Sperre + Wheel-Blocker sicher
+    // wieder aufheben.
+    this.setBodyScrollLocked(false);
+    this.removeWheelBlocker();
+  }
+
+  // Zusätzliche, harte Absicherung gegen Scroll-Chaining: solange das
+  // Dropdown offen ist, wird jedes Wheel-Event außerhalb des Dropdown-Menüs
+  // unterdrückt, damit die Homepage garantiert nicht mitscrollt (die
+  // body/html-overflow-Sperre allein reicht in manchen Umgebungen nicht).
+  // Muss manuell (nicht als @HostListener) registriert werden, da Angular
+  // 'wheel'-Listener standardmäßig als passiv registriert -> preventDefault()
+  // würde sonst stillschweigend ignoriert.
+  private wheelBlocker = (event: WheelEvent): void => {
+    const target = event.target as Node;
+    const menu = this.elementRef.nativeElement.querySelector('.category-dropdown__menu');
+    if (!menu || !menu.contains(target)) {
+      event.preventDefault();
+    }
+  };
+
+  private addWheelBlocker(): void {
+    document.addEventListener('wheel', this.wheelBlocker, { passive: false });
+  }
+
+  private removeWheelBlocker(): void {
+    document.removeEventListener('wheel', this.wheelBlocker);
   }
 
   loadPolls(): void {
@@ -108,16 +144,43 @@ export class PollListComponent implements OnInit {
   // --- Kategorie-Dropdown ---
   toggleCategoryDropdown(event: MouseEvent): void {
     event.stopPropagation();
-    this.categoryDropdownOpen.update(open => !open);
+    this.setDropdownOpen(!this.categoryDropdownOpen());
   }
 
   closeCategoryDropdown(): void {
-    this.categoryDropdownOpen.set(false);
+    this.setDropdownOpen(false);
   }
 
   selectCategory(value: string): void {
     this.setCategoryFilter(value);
-    this.categoryDropdownOpen.set(false);
+    this.setDropdownOpen(false);
+  }
+
+  // Verhindert Scroll-Chaining: bei offenem Dropdown scrollt die Homepage
+  // im Hintergrund nicht mit, wenn im (eigenständig scrollbaren)
+  // Dropdown-Menü ans Ende gescrollt wird.
+  private setDropdownOpen(open: boolean): void {
+    this.categoryDropdownOpen.set(open);
+    this.setBodyScrollLocked(open);
+    if (open) {
+      this.addWheelBlocker();
+    } else {
+      this.removeWheelBlocker();
+    }
+  }
+
+  private setBodyScrollLocked(locked: boolean): void {
+    // Je nach Browser ist nicht <body>, sondern <html> das tatsächlich
+    // scrollende Element -> beide sperren, damit garantiert nichts
+    // durchscrollt, während das Dropdown geöffnet ist.
+    document.documentElement.style.overflow = locked ? 'hidden' : '';
+    document.body.style.overflow = locked ? 'hidden' : '';
+  }
+
+  // Zusätzliche Absicherung gegen Scroll-Chaining auf Trackpads: verhindert,
+  // dass ein Wheel-Event aus dem Dropdown-Menü auf die Seite durchschlägt.
+  onDropdownWheel(event: WheelEvent): void {
+    event.stopPropagation();
   }
 
   deletePoll(id: number): void {

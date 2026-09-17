@@ -396,6 +396,9 @@ $font-nokora: 'Nokora', sans-serif;
     min-width: 260px;
     max-height: 280px;
     overflow-y: auto;
+    // Verhindert Scroll-Chaining: am Ende der Liste scrollt die
+    // Homepage im Hintergrund nicht weiter mit.
+    overscroll-behavior: contain;
     background: $card-light;
     border-radius: 0 0 14px 14px;
     box-shadow: 0 16px 28px rgba(0, 0, 0, 0.3);

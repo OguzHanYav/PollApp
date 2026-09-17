@@ -6,6 +6,7 @@ import { PollService } from '../../shared/services/poll.service';
 import { Poll } from '../../shared/models/poll.model';
 import { Question } from '../../shared/models/question.model';
 import { Answer } from '../../shared/models/answer.model';
+import { categoryLabel } from '../../shared/utils/category-label';
 
 @Component({
   selector: 'app-poll-detail',
@@ -23,6 +24,7 @@ export class PollDetailComponent implements OnInit, OnDestroy {
   resultsOpen = signal(true);
 
   answerLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  readonly categoryLabel = categoryLabel;
 
   // Live-Vorschau (Feature: "Live Result Vorschau"): hält pro Frage die
   // gerade angeklickten, aber NICHT gespeicherten Antwort-IDs.

@@ -32,7 +32,7 @@
         </div>
         <div class="badge-div">
         <span class="end-date" *ngIf="p.end_date">Ends on {{ p.end_date | date: 'dd.MM.yyyy' }}</span>
-        <span class="category" *ngIf="p.category">Category: {{ p.category }}</span>
+        <span class="category" *ngIf="p.category">Category: {{ categoryLabel(p.category) }}</span>
         </div>
 
       </div>
@@ -92,33 +92,38 @@
       {{ resultsOpen() ? 'Close results ▲' : 'Show results ▼' }}
     </button>
 
-    <div class="results" *ngIf="resultsOpen()">
-      <h2>Survey results <span class="live" *ngIf="p.is_active">LIVE</span></h2>
+    <!-- Animiertes Ein-/Ausklappen (Mobile): Panel bleibt im DOM, nur die
+         Höhe/Opacity wird per CSS-Transition animiert (siehe .results in
+         poll-detail.component.scss) statt hart über *ngIf ein-/auszublenden. -->
+    <div class="results" [class.results--collapsed]="!resultsOpen()">
+      <div class="results__inner">
+        <h2>Survey results <span class="live" *ngIf="p.is_active">LIVE</span></h2>
 
-      <ng-container *ngIf="hasResults(); else noResults">
-        <div class="result-question" *ngFor="let q of p.questions; let qi = index; trackBy: trackByQuestion">
-          <h4>{{ qi + 1 }}. {{ q.question_text }}</h4>
-          <!-- Task 1: sortedAnswers(q) statt q.answers -> Balkendiagramm hat
-               dieselbe feste Reihenfolge wie die Abstimmungs-Optionen -->
-          <!-- previewVotes/previewTotal: DB-Votes + lokale, noch nicht
-               gespeicherte Preview-Auswahl -> Live-Vorschau ohne DB-Write -->
-          <div class="result-row" *ngFor="let a of sortedAnswers(q); let ai = index; trackBy: trackByAnswer">
-            <span class="result-row__letter">{{ answerLetters[ai] }}</span>
-            <div class="result-row__bar">
-              <div
-                class="result-row__fill"
-                [style.width.%]="votePercentage(previewVotes(q.id, a), previewTotal(q.id, q.answers))"
-              ></div>
+        <ng-container *ngIf="hasResults(); else noResults">
+          <div class="result-question" *ngFor="let q of p.questions; let qi = index; trackBy: trackByQuestion">
+            <h4>{{ qi + 1 }}. {{ q.question_text }}</h4>
+            <!-- Task 1: sortedAnswers(q) statt q.answers -> Balkendiagramm hat
+                 dieselbe feste Reihenfolge wie die Abstimmungs-Optionen -->
+            <!-- previewVotes/previewTotal: DB-Votes + lokale, noch nicht
+                 gespeicherte Preview-Auswahl -> Live-Vorschau ohne DB-Write -->
+            <div class="result-row" *ngFor="let a of sortedAnswers(q); let ai = index; trackBy: trackByAnswer">
+              <span class="result-row__letter">{{ answerLetters[ai] }}</span>
+              <div class="result-row__bar">
+                <div
+                  class="result-row__fill"
+                  [style.width.%]="votePercentage(previewVotes(q.id, a), previewTotal(q.id, q.answers))"
+                ></div>
+              </div>
+              <span class="result-row__percent">
+                {{ votePercentage(previewVotes(q.id, a), previewTotal(q.id, q.answers)) }}%
+              </span>
             </div>
-            <span class="result-row__percent">
-              {{ votePercentage(previewVotes(q.id, a), previewTotal(q.id, q.answers)) }}%
-            </span>
           </div>
-        </div>
-      </ng-container>
-      <ng-template #noResults>
-        <p class="results__empty">There are no answers yet.</p>
-      </ng-template>
+        </ng-container>
+        <ng-template #noResults>
+          <p class="results__empty">There are no answers yet.</p>
+        </ng-template>
+      </div>
     </div>
   </div>
 </div>
