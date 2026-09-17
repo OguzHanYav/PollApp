@@ -493,6 +493,10 @@ $font-nokora: 'Nokora', sans-serif;
   width: 100%;
 }
 
+// Card-Größe ist für alle Umfragen fest (Active UND Past nutzen dieselbe
+// Klasse/Template) -> overflow:hidden + Titel-Clamp (siehe .poll-title)
+// sorgen dafür, dass lange Titel die Karte nicht unterschiedlich hoch
+// aufziehen, egal ob Active oder Past Survey.
 .poll-card {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -502,6 +506,7 @@ $font-nokora: 'Nokora', sans-serif;
   flex-direction: column;
   gap: 10px;
   cursor: pointer;
+  overflow: hidden;
   transition: transform 0.2s, background 0.2s;
   width: 513px;
   height: 130px;
@@ -546,6 +551,12 @@ $font-nokora: 'Nokora', sans-serif;
   font-weight: 700;
   font-size: 24px;
   margin: 0;
+  // Lange Titel werden abgeschnitten statt die feste Card-Höhe zu sprengen
+  // -> gleiche Card-Höhe für alle Umfragen, unabhängig von der Titellänge.
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .poll-description {
@@ -722,8 +733,7 @@ $font-nokora: 'Nokora', sans-serif;
   .poll-card {
     width: 100%;
     max-width: 343px;
-    height: auto;
-    min-height: 150px;
+    height: 150px;
     padding: 12px 16px;
     border-radius: 5px 50px 5px 5px;
     gap: 8px;
