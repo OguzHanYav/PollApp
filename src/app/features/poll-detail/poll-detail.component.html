@@ -100,16 +100,18 @@
           <h4>{{ qi + 1 }}. {{ q.question_text }}</h4>
           <!-- Task 1: sortedAnswers(q) statt q.answers -> Balkendiagramm hat
                dieselbe feste Reihenfolge wie die Abstimmungs-Optionen -->
+          <!-- previewVotes/previewTotal: DB-Votes + lokale, noch nicht
+               gespeicherte Preview-Auswahl -> Live-Vorschau ohne DB-Write -->
           <div class="result-row" *ngFor="let a of sortedAnswers(q); let ai = index; trackBy: trackByAnswer">
             <span class="result-row__letter">{{ answerLetters[ai] }}</span>
             <div class="result-row__bar">
               <div
                 class="result-row__fill"
-                [style.width.%]="votePercentage(a.votes, questionTotalVotes(q.answers))"
+                [style.width.%]="votePercentage(previewVotes(q.id, a), previewTotal(q.id, q.answers))"
               ></div>
             </div>
             <span class="result-row__percent">
-              {{ votePercentage(a.votes, questionTotalVotes(q.answers)) }}%
+              {{ votePercentage(previewVotes(q.id, a), previewTotal(q.id, q.answers)) }}%
             </span>
           </div>
         </div>

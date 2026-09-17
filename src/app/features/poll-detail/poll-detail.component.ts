@@ -23,7 +23,12 @@ export class PollDetailComponent implements OnInit, OnDestroy {
   resultsOpen = signal(true);
 
   answerLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
-  selectedAnswers: Record<number, Set<number>> = {};
+
+  // Live-Vorschau (Feature: "Live Result Vorschau"): hält pro Frage die
+  // gerade angeklickten, aber NICHT gespeicherten Antwort-IDs.
+  // -> ausschließlich In-Memory-State, kein Supabase-Call beim Klicken.
+  // Erst completeSurvey() schreibt diese Auswahl tatsächlich in die DB.
+  localPreviewAnswers: Record<number, number[]> = {};
 
   private answerChannel?: RealtimeChannel;
 
@@ -40,7 +45,7 @@ export class PollDetailComponent implements OnInit, OnDestroy {
     this.route.paramMap.subscribe(params => {
       const id = Number(params.get('id'));
       if (id) {
-        this.selectedAnswers = {};
+        this.localPreviewAnswers = {};
         this.loadPoll(id);
         this.subscribeToLiveUpdates(id);
       }
@@ -80,22 +85,24 @@ export class PollDetailComponent implements OnInit, OnDestroy {
     });
   }
 
+  // Klick auf eine Option: nur lokalen Preview-State togglen.
+  // KEIN Supabase-Call / kein Optimistic Update in der DB an dieser Stelle.
   toggleAnswer(questionId: number, answerId: number, allowMultiple: boolean): void {
     const poll = this.poll();
     if (!poll?.is_active) return; // Past Surveys sind nicht mehr interaktiv
 
-    const set = this.selectedAnswers[questionId] ?? new Set<number>();
+    const current = this.localPreviewAnswers[questionId] ?? [];
     if (allowMultiple) {
-      set.has(answerId) ? set.delete(answerId) : set.add(answerId);
+      this.localPreviewAnswers[questionId] = current.includes(answerId)
+        ? current.filter(id => id !== answerId)
+        : [...current, answerId];
     } else {
-      set.clear();
-      set.add(answerId);
+      this.localPreviewAnswers[questionId] = [answerId];
     }
-    this.selectedAnswers[questionId] = set;
   }
 
   isSelected(questionId: number, answerId: number): boolean {
-    return this.selectedAnswers[questionId]?.has(answerId) ?? false;
+    return this.localPreviewAnswers[questionId]?.includes(answerId) ?? false;
   }
 
   // Task 1: feste, konsistente Reihenfolge der Antwortoptionen (A, B, C, D...)
@@ -110,9 +117,11 @@ export class PollDetailComponent implements OnInit, OnDestroy {
   hasResults(): boolean {
     const p = this.poll();
     if (!p?.questions) return false;
-    return p.questions.some((q: Question) =>
+    const hasStoredVotes = p.questions.some((q: Question) =>
       (q.answers ?? []).some((a: Answer) => a.votes > 0)
     );
+    const hasPendingPreview = Object.values(this.localPreviewAnswers).some(ids => ids.length > 0);
+    return hasStoredVotes || hasPendingPreview;
   }
 
   questionTotalVotes(answers: Answer[] | undefined): number {
@@ -121,6 +130,18 @@ export class PollDetailComponent implements OnInit, OnDestroy {
 
   votePercentage(votes: number, total: number): number {
     return total > 0 ? Math.round((votes / total) * 100) : 0;
+  }
+
+  // Live-Vorschau: bestehende DB-Votes + lokale (noch nicht gespeicherte)
+  // Preview-Auswahl. Reine Berechnung für die Anzeige, kein Schreibzugriff.
+  previewVotes(questionId: number, answer: Answer): number {
+    const isPending = this.localPreviewAnswers[questionId]?.includes(answer.id) ?? false;
+    return answer.votes + (isPending ? 1 : 0);
+  }
+
+  previewTotal(questionId: number, answers: Answer[] | undefined): number {
+    const base = this.questionTotalVotes(answers);
+    return base + (this.localPreviewAnswers[questionId]?.length ?? 0);
   }
 
   // TrackBy-Funktionen: verhindern, dass Angular bei jedem Live-Update
@@ -145,48 +166,25 @@ export class PollDetailComponent implements OnInit, OnDestroy {
     this.resultsOpen.update(open => !open);
   }
 
+  // Erst hier werden die Preview-Antworten tatsächlich in Supabase
+  // gespeichert (ein Insert/Increment pro ausgewählter Antwort-ID).
   completeSurvey(): void {
     const p = this.poll();
     if (!p || !p.is_active || this.submitting()) return;
 
-    const answerIds: number[] = [];
-    Object.values(this.selectedAnswers).forEach(set => answerIds.push(...set));
-
+    const answerIds: number[] = Object.values(this.localPreviewAnswers).flat();
     if (answerIds.length === 0) return;
 
     this.submitting.set(true);
 
-    // Optimistisches Update: Stimmen sofort lokal hochzählen, damit die
-    // Balken ohne spürbare Verzögerung reagieren, bevor die Bestätigung
-    // von Supabase (bzw. der Realtime-Push) zurückkommt.
-    this.applyOptimisticVotes(answerIds);
-
     Promise.all(answerIds.map(id => this.pollService.vote(id)))
       .then(() => {
-        this.selectedAnswers = {};
-        if (p.id) this.loadPoll(p.id);
+        this.localPreviewAnswers = {};
+        if (p.id) this.loadPoll(p.id); // echte, gespeicherte Werte nachladen
       })
       .catch(err => {
         console.error('Fehler beim Abstimmen:', err);
-        if (p.id) this.loadPoll(p.id); // bei Fehler auf den echten Stand zurücksetzen
       })
       .finally(() => this.submitting.set(false));
-  }
-
-  private applyOptimisticVotes(answerIds: number[]): void {
-    const current = this.poll();
-    if (!current?.questions) return;
-
-    const idSet = new Set(answerIds);
-    const updated: Poll = {
-      ...current,
-      questions: current.questions.map(q => ({
-        ...q,
-        answers: (q.answers ?? []).map(a =>
-          idSet.has(a.id) ? { ...a, votes: (a.votes ?? 0) + 1 } : a
-        )
-      }))
-    };
-    this.poll.set(updated);
   }
 }
