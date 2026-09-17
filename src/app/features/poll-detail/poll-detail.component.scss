@@ -26,13 +26,28 @@ $font-nokora: 'Nokora', sans-serif;
   color: $text-dark;
 }
 
+.detail {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
 .detail__topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 24px 40px;
+  width: 100%;
+  // Kein horizontales Padding auf dem Container selbst: Logo-Abstand und
+  // Button-Abstand werden gezielt auf den Kindern gesetzt (siehe unten),
+  // damit die %-Basis der margin-left-Formel exakt der von .detail__content
+  // entspricht (sonst verschiebt eigenes Padding hier die Rechnung).
+  padding: 24px 0;
 
-  .hero-brand2 {
+  // Linke Kante der Logo-Spalte = linke Kante des Survey-Content darunter.
+  // .detail__content ist max-width:1059px, margin:auto (zentriert in .detail)
+  // plus eigenes padding-left:40px -> dieselbe Formel wird hier für den
+  // Logo-Abstand nachgebildet, damit beide Kanten immer exakt übereinstimmen.
+  .hero-brand2,
+  .hero-brand {
+    margin-left: max(40px, calc((100% - 1059px) / 2 + 40px));
     text-decoration: unset;
     cursor: pointer;
 
@@ -48,6 +63,13 @@ $font-nokora: 'Nokora', sans-serif;
       color: $bg-dark;
       font-size: 26px;
     }
+  }
+
+  // Button an die rechte Kante des breiteren Page-Containers (.detail),
+  // nicht an die rechte Kante des schmaleren Content-Grids.
+  .btn-primary {
+    margin-left: auto;
+    margin-right: 40px;
   }
 }
 
@@ -352,7 +374,16 @@ $font-nokora: 'Nokora', sans-serif;
   }
 
   .detail__topbar {
-    padding: 16px 20px;
+    padding: 16px 0;
+
+    .hero-brand2,
+    .hero-brand {
+      margin-left: max(20px, calc((100% - 1059px) / 2 + 20px));
+    }
+
+    .btn-primary {
+      margin-right: 20px;
+    }
   }
 
   .survey-card {
@@ -491,7 +522,16 @@ $font-nokora: 'Nokora', sans-serif;
     flex-wrap: wrap;
     align-items: center;
     gap: 12px;
-    padding: 16px;
+    padding: 16px 0;
+
+    .hero-brand2,
+    .hero-brand {
+      margin-left: 16px;
+    }
+
+    .btn-primary {
+      margin-right: 16px;
+    }
   }
 
   .hero-brand img {
