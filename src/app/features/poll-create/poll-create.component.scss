@@ -79,6 +79,12 @@ $font-nokora: 'Nokora', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-top-right-radius: 14px;
+    padding-top: 3px;
+    padding-right: 12px;
+    padding-bottom: 3px;
+    padding-left: 8px;
+
   }
 }
 
@@ -232,6 +238,7 @@ $font-nokora: 'Nokora', sans-serif;
 
   }
 }
+
 // poll-create.component.scss
 
 // Date Input - ohne Wert/Focus komplett leer (kein Platzhalter, kein Icon).
@@ -239,6 +246,7 @@ $font-nokora: 'Nokora', sans-serif;
 // Date-Picker öffnen lässt; sobald ein Datum gewählt wurde, bleibt es
 // dauerhaft sichtbar (über .has-value).
 .date-input-custom {
+
   // Chrome, Safari, Edge - Icon nur bei Hover/Focus sichtbar, aber
   // (anders als display:none) weiterhin klickbar, damit der Picker
   // geöffnet werden kann
@@ -266,6 +274,7 @@ $font-nokora: 'Nokora', sans-serif;
   // Bei Focus ODER wenn ein Datum ausgewählt ist: Wert sichtbar
   &:focus,
   &.has-value {
+
     &::-webkit-datetime-edit,
     &::-webkit-datetime-edit-text,
     &::-webkit-datetime-edit-month-field,
@@ -324,7 +333,7 @@ textarea {
   border-bottom-left-radius: 5px;
   padding: 7px 13px;
 
-  
+
   &:focus {
     outline: 2px solid $accent-orange;
   }
@@ -493,7 +502,7 @@ textarea {
   gap: 12px;
   margin-bottom: 8px;
 
-  > label {
+  >label {
     font-family: $font-mulish;
     font-weight: 600;
     margin: 0;
@@ -743,7 +752,7 @@ textarea {
     gap: 12px;
     margin-bottom: 20px;
 
-    > div {
+    >div {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -768,6 +777,7 @@ textarea {
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
       align-self: flex-start;
+
     }
   }
 
@@ -814,15 +824,33 @@ textarea {
     width: 100%;
   }
 
-  .grid-title { order: 1; }
-  .grid-category { order: 2; }
-  .grid-desc { order: 3; }
-  .grid-enddate { order: 4; }
-  .grid-questions { order: 5; }
-  .grid-addq { order: 6; }
+  .grid-title {
+    order: 1;
+  }
+
+  .grid-category {
+    order: 2;
+  }
+
+  .grid-desc {
+    order: 3;
+  }
+
+  .grid-enddate {
+    order: 4;
+  }
+
+  .grid-questions {
+    order: 5;
+  }
+
+  .grid-addq {
+    order: 6;
+  }
 
   // Blauen Browser-Focus-Rahmen auf dem Category-Dropdown entfernen
   .category-select__toggle {
+
     &:focus,
     &:focus-visible {
       outline: none;
@@ -846,6 +874,7 @@ textarea {
       right: 0;
       z-index: 1;
     }
+
     img {
       width: 26px;
       height: 26px;
@@ -872,7 +901,7 @@ textarea {
   }
 
   // Platz für die nach oben verschobene Mülltonne neben dem Label schaffen
-  .form-group > label {
+  .form-group>label {
     display: inline-block;
     padding-right: 32px;
     max-width: calc(100% - 32px);
