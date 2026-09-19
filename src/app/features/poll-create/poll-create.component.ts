@@ -130,10 +130,12 @@ export class PollCreateComponent {
 
   onSubmit(): void {
     if (this.surveyForm.invalid) {
-      Object.keys(this.surveyForm.controls).forEach(key => {
-        const control = this.surveyForm.get(key);
-        control?.markAsTouched();
-      });
+      // markAllAsTouched() (statt markAsTouched() nur auf den Top-Level-
+      // Controls) touched auch verschachtelte Controls (question_text,
+      // answer_text in den FormArrays) -> deren Fehlermeldungen werden
+      // beim Klick auf Publish jetzt ebenfalls sichtbar, nicht nur die
+      // von title/category.
+      this.surveyForm.markAllAsTouched();
       return;
     }
 

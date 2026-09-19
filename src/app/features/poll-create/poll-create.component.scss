@@ -504,9 +504,23 @@ textarea {
 
 .answer-row {
   display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+
+  small {
+    font-family: $font-mulish;
+    font-weight: 400;
+    color: #ff9a9a;
+    font-size: 12px;
+    margin-left: 24px;
+  }
+}
+
+.answer-field {
+  display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
 
   .answer-letter {
     font-family: $font-mulish;
@@ -935,13 +949,15 @@ textarea {
 
   // Answer Row: Buchstabe oben links, Mülltonne oben rechts, Input darunter
   .answer-row {
+    margin-bottom: 12px;
+  }
+
+  .answer-field {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 4px;
-    margin-bottom: 12px;
-    padding-right: 0;
 
     .answer-letter {
       align-self: flex-start;
