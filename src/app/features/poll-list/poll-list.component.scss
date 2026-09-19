@@ -251,6 +251,8 @@ $font-nokora: 'Nokora', sans-serif;
     font-weight: 700;
     font-size: 26px;
     margin: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .ends-in {
@@ -493,10 +495,11 @@ $font-nokora: 'Nokora', sans-serif;
   width: 100%;
 }
 
-// Card-Größe ist für alle Umfragen fest (Active UND Past nutzen dieselbe
-// Klasse/Template) -> overflow:hidden + Titel-Clamp (siehe .poll-title)
-// sorgen dafür, dass lange Titel die Karte nicht unterschiedlich hoch
-// aufziehen, egal ob Active oder Past Survey.
+// min-height (statt fester height) + KEIN overflow:hidden: die Karte
+// wächst bei langen (umbrechenden) Titeln mit, damit das Footer-Badge
+// ("Ends today"/"Ends in X days") niemals abgeschnitten wird. Active UND
+// Past Survey nutzen dieselbe Klasse/Template, haben also automatisch
+// dieselbe Mindesthöhe.
 .poll-card {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -506,10 +509,9 @@ $font-nokora: 'Nokora', sans-serif;
   flex-direction: column;
   gap: 10px;
   cursor: pointer;
-  overflow: hidden;
   transition: transform 0.2s, background 0.2s;
   width: 513px;
-  height: 130px;
+  min-height: 130px;
   border-top-right-radius: 50px;
   border-bottom-right-radius: 5px;
   border-bottom-left-radius: 5px;
@@ -551,12 +553,14 @@ $font-nokora: 'Nokora', sans-serif;
   font-weight: 700;
   font-size: 24px;
   margin: 0;
-  // Lange Titel werden abgeschnitten statt die feste Card-Höhe zu sprengen
-  // -> gleiche Card-Höhe für alle Umfragen, unabhängig von der Titellänge.
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
+  // Erzwingt Zeilenumbruch auch bei langen zusammenhängenden Strings ohne
+  // Leerzeichen (z.B. "TESTTESTTEST...") -> Titel läuft sonst horizontal
+  // über die Card-Breite hinaus in die Nachbar-Card.
+  overflow-wrap: break-word;
+  word-break: break-word;
+  // Kein Line-Clamp mehr: lange Titel lassen die Karte mitwachsen
+  // (min-height statt fester height auf .poll-card), statt Text oder das
+  // Footer-Badge abzuschneiden.
 }
 
 .poll-description {
@@ -730,10 +734,12 @@ $font-nokora: 'Nokora', sans-serif;
   }
 
   // POLL CARD - Figma-Maße: 343 x 150px, Radius 5/50/5/5, Padding 12px 16px
+  // (min-height statt height: bei umbrechenden Titeln wächst die Karte mit,
+  // damit das Footer-Badge nicht abgeschnitten wird)
   .poll-card {
     width: 100%;
     max-width: 343px;
-    height: 150px;
+    min-height: 150px;
     padding: 12px 16px;
     border-radius: 5px 50px 5px 5px;
     gap: 8px;
@@ -893,9 +899,7 @@ $font-nokora: 'Nokora', sans-serif;
 @media (max-width: 430px) {
   .poll-card {
     width: 343px;
-    height: 150px;
-
-
+    min-height: 150px;
 
     .poll-title {
       font-size: 20px;

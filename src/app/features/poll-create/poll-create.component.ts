@@ -19,6 +19,7 @@ export class PollCreateComponent {
 
   showPublishOverlay = signal(false);
   createdPollId = signal<number | undefined>(undefined);
+  private autoCloseTimeout?: ReturnType<typeof setTimeout>;
 
   // Custom "Choose Category"-Dropdown (gleiches Verhalten wie
   // "Sort by categories" in PollListComponent)
@@ -143,6 +144,9 @@ export class PollCreateComponent {
     this.pollService.createPoll(formValue).then((poll) => {
       this.createdPollId.set(poll.id);
       this.showPublishOverlay.set(true);
+      // Toast schließt sich nach ein paar Sekunden automatisch und leitet
+      // dann ebenfalls zur neuen Survey weiter (wie ein manuelles Schließen).
+      this.autoCloseTimeout = setTimeout(() => this.closeOverlay(), 4000);
     }).catch(err => {
       console.error('Fehler beim Erstellen der Umfrage:', err);
     });
@@ -153,9 +157,16 @@ export class PollCreateComponent {
   }
 
   closeOverlay(): void {
+    if (this.autoCloseTimeout) {
+      clearTimeout(this.autoCloseTimeout);
+      this.autoCloseTimeout = undefined;
+    }
     this.showPublishOverlay.set(false);
     const id = this.createdPollId();
     if (id) {
+      // Neue Survey-ID aus der Publish-Response -> Weiterleitung zur
+      // Detail-Seite übernimmt der Parent (PollListComponent.onPollCreated)
+      // via router.navigate(['/poll', id]), kein Page Refresh nötig.
       this.created.emit(id);
     } else {
       this.closed.emit();

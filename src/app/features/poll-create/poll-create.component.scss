@@ -655,19 +655,28 @@ textarea {
 
 .publish-toast {
   position: fixed;
-  bottom: 32px;
-  right: 32px;
+  bottom: 24px;
+  right: 24px;
+  width: 357px;
+  height: 86px;
+  max-width: calc(100vw - 48px);
+  box-sizing: border-box;
+  opacity: 1;
   background: $accent-apricot;
   color: $text-dark;
-  border-radius: 12px 32px 12px 12px;
-  padding: 16px 44px 16px 20px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  padding: 16px 44px 16px 24px;
   display: flex;
   align-items: flex-start;
   gap: 16px;
   font-family: $font-nerko;
   font-weight: 400;
-  font-size: 18px;
-  line-height: 1.2;
+  font-size: 24px;
+  line-height: 100%;
+  letter-spacing: 0.02em;
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25);
   z-index: 1000;
 
@@ -1082,6 +1091,9 @@ textarea {
     left: 16px;
     right: 16px;
     bottom: 16px;
+    width: auto;
+    height: auto;
+    max-width: none;
   }
 }
 
