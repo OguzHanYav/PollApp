@@ -133,11 +133,16 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Add Question Button -->
-        <div class="grid-addq">
-          <button type="button" class="btn-add-question" (click)="addQuestion()">
+          <!-- Grid-Geschwister der Question-Blöcke (kein *ngFor-Kind):
+               CSS Grid ordnet den Button automatisch in die nächste freie
+               Spalte/Zeile ein -> bei 1 Frage direkt neben "1. Question"
+               auf Höhe des Titels, wie im Figma-Design. -->
+          <button
+            type="button"
+            class="btn-add-question"
+            (click)="addQuestion()"
+          >
             <span>Add next question</span>
             <img src="./assets/add_circle.svg" alt="">
           </button>

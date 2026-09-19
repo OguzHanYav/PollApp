@@ -118,7 +118,7 @@ $font-nokora: 'Nokora', sans-serif;
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto;
   row-gap: 8px;
   background: rgba(255, 255, 255, 0.06);
   border-top-left-radius: 5px;
@@ -132,8 +132,7 @@ $font-nokora: 'Nokora', sans-serif;
   grid-template-areas:
     "title desc"
     "meta  desc"
-    "questions questions"
-    "addq addq";
+    "questions questions";
 }
 
 .grid-title {
@@ -150,13 +149,6 @@ $font-nokora: 'Nokora', sans-serif;
 
 .grid-questions {
   grid-area: questions;
-}
-
-// "Add next question" steht jetzt unterhalb aller Fragen-Blöcke,
-// über die volle Breite
-.grid-addq {
-  grid-area: addq;
-  margin-top: 8px;
 }
 
 .meta-row {
@@ -595,6 +587,14 @@ textarea {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
+  // Grid-Geschwister von .question-block in .questions-section: CSS Grid
+  // ordnet den Button automatisch in die nächste freie Spalte ein (bei 1
+  // Frage neben "1. Question", bei gerader Fragenanzahl in eine neue Zeile).
+  // align-self:start verhindert, dass er sich über die volle (viel höhere)
+  // Zeilenhöhe streckt -> bleibt oben auf Höhe des Frage-Titels.
+  align-self: start;
+  justify-self: start;
 
   img {
     display: inline-block;
@@ -686,8 +686,7 @@ textarea {
       "title"
       "desc"
       "meta"
-      "questions"
-      "addq";
+      "questions";
   }
 
   .questions-section {
@@ -844,10 +843,6 @@ textarea {
     order: 5;
   }
 
-  .grid-addq {
-    order: 6;
-  }
-
   // Blauen Browser-Focus-Rahmen auf dem Category-Dropdown entfernen
   .category-select__toggle {
 
@@ -976,16 +971,13 @@ textarea {
     font-size: 14px;
   }
 
-  // "Add next question": Hug-Breite statt volle Breite, zentriert
-  .grid-addq {
-    display: flex;
-    justify-content: center;
-    margin-top: 88px;
-  }
-
+  // Mobile: questions-section ist einspaltig -> der Button (Grid-Geschwister
+  // der Question-Blöcke) landet automatisch in einer eigenen Zeile unter
+  // der letzten Frage. Hug-Breite, zentriert, etwas Abstand nach oben.
   .btn-add-question {
     width: auto;
-    justify-content: center;
+    justify-self: center;
+    margin-top: 8px;
   }
 
   // "Publish": Hug-Breite statt volle Breite, zentriert, orange
